@@ -217,10 +217,16 @@ html.w1100 #cwrap{grid-template-columns:1fr 1fr}html.w1100 #pA,html.w1100 #pB,ht
 html.w700 #cwrap{grid-template-columns:1fr}html.w700 #pCard{grid-column:1}
 .fld{margin-bottom:13px}
 .fld label,.lab{display:block;font:11px var(--mono);letter-spacing:.25em;color:#b8a4d4;margin-bottom:6px}
-.fld input[type=text],.fld select{width:100%;background:rgba(0,0,0,.45);border:1.5px solid #6f5a8c;color:#fff;padding:8px 11px;font:14px "Microsoft YaHei",sans-serif;outline:0}
-.fld input:focus,.fld select:focus{border-color:var(--c1)}
+.fld input[type=text],.fld select,.fld textarea{width:100%;background:rgba(0,0,0,.45);border:1.5px solid #6f5a8c;color:#fff;padding:8px 11px;font:14px "Microsoft YaHei",sans-serif;outline:0}
+.fld textarea{resize:vertical;min-height:58px;line-height:1.55;font-size:13px}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--c1)}
 .fld select option{background:#120a1c}
 .fld input[type=range]{width:100%;accent-color:var(--c1)}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px}
+.chips button{font-size:11.5px;padding:3px 9px;border:1px solid #6f5a8c;background:rgba(0,0,0,.4);color:#e2d4f6;transition:.2s}
+.chips button:hover{border-color:var(--c1);color:#fff}
+.chips button.on{background:var(--c1);color:#000;border-color:var(--c1);font-weight:700}
+.chips.loc button.on{background:var(--o);color:#000;border-color:var(--o)}
 .sw{display:flex;gap:9px;flex-wrap:wrap}
 .sw i{width:26px;height:26px;border:2px solid transparent;cursor:pointer;transform:rotate(45deg) scale(.78);transition:.2s}
 .sw i.on,.sw i:hover{border-color:#fff;transform:rotate(45deg) scale(.98)}
@@ -493,10 +499,13 @@ html.mob.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
   <div class="cp panel chamf" id="pA">
    <div class="ph"><span>01 · IDENTITY</span><i>身份</i></div>
    <div class="fld"><label>姓名</label><input type="text" id="f-name" maxlength="10" value="天城 朔夜"></div>
+   <div class="fld"><label>性别（可选 / 自由填写）</label><div class="chips" id="f-gen-opts"></div><input type="text" id="f-gen" maxlength="18" value="男" placeholder="点选或自由填写性别"></div>
    <div class="fld"><label>年龄 · <span id="f-agev">20</span></label><input type="range" id="f-age" min="18" max="21" value="20"></div>
-   <div class="fld"><label>所属</label><select id="f-org"><option>NERV 本部</option><option>WILLE</option><option>SEELE 直属</option><option>联合国军 · 特别派遣</option><option>第3村 · 独立适格者</option></select></div>
-   <div class="fld"><label>身份</label><select id="f-role"></select></div>
-   <div class="fld"><label>开局地点</label><div class="locs" id="f-loc"></div></div>
+   <div class="fld"><label>所属（可选 / 自由填写）</label><div class="chips" id="f-org-opts"></div><input type="text" id="f-org" maxlength="28" value="NERV 本部" placeholder="点选或自定义所属势力"></div>
+   <div class="fld"><label>身份（可选 / 自由填写）</label><div class="chips" id="f-role-opts"></div><input type="text" id="f-role" maxlength="28" value="适格者（驾驶员）" placeholder="点选或自定义角色身份"></div>
+   <div class="fld"><label>开局地点（可选 / 自由填写）</label><div class="chips loc" id="f-loc"></div><input type="text" id="f-loc-in" maxlength="32" value="NERV 本部 · 发令所" placeholder="点选或自定义开局地点"></div>
+   <div class="fld"><label>开局背景（自由填写）</label><textarea id="f-bg" maxlength="500" placeholder="选填：角色的来历、当前处境、与原作人物的渊源或开场前情…"></textarea></div>
+   <div class="fld"><label>特殊设定（自由填写）</label><textarea id="f-sp" maxlength="500" placeholder="选填：体质/同步异常、特殊能力、隐藏秘密、随身物品或专属限制…"></textarea></div>
    <div class="fld"><label>出击宣言</label><input type="text" id="f-q" maxlength="22" value="让我来结束这一切。"></div>
   </div>
 
@@ -867,6 +876,8 @@ const ALL_TL=Object.entries(WLS).flatMap(([w,o])=>o.nodes.map(x=>({...x,wl:w,wn:
 const getTL=(id)=>ALL_TL.find(x=>x.id===id)||ALL_TL[0];
 const TRAITS=["沉默","热血","傲娇","冷静","温柔","孤僻","好胜","天然","毒舌","执着","乐观","多疑","责任感","自我否定"];
 const COLS=["#ff7a1a","#ff2a44","#7cff2e","#b48cff","#38c8ff","#ffd23a","#ff6fb0","#ffffff"];
+const GENDERS=["男","女","其他 / 未公开"];
+const ORGS=["NERV 本部","WILLE","SEELE 直属","联合国军 · 特别派遣","第3村 · 独立适格者"];
 const ROLES=["适格者（驾驶员）","作战参谋","技术开发员","情报特务","SEELE 使者","转学生","第3村居民","前联合国军士官","MAGI 运维员"];
 const LOCS=["NERV 本部 · 发令所","第三新东京市 · 地表","大空洞 · 湖畔","发进井 · 整备桥","第3村 · 农田","箱根 · 旧温泉街","月面 · 地下基地","南极 · 观测站"];
 const STN=["格斗","射击","谋略","意志","同步","体能"],CAP=95,BUDGET=330,MINV=5,DEFST=[55,50,60,55,60,50];
@@ -896,13 +907,17 @@ function getPortraitLinks(s){
 }
 function formatProfile(s){
  const tinfo=getTL(s.tl),oc=OC_MAP[s.base]||OCS[0],lk=getPortraitLinks(s);
+ const gen=(s.gender||"").trim()||oc.g;
+ const stage=lk.isCustom?"自定义立绘":oc.n;
  const ptLines=lk.isCustom
   ?`立绘来源：${lk.isUpload?"自定义本地上传":"自定义外链"}\n立绘外链：${lk.pLink}\n头像外链：${lk.aLink}`
   :`立绘短码：${oc.id}（mt-${oc.id}）\n立绘外链：${lk.pLink}\n头像外链：${lk.aLink}`;
  const req=lk.isCustom
   ?`【立绘渲染要求】请在正文玩家气泡头像及主角状态栏（立绘）中使用上述「立绘外链」与「头像外链」渲染。`
   :`【立绘渲染要求】请在正文玩家气泡头像及主角状态栏（立绘）中统一使用短码 mt-${oc.id}（立绘外链：${lk.pLink}｜头像外链：${lk.aLink}）。`;
- return `【NERV 驾驶员档案】\n时间线：${tinfo.wn} · ${tinfo.n}（${tinfo.t}）\n姓名：${s.name}\n性别/阶段：${oc.n}\n${ptLines}\n年龄：${s.age}\n所属：${s.org}\n身份：${s.role}\n开局地点：${s.loc}\n机体：${BYID[s.eva].n}\n性格：${s.tr.join("、")}\n属性：${STN.map((n,i)=>n+s.st[i]).join(" ")}\n同步率：${s.sync}%\n出击宣言：${s.q}\n${req}`;
+ const bgLine=(s.bg||"").trim()?`\n开局背景：${s.bg.trim()}`:"";
+ const spLine=(s.sp||"").trim()?`\n特殊设定：${s.sp.trim()}`:"";
+ return `【NERV 驾驶员档案】\n时间线：${tinfo.wn} · ${tinfo.n}（${tinfo.t}）\n姓名：${s.name}\n性别：${gen}（立绘阶段：${stage}）\n${ptLines}\n年龄：${s.age}\n所属：${s.org}\n身份：${s.role}\n开局地点：${s.loc}\n机体：${BYID[s.eva].n}\n性格：${s.tr.join("、")}\n属性：${STN.map((n,i)=>n+s.st[i]).join(" ")}\n同步率：${s.sync}%${bgLine}${spLine}\n出击宣言：${s.q}\n${req}`;
 }
 function formatLinksOnly(s){
  const lk=getPortraitLinks(s);
@@ -972,9 +987,15 @@ function renderCustPrev(){
 }
 ENTER.createInit=()=>{
  $("#f-eva").innerHTML=R.filter(x=>x.c==="eva").map(x=>`<option value="${x.id}" ${x.id==="073"?"selected":""}>${x.n}</option>`).join("");
- $("#f-role").innerHTML=ROLES.map(r=>`<option>${r}</option>`).join("");
- $("#f-loc").innerHTML=LOCS.map(l=>`<button data-l="${l}">${l}</button>`).join("");
- $("#f-loc").onclick=e=>{const l=e.target.dataset.l;if(!l)return;cr.loc=l;SFX.blip();syncUI()};
+ $("#f-gen-opts").innerHTML=GENDERS.map(g=>`<button type="button" data-v="${g}">${g}</button>`).join("");
+ $("#f-gen-opts").onclick=e=>{const v=e.target.dataset.v;if(!v)return;$("#f-gen").value=v;SFX.blip();syncUI()};
+ $("#f-org-opts").innerHTML=ORGS.map(o=>`<button type="button" data-v="${o}">${o}</button>`).join("");
+ $("#f-org-opts").onclick=e=>{const v=e.target.dataset.v;if(!v)return;$("#f-org").value=v;SFX.blip();syncUI()};
+ $("#f-role-opts").innerHTML=ROLES.map(r=>`<button type="button" data-v="${r}">${r}</button>`).join("");
+ $("#f-role-opts").onclick=e=>{const v=e.target.dataset.v;if(!v)return;$("#f-role").value=v;SFX.blip();syncUI()};
+ $("#f-loc").innerHTML=LOCS.map(l=>`<button type="button" data-l="${l}">${l}</button>`).join("");
+ $("#f-loc").onclick=e=>{const l=e.target.dataset.l;if(!l)return;cr.loc=l;$("#f-loc-in").value=l;SFX.blip();syncUI()};
+ $("#f-loc-in").oninput=e=>{cr.loc=e.target.value;syncUI()};
  $("#f-wl").onclick=e=>{const b=e.target.closest("button");if(!b)return;cr.wl=b.dataset.w;cr.tl=WLS[cr.wl].nodes[0].id;SFX.blip();syncUI()};
  $("#f-tl").onclick=e=>{const b=e.target.closest("button");if(!b)return;cr.tl=b.dataset.t;SFX.blip();syncUI()};
  $("#f-tr").innerHTML=TRAITS.map(t=>`<button data-t="${t}">${t}</button>`).join("");
@@ -988,7 +1009,7 @@ ENTER.createInit=()=>{
  $("#st-rnd").onclick=()=>{const a=Array(6).fill(20);let left=BUDGET-120;while(left>0){const i=Math.floor(Math.random()*6);if(a[i]+5<=CAP){a[i]+=5;left-=5}}cr.st=a;SFX.ok();syncUI()};
  $("#b-sync").onclick=()=>{cr.noise=rnd(-6,6);SFX.ok();syncUI()};
  $("#bases").innerHTML=OCS.map(x=>`<button data-b="${x.id}" title="${x.n}">${IM(x.p)}<span>${x.short}</span></button>`).join("");
- $("#bases").onclick=e=>{const b=e.target.closest("button");if(!b)return;cr.base=b.dataset.b;cr.mode="base";cr.pVal="";cr.aVal="";pend={pVal:"",aVal:"",dirty:false};$("#f-url").value="";$("#f-avurl").value="";const oc=OC_MAP[cr.base]||OCS[0];const curA=+$("#f-age").value;if(curA<oc.minA||curA>oc.maxA){$("#f-age").value=oc.defAge;$("#f-agev").textContent=oc.defAge}SFX.blip();syncUI()};
+ $("#bases").onclick=e=>{const b=e.target.closest("button");if(!b)return;cr.base=b.dataset.b;cr.mode="base";cr.pVal="";cr.aVal="";pend={pVal:"",aVal:"",dirty:false};$("#f-url").value="";$("#f-avurl").value="";const oc=OC_MAP[cr.base]||OCS[0];const curG=$("#f-gen").value.trim();if(!curG||curG==="男"||curG==="女")$("#f-gen").value=oc.g;const curA=+$("#f-age").value;if(curA<oc.minA||curA>oc.maxA){$("#f-age").value=oc.defAge;$("#f-agev").textContent=oc.defAge}SFX.blip();syncUI()};
  $("#f-url").oninput=e=>{pend.pVal=e.target.value.trim();pend.dirty=true;renderCustPrev()};
  $("#f-avurl").oninput=e=>{pend.aVal=e.target.value.trim();pend.dirty=true;renderCustPrev()};
  $("#f-up").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=await readImgFile(f,600,900);pend.pVal=d;pend.dirty=true;$("#f-url").value="";toast("已读取本地立绘，请点击「保存设定」");renderCustPrev()}catch(err){toast("图片读取失败")}e.target.value=""};
@@ -996,7 +1017,7 @@ ENTER.createInit=()=>{
  $("#b-save-custom").onclick=()=>commitCustomAndSave(true);
  $("#b-reset-pt").onclick=()=>{cr.mode="base";cr.pVal="";cr.aVal="";pend={pVal:"",aVal:"",dirty:false};$("#f-url").value="";$("#f-avurl").value="";SFX.blip();syncUI();toast("已恢复自创预设立绘")};
  $("#b-copy-img").onclick=()=>{if(pend.dirty){toast("请先点击「保存设定」保存自定义立绘");return}copyText(formatLinksOnly(snap())).then(()=>{SFX.ok();toast("立绘外链与头像外链已复制")})};
- ["f-name","f-org","f-role","f-eva","f-q"].forEach(id=>$("#"+id).oninput=()=>syncUI());
+ ["f-name","f-gen","f-org","f-role","f-bg","f-sp","f-eva","f-q"].forEach(id=>$("#"+id).oninput=()=>syncUI());
  $("#f-age").oninput=e=>{$("#f-agev").textContent=e.target.value;syncUI()};$("#f-hue").oninput=e=>{$("#f-huev").textContent=e.target.value;syncUI()};
  $("#u-prev").onclick=()=>cycleEva(-1);$("#u-next").onclick=()=>cycleEva(1);
  $("#b-save").onclick=()=>{if(pend.dirty){commitCustomAndSave(true);return}const a=loadMine();a.unshift(snap());saveMineArr(a);SFX.ok();toast("设定已保存 ✔");renderMine()};
@@ -1010,12 +1031,12 @@ ENTER.createInit=()=>{
  renderMine()};
 function copyText(t){return(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).catch(()=>{const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove()})}
 function cycleEva(d){const ids=R.filter(x=>x.c==="eva").map(x=>x.id),i=ids.indexOf($("#f-eva").value);$("#f-eva").value=ids[(i+d+ids.length)%ids.length];SFX.clunk();const p=$(".plugbtn");if(p){p.classList.remove("pop");void p.offsetWidth;p.classList.add("pop")}syncUI()}
-const snap=()=>({wl:cr.wl,tl:cr.tl,name:$("#f-name").value||"无名",age:$("#f-age").value,org:$("#f-org").value,role:$("#f-role").value,loc:cr.loc,eva:$("#f-eva").value,tr:[...cr.tr],color:cr.color,mode:cr.mode,base:(OC_MAP[cr.base]||OCS[0]).id,pVal:cr.pVal,aVal:cr.aVal,hue:+$("#f-hue").value,q:$("#f-q").value||"……",sync:calcSync(),st:[...cr.st]});
+const snap=()=>({wl:cr.wl,tl:cr.tl,name:$("#f-name").value||"无名",gender:$("#f-gen").value.trim()||(OC_MAP[cr.base]||OCS[0]).g,age:$("#f-age").value,org:$("#f-org").value.trim()||"无所属",role:$("#f-role").value.trim()||"独立个体",loc:($("#f-loc-in").value||cr.loc||"").trim()||LOCS[0],bg:$("#f-bg").value,sp:$("#f-sp").value,eva:$("#f-eva").value,tr:[...cr.tr],color:cr.color,mode:cr.mode,base:(OC_MAP[cr.base]||OCS[0]).id,pVal:cr.pVal,aVal:cr.aVal,hue:+$("#f-hue").value,q:$("#f-q").value||"……",sync:calcSync(),st:[...cr.st]});
 const pImg=s=>(s.mode==="custom"&&s.pVal)?s.pVal:U((OC_MAP[s.base]||OCS[0]).p);
 const aImg=s=>(s.mode==="custom"&&(s.aVal||s.pVal))?(s.aVal||s.pVal):U((OC_MAP[s.base]||OCS[0]).p);
 function apply(s){
  const oc=OC_MAP[s.base]||OCS[0];const ag=clamp(+(s.age||oc.defAge),18,21);
- $("#f-name").value=s.name||"";$("#f-age").value=ag;$("#f-agev").textContent=ag;$("#f-org").value=s.org||"NERV 本部";$("#f-role").value=s.role||ROLES[0];$("#f-eva").value=s.eva||"073";$("#f-q").value=s.q||"";$("#f-hue").value=s.hue||0;$("#f-huev").textContent=s.hue||0;
+ $("#f-name").value=s.name||"";$("#f-gen").value=s.gender||oc.g;$("#f-age").value=ag;$("#f-agev").textContent=ag;$("#f-org").value=s.org||"NERV 本部";$("#f-role").value=s.role||ROLES[0];$("#f-loc-in").value=s.loc||LOCS[0];$("#f-bg").value=s.bg||"";$("#f-sp").value=s.sp||"";$("#f-eva").value=s.eva||"073";$("#f-q").value=s.q||"";$("#f-hue").value=s.hue||0;$("#f-huev").textContent=s.hue||0;
  const tinfo=getTL(s.tl);cr.wl=s.wl||tinfo.wl;cr.tl=tinfo.id;cr.tr=[...(s.tr||[])];cr.color=s.color||COLS[0];cr.base=oc.id;
  cr.mode=(s.mode==="custom"&&(s.pVal||s.aVal))?"custom":"base";cr.pVal=s.pVal||"";cr.aVal=s.aVal||"";
  pend={pVal:cr.pVal,aVal:cr.aVal,dirty:false};
@@ -1027,6 +1048,11 @@ function radar(st){const pt=(i,r)=>{const a=-Math.PI/2+i*Math.PI/3;return(50+Mat
  const ring=k=>st.map((_,i)=>pt(i,34*k)).join(" ");return`<svg viewBox="0 0 100 100" fill="none"><polygon points="${ring(1)}" stroke="rgba(255,255,255,.35)" stroke-width=".6" fill="rgba(0,0,0,.35)"/><polygon points="${ring(.66)}" stroke="rgba(255,255,255,.18)" stroke-width=".5"/><polygon points="${ring(.33)}" stroke="rgba(255,255,255,.18)" stroke-width=".5"/>${st.map((_,i)=>`<line x1="50" y1="50" x2="${pt(i,34).split(",")[0]}" y2="${pt(i,34).split(",")[1]}" stroke="rgba(255,255,255,.18)" stroke-width=".4"/>`).join("")}<polygon points="${st.map((v,i)=>pt(i,34*v/100)).join(" ")}" fill="var(--cc)" fill-opacity=".38" stroke="var(--cc)" stroke-width="1.2"/>${STN.map((n,i)=>{const [x,y]=pt(i,43).split(",");return`<text x="${x}" y="${y}" fill="#fff" font-size="6.5" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif">${n}</text>`}).join("")}</svg>`}
 let cardBuilt=false,dtm;
 function syncUI(){renderTLUI();$$("#f-tr button").forEach(b=>b.classList.toggle("on",cr.tr.includes(b.dataset.t)));$$("#f-sw i").forEach(i=>i.classList.toggle("on",i.dataset.c===cr.color));
+ const gV=$("#f-gen").value.trim(),oV=$("#f-org").value.trim(),rV=$("#f-role").value.trim(),lV=$("#f-loc-in").value.trim();
+ cr.loc=lV||cr.loc||LOCS[0];
+ $$("#f-gen-opts button").forEach(b=>b.classList.toggle("on",b.dataset.v===gV));
+ $$("#f-org-opts button").forEach(b=>b.classList.toggle("on",b.dataset.v===oV));
+ $$("#f-role-opts button").forEach(b=>b.classList.toggle("on",b.dataset.v===rV));
  $$("#f-loc button").forEach(b=>b.classList.toggle("on",b.dataset.l===cr.loc));$$("#bases button").forEach(x=>x.classList.toggle("on",cr.mode==="base"&&x.dataset.b===cr.base));
  $$("#stats .stp").forEach((r,i)=>{$("input",r).value=cr.st[i];$("b",r).textContent=cr.st[i]});$("#pts-left").textContent=BUDGET-cr.st.reduce((a,b)=>a+b,0);
  renderCustPrev();drawCard();clearTimeout(dtm);dtm=setTimeout(()=>{try{localStorage.setItem(DR,JSON.stringify(snap()))}catch(e){}},400)}
@@ -1040,8 +1066,9 @@ function drawCard(){if(!cardBuilt)buildCard();const s=snap(),c=$("#idc"),tinfo=g
   if(pt.dataset.cur!==oc.id){pt.dataset.cur=oc.id;setImg(pt,oc.p)}
  }
  pt.style.filter=`hue-rotate(${s.hue}deg) drop-shadow(0 4px 8px rgba(0,0,0,.55))`;
+ const esc=v=>String(v||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
  $("#ic-un").textContent=split(BYID[s.eva].n)[0].slice(0,6);$("#ic-no").textContent="NO."+(hash(s.name)%9000+1000);$("#ic-nm").textContent=s.name;$("#ic-rd").innerHTML=radar(s.st);
- $("#ic-bt").innerHTML=`<div class="ic-q">「${s.q}」</div><b>TIME</b> ${tinfo.wn.replace(/世界线\s*/,"")} · ${tinfo.n}<br><b>UNIT</b> ${BYID[s.eva].n}　<b>AGE</b> ${s.age}<br><b>ROLE</b> ${s.role}<br><b>FROM</b> ${s.loc}<br><b>ORG</b> ${s.org}<br><b>TRAIT</b> ${s.tr.join(" / ")||"—"}　<b>SYNC</b> ${s.sync}%<div class="bar2"></div>`}
+ $("#ic-bt").innerHTML=`<div class="ic-q">「${esc(s.q)}」</div><b>TIME</b> ${esc(tinfo.wn.replace(/世界线\s*/,""))} · ${esc(tinfo.n)}<br><b>UNIT</b> ${esc(BYID[s.eva].n)}　<b>SEX</b> ${esc(s.gender)}　<b>AGE</b> ${esc(s.age)}<br><b>ROLE</b> ${esc(s.role)}<br><b>FROM</b> ${esc(s.loc)}<br><b>ORG</b> ${esc(s.org)}<br><b>TRAIT</b> ${esc(s.tr.join(" / ")||"—")}　<b>SYNC</b> ${s.sync}%<div class="bar2"></div>`}
 function renderMine(){const a=loadMine();$("#mine").innerHTML=a.map((s,i)=>`<div class="m" data-i="${i}" title="${s.name}"><img src="${pImg(s)}" style="filter:hue-rotate(${s.hue}deg)"><s data-d="${i}">✕</s></div>`).join("");
  $("#mine").onclick=e=>{const d=e.target.dataset.d;if(d!=null){const a=loadMine();a.splice(+d,1);localStorage.setItem(LS,JSON.stringify(a));renderMine();return}const m=e.target.closest(".m");if(m){apply(loadMine()[+m.dataset.i]);toast("已读取设定")}}}
 ENTER.create=()=>drawCard();
