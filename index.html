@@ -222,11 +222,11 @@ html.w700 #cwrap{grid-template-columns:1fr}html.w700 #pCard{grid-column:1}
 .fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--c1)}
 .fld select option{background:#120a1c}
 .fld input[type=range]{width:100%;accent-color:var(--c1)}
-.chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px}
-.chips button{font-size:11.5px;padding:3px 9px;border:1px solid #6f5a8c;background:rgba(0,0,0,.4);color:#e2d4f6;transition:.2s}
-.chips button:hover{border-color:var(--c1);color:#fff}
-.chips button.on{background:var(--c1);color:#000;border-color:var(--c1);font-weight:700}
-.chips.loc button.on{background:var(--o);color:#000;border-color:var(--o)}
+.cchips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:7px;margin-left:0}
+.cchips button{font-size:11.5px;padding:3px 9px;border:1px solid #6f5a8c;background:rgba(0,0,0,.4);color:#e2d4f6;transition:.2s}
+.cchips button:hover{border-color:var(--c1);color:#fff}
+.cchips button.on{background:var(--c1);color:#000;border-color:var(--c1);font-weight:700}
+.cchips.loc button.on{background:var(--o);color:#000;border-color:var(--o)}
 .sw{display:flex;gap:9px;flex-wrap:wrap}
 .sw i{width:26px;height:26px;border:2px solid transparent;cursor:pointer;transform:rotate(45deg) scale(.78);transition:.2s}
 .sw i.on,.sw i:hover{border-color:#fff;transform:rotate(45deg) scale(.98)}
@@ -499,11 +499,11 @@ html.mob.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
   <div class="cp panel chamf" id="pA">
    <div class="ph"><span>01 · IDENTITY</span><i>身份</i></div>
    <div class="fld"><label>姓名</label><input type="text" id="f-name" maxlength="10" value="天城 朔夜"></div>
-   <div class="fld"><label>性别（可选 / 自由填写）</label><div class="chips" id="f-gen-opts"></div><input type="text" id="f-gen" maxlength="18" value="男" placeholder="点选或自由填写性别"></div>
+   <div class="fld"><label>性别（可选 / 自由填写）</label><div class="cchips" id="f-gen-opts"></div><input type="text" id="f-gen" maxlength="18" value="男" placeholder="点选或自由填写性别"></div>
    <div class="fld"><label>年龄 · <span id="f-agev">20</span></label><input type="range" id="f-age" min="18" max="21" value="20"></div>
-   <div class="fld"><label>所属（可选 / 自由填写）</label><div class="chips" id="f-org-opts"></div><input type="text" id="f-org" maxlength="28" value="NERV 本部" placeholder="点选或自定义所属势力"></div>
-   <div class="fld"><label>身份（可选 / 自由填写）</label><div class="chips" id="f-role-opts"></div><input type="text" id="f-role" maxlength="28" value="适格者（驾驶员）" placeholder="点选或自定义角色身份"></div>
-   <div class="fld"><label>开局地点（可选 / 自由填写）</label><div class="chips loc" id="f-loc"></div><input type="text" id="f-loc-in" maxlength="32" value="NERV 本部 · 发令所" placeholder="点选或自定义开局地点"></div>
+   <div class="fld"><label>所属（可选 / 自由填写）</label><div class="cchips" id="f-org-opts"></div><input type="text" id="f-org" maxlength="28" value="NERV 本部" placeholder="点选或自定义所属势力"></div>
+   <div class="fld"><label>身份（可选 / 自由填写）</label><div class="cchips" id="f-role-opts"></div><input type="text" id="f-role" maxlength="28" value="适格者（驾驶员）" placeholder="点选或自定义角色身份"></div>
+   <div class="fld"><label>开局地点（可选 / 自由填写）</label><div class="cchips loc" id="f-loc"></div><input type="text" id="f-loc-in" maxlength="32" value="NERV 本部 · 发令所" placeholder="点选或自定义开局地点"></div>
    <div class="fld"><label>开局背景（自由填写）</label><textarea id="f-bg" maxlength="500" placeholder="选填：角色的来历、当前处境、与原作人物的渊源或开场前情…"></textarea></div>
    <div class="fld"><label>特殊设定（自由填写）</label><textarea id="f-sp" maxlength="500" placeholder="选填：体质/同步异常、特殊能力、隐藏秘密、随身物品或专属限制…"></textarea></div>
    <div class="fld"><label>出击宣言</label><input type="text" id="f-q" maxlength="22" value="让我来结束这一切。"></div>
