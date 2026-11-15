@@ -251,6 +251,16 @@ html.w700 #cwrap{grid-template-columns:1fr}html.w700 #pCard{grid-column:1}
 .locs{display:flex;gap:6px;flex-wrap:wrap}
 .locs button{font-size:12px;padding:4px 10px;border:1px solid #6f5a8c;background:rgba(0,0,0,.4);transition:.2s}
 .locs button.on{background:var(--o);color:#000;border-color:var(--o)}
+.tl-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.tl-tabs button{font:11px var(--mono);padding:5px 10px;border:1px solid #6f5a8c;background:rgba(0,0,0,.45);color:#d9c9ee;transition:.2s;letter-spacing:.06em}
+.tl-tabs button.on{background:var(--o);color:#000;border-color:var(--o);font-weight:700}
+.tl-nodes{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.tl-nodes button{font-size:12px;padding:4px 9px;border:1px solid #6f5a8c;background:rgba(0,0,0,.4);color:#eadcff;transition:.2s;text-align:left}
+.tl-nodes button.on{background:var(--c1);color:#000;border-color:var(--c1);font-weight:700}
+.tl-info{font:11px/1.6 var(--mono);color:#cdb8e6;padding:7px 10px;background:rgba(0,0,0,.38);border-left:3px solid var(--o);margin-bottom:14px}
+.bd-tl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font:11px/1.6 var(--mono);color:#e9dcff;padding:7px 12px;background:rgba(10,5,18,.7);border-left:3px solid var(--o);align-self:flex-start}
+.bd-tl b{color:var(--o);font-weight:700}
+.bd-tl select{background:rgba(0,0,0,.6);border:1px solid #6f5a8c;color:#fff;padding:3px 8px;font:11px var(--mono)}
 .idcard{--cc:#ff7a1a;position:relative;width:min(430px,100%);margin:0 auto;aspect-ratio:3/4.3;max-height:calc(calc(100*var(--vh,1vh)) - 190px);overflow:hidden;background:#0a0510;border:2px solid var(--cc);box-shadow:10px 12px 0 rgba(0,0,0,.35);clip-path:polygon(0 0,calc(100% - 28px) 0,100% 28px,100% 100%,28px 100%,0 calc(100% - 28px))}
 .ic-bgw{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(3px) saturate(.55) brightness(.4)}
 .ic-eva{position:absolute;right:-12%;bottom:-2%;height:96%;width:auto;max-width:none;opacity:.72;filter:saturate(.8) brightness(.8)}
@@ -364,8 +374,11 @@ html.w700 #cwrap{grid-template-columns:1fr}html.w700 #pCard{grid-column:1}
 /* ---------- 舞台模式（仅手机端：横屏与电脑端同一套分屏排版，等比缩放） ---------- */
 html.stage body{position:fixed;left:0;top:0;transform-origin:0 0}
 #mbtn,#rot{padding:4px 10px;font:11px var(--mono);letter-spacing:.15em;border:1px solid #8a7aa0;color:#e9dcff;white-space:nowrap;margin-left:8px}
+#rot{border-color:var(--o);background:rgba(255,122,26,.16);color:#fff}
 #mbtn.on,#rot.on{background:var(--c1);color:#fff;border-color:transparent}
-html:not(.mob) #rot{display:none!important}
+#mob-rot{position:fixed;left:14px;top:14px;z-index:220;padding:6px 12px;font:11px var(--mono);letter-spacing:.15em;border:1.5px solid var(--o);background:rgba(10,5,18,.82);color:#fff;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+#mob-rot.on{background:var(--o);color:#000;font-weight:700}
+html:not(.mob) #rot,html:not(.mob) #mob-rot,#nav.on~#mob-rot{display:none!important}
 html.mob.w820 #nav{flex-wrap:wrap;height:auto;padding:6px 8px;gap:0 2px;overflow:visible;background:linear-gradient(180deg,rgba(5,2,10,.92),rgba(5,2,10,.4))}
 html.mob.w820 #nav button.n{padding:6px 7px;letter-spacing:.05em;translate:0 0!important}
 html.mob.w820 #snd,html.mob.w820 #mbtn,html.mob.w820 #rot{padding:4px 6px;font-size:10px;margin-left:2px;letter-spacing:.04em}
@@ -414,6 +427,7 @@ html.mob.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
  <button id="mbtn" class="mono">♪ MUSIC</button>
  <button id="rot" class="mono">横屏 ⟳</button>
 </div>
+<button id="mob-rot" class="mono">横屏 ⟳</button>
 <div id="mp"></div>
 
 <section class="scr" id="s-title">
@@ -476,14 +490,18 @@ html.mob.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
 
   <div class="cp" id="pCard">
    <div class="idcard" id="idc"></div>
-   <div id="cact"><button class="btn solid" id="b-save">保存设定</button><button class="btn" id="b-copy">复制档案</button><button class="btn" id="b-link">复制分享链接</button><button class="btn" id="b-board">以此登机 ▸</button></div>
+   <div id="cact"><button class="btn solid" id="b-save">保存设定</button><button class="btn" id="b-copy">复制档案</button><button class="btn" id="b-link">复制分享链接</button><button class="btn" id="b-board">以此时间线登机 ▸</button></div>
    <div id="mine"></div>
   </div>
 
   <div class="cp panel chamf" id="pB">
-   <div class="ph"><span>02 · PERSONALITY</span><i>性格 ≤3</i></div>
+   <div class="ph"><span>02 · TIMELINE</span><i>时间线选择</i></div>
+   <div class="tl-tabs" id="f-wl"></div>
+   <div class="tl-nodes" id="f-tl"></div>
+   <div class="tl-info" id="f-tli"></div>
+   <div class="ph"><span>PERSONALITY</span><i>性格 ≤3</i></div>
    <div class="tg" id="f-tr"></div>
-   <div class="ph" style="margin-top:16px"><span>THEME COLOR</span><i>主题色</i></div>
+   <div class="ph" style="margin-top:14px"><span>THEME COLOR</span><i>主题色</i></div>
    <div class="sw" id="f-sw"></div>
   </div>
 
@@ -510,6 +528,7 @@ html.mob.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
 <section class="scr" id="s-board">
  <div id="bd-pre">
   <h2 class="mincho rise">登 机 准 备</h2>
+  <div class="bd-tl rise" id="bd-tl" style="--i:.5"></div>
   <div class="mono rise" style="font-size:11px;color:var(--g);--i:1">SELECT PILOT</div>
   <div class="pick" id="pk-p"></div>
   <div class="mono rise" style="font-size:11px;color:var(--g);--i:2;margin-left:calc(5*var(--vw,1vw))">SELECT UNIT</div>
@@ -543,7 +562,7 @@ html.mob.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
 <script>
 "use strict";
 /* ============ 舞台 / 横竖屏：严格只在手机端启用；电脑端保持原版不动 ============ */
-const IS_MOB=/Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(navigator.userAgent)||(matchMedia("(pointer:coarse)").matches&&!matchMedia("(any-pointer:fine)").matches);
+const IS_MOB=/Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(navigator.userAgent)||(matchMedia("(pointer:coarse)").matches&&(!matchMedia("(any-pointer:fine)").matches||Math.min(window.innerWidth||9999,screen.width||9999)<=900));
 const STG={w:window.innerWidth||1280,h:window.innerHeight||720,s:1,rw:window.innerWidth||1280,stage:false,rot:false,force:false};
 let onRs=()=>{};
 function P(e){if(!STG.stage)return{x:e.clientX,y:e.clientY};return STG.rot?{x:e.clientY/STG.s,y:(STG.rw-e.clientX)/STG.s}:{x:e.clientX/STG.s,y:e.clientY/STG.s}}
@@ -568,7 +587,8 @@ function layout(){
  }
  root.classList.toggle("stage",stage);root.classList.toggle("rot",rot);
  [700,820,860,900,1000,1100].forEach(n=>root.classList.toggle("w"+n,STG.w<=n));
- const rb=document.getElementById("rot");if(rb){rb.textContent=(rot||STG.force)?"竖屏 ⟲":"横屏 ⟳";rb.classList.toggle("on",rot||STG.force)}
+ const rotOn=rot||STG.force;
+ ["rot","mob-rot"].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=rotOn?"竖屏 ⟲":"横屏 ⟳";b.classList.toggle("on",rotOn)}});
  onRs();
 }
 layout();
@@ -809,21 +829,53 @@ ENTER.map=()=>{renderMapTabs();renderM()};
 function renderMapTabs(){const box=$("#mlt");box.innerHTML=ML.map((l,i)=>`<button class="${i===mL?"on":""}" data-i="${i}">${String(i+1).padStart(2,"0")} ${l.n} <span style="opacity:.6;font-size:10px">${l.en}</span></button>`).join("");box.onclick=e=>{const b=e.target.closest("button");if(b){mapLayerSet(+b.dataset.i);renderMapTabs()}}}
 
 /* ================= CREATE ================= */
+const WLS={
+ A:{n:"世界线 A · 旧世纪正史",en:"TV 1–26 + EoE",nodes:[
+  {id:"A1",n:"第1话 使徒袭来",t:"2015-06-22",d:"第3使徒水天使来袭，初号机初次启动；零号机为橙色试作涂装（无新剧场版机体与角色）。"},
+  {id:"A2",n:"第8话 明日香来日",t:"2015-08",d:"惣流·明日香·兰格雷携贰号机自太平洋舰队抵日，第6使徒鱼天使海上截击战。"},
+  {id:"A3",n:"第17话 四号机与力天使",t:"2015-10",d:"松代三号机启动实验事故（第四适格者铃原东治），随后第14使徒力天使强袭 NERV 本部。"},
+  {id:"A4",n:"第24话 最后的使者",t:"2015-12",d:"第17使徒渚薰降临，真嗣精神濒临崩溃，终极教条区决战前夜。"},
+  {id:"A5",n:"旧剧场版 EoE",t:"2015年末",d:"战略自卫队强袭 NERV，量产机围攻贰号机，第三次冲击与人类补完开启。"}
+ ]},
+ B:{n:"世界线 B · 新剧场版",en:"Rebuild 序·破·Q·终",nodes:[
+  {id:"B1",n:"《序》屋岛作战",t:"2015年 · 序",d:"第4/第5/第6使徒来袭，初号机与零号机集结日本全境电力执行阳电子炮狙击。"},
+  {id:"B2",n:"《破》第10使徒战",t:"2015年 · 破",d:"式波·明日香·兰格雷与真希波·玛丽登场，三号机事故后第10使徒吞噬零号机触发拟似神化。"},
+  {id:"B3",n:"《Q》14年后 · WILLE",t:"空白14年后",d:"反 NERV 组织 WILLE 与 AAA 奇迹号抗衡，适格者停滞在14岁，第13号机双人共乘启动。"},
+  {id:"B4",n:"《终》第3村与南极决战",t:"终局前夜",d:"第3村休整后突入南极 L 结界，迎战第13号机与最终补完告别所有 EVA。"}
+ ]},
+ C:{n:"世界线 C · IF 分支",en:"改写节点 / 自定分支",nodes:[
+  {id:"C1",n:"2000年 第二次冲击前夜",t:"2000-09-13",d:"南极葛城调查队时期，试图干涉亚当觉醒实验，从源头改写人类命运。"},
+  {id:"C2",n:"2015年 节点改写 IF",t:"2015年 · IF",d:"遵循基底物理法则干涉关键战役，挽救原本注定牺牲或精神崩溃的角色。"},
+  {id:"C3",n:"自由时间线 · 观测介入",t:"自定切入点",d:"自行指定日期、所属阵营与关键事件，在任意节点展开独立叙事。"}
+ ]}
+};
+const ALL_TL=Object.entries(WLS).flatMap(([w,o])=>o.nodes.map(x=>({...x,wl:w,wn:o.n})));
+const getTL=(id)=>ALL_TL.find(x=>x.id===id)||ALL_TL[0];
 const TRAITS=["沉默","热血","傲娇","冷静","温柔","孤僻","好胜","天然","毒舌","执着","乐观","多疑","责任感","自我否定"];
 const COLS=["#ff7a1a","#ff2a44","#7cff2e","#b48cff","#38c8ff","#ffd23a","#ff6fb0","#ffffff"];
 const ROLES=["适格者（驾驶员）","作战参谋","技术开发员","情报特务","SEELE 使者","转学生","第3村居民","前联合国军士官","MAGI 运维员"];
 const LOCS=["NERV 本部 · 发令所","第三新东京市 · 地表","大空洞 · 湖畔","发进井 · 整备桥","第3村 · 农田","箱根 · 旧温泉街","月面 · 地下基地","南极 · 观测站"];
 const STN=["格斗","射击","谋略","意志","同步","体能"],CAP=95,BUDGET=330,MINV=5,DEFST=[55,50,60,55,60,50];
-let cr={tr:["冷静"],color:COLS[0],mode:"base",base:"002",url:"",upload:null,noise:0,st:[...DEFST],loc:LOCS[0]};
+let cr={wl:"A",tl:"A1",tr:["冷静"],color:COLS[0],mode:"base",base:"002",url:"",upload:null,noise:0,st:[...DEFST],loc:LOCS[0]};
 const LS="eva_genesis_pilots",DR="eva_genesis_draft";
 const loadMine=()=>{try{return JSON.parse(localStorage.getItem(LS)||"[]")}catch(e){return[]}};
 const calcSync=()=>+clamp(22+cr.st[4]*.55+cr.st[3]*.12+cr.st[5]*.05+cr.noise,18,99.9).toFixed(1);
 let sharedP=null;
+function renderTLUI(){
+ $("#f-wl").innerHTML=Object.entries(WLS).map(([k,v])=>`<button data-w="${k}" class="${cr.wl===k?"on":""}">${v.n}</button>`).join("");
+ const curW=WLS[cr.wl]||WLS.A;
+ if(!curW.nodes.some(n=>n.id===cr.tl))cr.tl=curW.nodes[0].id;
+ $("#f-tl").innerHTML=curW.nodes.map(n=>`<button data-t="${n.id}" class="${cr.tl===n.id?"on":""}">${n.n}<span style="opacity:.7;font-size:10px;margin-left:6px">${n.t}</span></button>`).join("");
+ const t=getTL(cr.tl);
+ $("#f-tli").innerHTML=`<b style="color:var(--o)">${t.wn} · ${t.n}（${t.t}）</b><br>${t.d}`;
+}
 ENTER.createInit=()=>{
  $("#f-eva").innerHTML=R.filter(x=>x.c==="eva").map(x=>`<option value="${x.id}" ${x.id==="073"?"selected":""}>${x.n}</option>`).join("");
  $("#f-role").innerHTML=ROLES.map(r=>`<option>${r}</option>`).join("");
  $("#f-loc").innerHTML=LOCS.map(l=>`<button data-l="${l}">${l}</button>`).join("");
  $("#f-loc").onclick=e=>{const l=e.target.dataset.l;if(!l)return;cr.loc=l;SFX.blip();syncUI()};
+ $("#f-wl").onclick=e=>{const b=e.target.closest("button");if(!b)return;cr.wl=b.dataset.w;cr.tl=WLS[cr.wl].nodes[0].id;SFX.blip();syncUI()};
+ $("#f-tl").onclick=e=>{const b=e.target.closest("button");if(!b)return;cr.tl=b.dataset.t;SFX.blip();syncUI()};
  $("#f-tr").innerHTML=TRAITS.map(t=>`<button data-t="${t}">${t}</button>`).join("");
  $("#f-tr").onclick=e=>{const t=e.target.dataset.t;if(!t)return;if(cr.tr.includes(t))cr.tr=cr.tr.filter(x=>x!==t);else{cr.tr.push(t);if(cr.tr.length>3)cr.tr.shift()}SFX.blip();syncUI()};
  $("#f-sw").innerHTML=COLS.map(c=>`<i data-c="${c}" style="background:${c}"></i>`).join("");
@@ -842,8 +894,8 @@ ENTER.createInit=()=>{
  $("#f-age").oninput=e=>{$("#f-agev").textContent=e.target.value;syncUI()};$("#f-hue").oninput=e=>{$("#f-huev").textContent=e.target.value;syncUI()};
  $("#u-prev").onclick=()=>cycleEva(-1);$("#u-next").onclick=()=>cycleEva(1);
  $("#b-save").onclick=()=>{const a=loadMine();a.unshift(snap());localStorage.setItem(LS,JSON.stringify(a.slice(0,12)));SFX.ok();toast("设定已保存 ✔");renderMine()};
- $("#b-board").onclick=()=>{bdPilot="u:cur";bdCur=snap();ainit();go("board")};
- $("#b-copy").onclick=()=>{const s=snap();const t=`【NERV 驾驶员档案】\n姓名：${s.name}\n年龄：${s.age}\n所属：${s.org}\n身份：${s.role}\n开局地点：${s.loc}\n机体：${BYID[s.eva].n}\n性格：${s.tr.join("、")}\n属性：${STN.map((n,i)=>n+s.st[i]).join(" ")}\n同步率：${s.sync}%\n出击宣言：${s.q}`;copyText(t).then(()=>{SFX.ok();toast("档案文本已复制")})};
+ $("#b-board").onclick=()=>{bdPilot="u:cur";bdCur=snap();bdTl=bdCur.tl||cr.tl;ainit();go("board")};
+ $("#b-copy").onclick=()=>{const s=snap(),tinfo=getTL(s.tl);const t=`【NERV 驾驶员档案】\n时间线：${tinfo.wn} · ${tinfo.n}（${tinfo.t}）\n姓名：${s.name}\n年龄：${s.age}\n所属：${s.org}\n身份：${s.role}\n开局地点：${s.loc}\n机体：${BYID[s.eva].n}\n性格：${s.tr.join("、")}\n属性：${STN.map((n,i)=>n+s.st[i]).join(" ")}\n同步率：${s.sync}%\n出击宣言：${s.q}`;copyText(t).then(()=>{SFX.ok();toast("档案文本已复制")})};
  $("#b-link").onclick=()=>{const s=snap();if(s.mode==="upload"){s.mode="base"}delete s.upload;const code=btoa(unescape(encodeURIComponent(JSON.stringify(s))));copyText(location.href.split("#")[0]+"#p="+code).then(()=>toast(snap().mode==="upload"?"链接已复制（本地上传立绘不会随链接分享）":"分享链接已复制"))};
  $("#idc").onclick=e=>{if(e.target.closest(".plugbtn"))cycleEva(e.shiftKey?-1:1)};
  $("#idc").oncontextmenu=e=>{if(e.target.closest(".plugbtn")){e.preventDefault();cycleEva(-1)}};
@@ -852,44 +904,50 @@ ENTER.createInit=()=>{
  renderMine()};
 function copyText(t){return(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).catch(()=>{const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove()})}
 function cycleEva(d){const ids=R.filter(x=>x.c==="eva").map(x=>x.id),i=ids.indexOf($("#f-eva").value);$("#f-eva").value=ids[(i+d+ids.length)%ids.length];SFX.clunk();const p=$(".plugbtn");if(p){p.classList.remove("pop");void p.offsetWidth;p.classList.add("pop")}syncUI()}
-const snap=()=>({name:$("#f-name").value||"无名",age:$("#f-age").value,org:$("#f-org").value,role:$("#f-role").value,loc:cr.loc,eva:$("#f-eva").value,tr:[...cr.tr],color:cr.color,mode:cr.mode,base:cr.base,url:cr.url,upload:cr.upload,hue:+$("#f-hue").value,q:$("#f-q").value||"……",sync:calcSync(),st:[...cr.st]});
+const snap=()=>({wl:cr.wl,tl:cr.tl,name:$("#f-name").value||"无名",age:$("#f-age").value,org:$("#f-org").value,role:$("#f-role").value,loc:cr.loc,eva:$("#f-eva").value,tr:[...cr.tr],color:cr.color,mode:cr.mode,base:cr.base,url:cr.url,upload:cr.upload,hue:+$("#f-hue").value,q:$("#f-q").value||"……",sync:calcSync(),st:[...cr.st]});
 const pImg=s=>s.mode==="url"&&s.url?s.url:s.mode==="upload"&&s.upload?s.upload:U(pathOf(BYID[s.base]||BYID["002"]));
 function apply(s){$("#f-name").value=s.name||"";$("#f-age").value=s.age||14;$("#f-agev").textContent=s.age||14;$("#f-org").value=s.org;$("#f-role").value=s.role;$("#f-eva").value=s.eva||"073";$("#f-q").value=s.q||"";$("#f-hue").value=s.hue||0;$("#f-huev").textContent=s.hue||0;
- cr.tr=[...(s.tr||[])];cr.color=s.color||COLS[0];cr.mode=s.mode||"base";cr.base=s.base||"002";cr.url=s.url||"";cr.upload=s.upload||null;cr.st=[...(s.st||DEFST)];cr.loc=s.loc||LOCS[0];cr.noise=(s.sync||60)-(22+cr.st[4]*.55+cr.st[3]*.12+cr.st[5]*.05);if(cr.mode==="url")$("#f-url").value=cr.url;syncUI()}
+ const tinfo=getTL(s.tl);cr.wl=s.wl||tinfo.wl;cr.tl=tinfo.id;cr.tr=[...(s.tr||[])];cr.color=s.color||COLS[0];cr.mode=s.mode||"base";cr.base=s.base||"002";cr.url=s.url||"";cr.upload=s.upload||null;cr.st=[...(s.st||DEFST)];cr.loc=s.loc||LOCS[0];cr.noise=(s.sync||60)-(22+cr.st[4]*.55+cr.st[3]*.12+cr.st[5]*.05);if(cr.mode==="url")$("#f-url").value=cr.url;syncUI()}
 function radar(st){const pt=(i,r)=>{const a=-Math.PI/2+i*Math.PI/3;return(50+Math.cos(a)*r).toFixed(1)+","+(50+Math.sin(a)*r).toFixed(1)};
  const ring=k=>st.map((_,i)=>pt(i,34*k)).join(" ");return`<svg viewBox="0 0 100 100" fill="none"><polygon points="${ring(1)}" stroke="rgba(255,255,255,.35)" stroke-width=".6" fill="rgba(0,0,0,.35)"/><polygon points="${ring(.66)}" stroke="rgba(255,255,255,.18)" stroke-width=".5"/><polygon points="${ring(.33)}" stroke="rgba(255,255,255,.18)" stroke-width=".5"/>${st.map((_,i)=>`<line x1="50" y1="50" x2="${pt(i,34).split(",")[0]}" y2="${pt(i,34).split(",")[1]}" stroke="rgba(255,255,255,.18)" stroke-width=".4"/>`).join("")}<polygon points="${st.map((v,i)=>pt(i,34*v/100)).join(" ")}" fill="var(--cc)" fill-opacity=".38" stroke="var(--cc)" stroke-width="1.2"/>${STN.map((n,i)=>{const [x,y]=pt(i,43).split(",");return`<text x="${x}" y="${y}" fill="#fff" font-size="6.5" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif">${n}</text>`}).join("")}</svg>`}
 let cardBuilt=false,dtm;
-function syncUI(){$$("#f-tr button").forEach(b=>b.classList.toggle("on",cr.tr.includes(b.dataset.t)));$$("#f-sw i").forEach(i=>i.classList.toggle("on",i.dataset.c===cr.color));
+function syncUI(){renderTLUI();$$("#f-tr button").forEach(b=>b.classList.toggle("on",cr.tr.includes(b.dataset.t)));$$("#f-sw i").forEach(i=>i.classList.toggle("on",i.dataset.c===cr.color));
  $$("#f-loc button").forEach(b=>b.classList.toggle("on",b.dataset.l===cr.loc));$$("#bases button").forEach(x=>x.classList.toggle("on",cr.mode==="base"&&x.dataset.b===cr.base));
  $$("#stats .stp").forEach((r,i)=>{$("input",r).value=cr.st[i];$("b",r).textContent=cr.st[i]});$("#pts-left").textContent=BUDGET-cr.st.reduce((a,b)=>a+b,0);
  drawCard();clearTimeout(dtm);dtm=setTimeout(()=>{try{localStorage.setItem(DR,JSON.stringify(snap()))}catch(e){}},400)}
 function buildCard(){$("#idc").innerHTML=`<div class="ic-bgw" data-bg="img/bg/create.webp"></div><img class="ic-eva" id="ic-eva" alt=""><img class="ic-pt" id="ic-pt" alt=""><button class="plugbtn" title="点击切换搭载机体（右键 / Shift 反向）">${IM("img/fx/plug.webp","","alt=''")}<span id="ic-un">UNIT</span></button><div class="ic-top"><span>NERV · PILOT FILE</span><span id="ic-no"></span></div><div class="stamp">PILOT</div><div class="ic-nm" id="ic-nm"></div><div class="ic-rd" id="ic-rd"></div><div class="ic-bt" id="ic-bt"></div>`;hydrate($("#idc"));cardBuilt=true}
-function drawCard(){if(!cardBuilt)buildCard();const s=snap(),c=$("#idc");c.style.setProperty("--cc",s.color);
+function drawCard(){if(!cardBuilt)buildCard();const s=snap(),c=$("#idc"),tinfo=getTL(s.tl);c.style.setProperty("--cc",s.color);
  const ev=$("#ic-eva"),ep=evaPath(s.eva);if(ev.dataset.p!==ep){setImg(ev,ep);ev.classList.remove("swap");void ev.offsetWidth;ev.classList.add("swap")}
  const pt=$("#ic-pt"),pu=pImg(s),key=s.mode+"|"+(s.mode==="url"?s.url:s.mode==="upload"?"up":s.base);
  if(pt.dataset.cur!==key){pt.dataset.cur=key;if(s.mode==="base"){setImg(pt,pathOf(BYID[s.base]))}else{delete pt.dataset.p;pt.src=pu}}
  pt.style.filter=`hue-rotate(${s.hue}deg) drop-shadow(0 4px 8px rgba(0,0,0,.55))`;
  $("#ic-un").textContent=split(BYID[s.eva].n)[0].slice(0,6);$("#ic-no").textContent="NO."+(hash(s.name)%9000+1000);$("#ic-nm").textContent=s.name;$("#ic-rd").innerHTML=radar(s.st);
- $("#ic-bt").innerHTML=`<div class="ic-q">「${s.q}」</div><b>UNIT</b> ${BYID[s.eva].n}　<b>AGE</b> ${s.age}<br><b>ROLE</b> ${s.role}<br><b>FROM</b> ${s.loc}<br><b>ORG</b> ${s.org}<br><b>TRAIT</b> ${s.tr.join(" / ")||"—"}　<b>SYNC</b> ${s.sync}%<div class="bar2"></div>`}
+ $("#ic-bt").innerHTML=`<div class="ic-q">「${s.q}」</div><b>TIME</b> ${tinfo.wn.replace(/世界线\s*/,"")} · ${tinfo.n}<br><b>UNIT</b> ${BYID[s.eva].n}　<b>AGE</b> ${s.age}<br><b>ROLE</b> ${s.role}<br><b>FROM</b> ${s.loc}<br><b>ORG</b> ${s.org}<br><b>TRAIT</b> ${s.tr.join(" / ")||"—"}　<b>SYNC</b> ${s.sync}%<div class="bar2"></div>`}
 function renderMine(){const a=loadMine();$("#mine").innerHTML=a.map((s,i)=>`<div class="m" data-i="${i}" title="${s.name}"><img src="${pImg(s)}" style="filter:hue-rotate(${s.hue}deg)"><s data-d="${i}">✕</s></div>`).join("");
  $("#mine").onclick=e=>{const d=e.target.dataset.d;if(d!=null){const a=loadMine();a.splice(+d,1);localStorage.setItem(LS,JSON.stringify(a));renderMine();return}const m=e.target.closest(".m");if(m){apply(loadMine()[+m.dataset.i]);toast("已读取设定")}}}
 ENTER.create=()=>drawCard();
 
 /* ================= BOARD ================= */
 const PILOTS=[{id:"001",eva:"073",q:"逃げちゃダメだ。（不能逃避。）"},{id:"002",eva:"071",q:"我会完成任务。"},{id:"003",eva:"075",q:"你是笨蛋吗？让我来！"},{id:"004",eva:"077",q:"交给我吧，别拖后腿。"},{id:"005",eva:"094",q:"能与你相遇，真好。"},{id:"006",eva:"082",q:"出击咯，喵～"}];
-let bdPilot="001",bdEva="073",bdCur=null;
-const bdP=()=>{const from=s=>({n:s.name,img:pImg(s),eva:s.eva,q:s.q,sync:s.sync,color:s.color,hue:s.hue,loc:s.loc});
+let bdPilot="001",bdEva="073",bdCur=null,bdTl="A1";
+const bdP=()=>{const from=s=>({n:s.name,img:pImg(s),eva:s.eva,q:s.q,sync:s.sync,color:s.color,hue:s.hue,loc:s.loc,tl:s.tl||bdTl});
  if(bdPilot==="u:cur"&&bdCur)return from(bdCur);
  if(bdPilot.startsWith("u:")){const s=loadMine()[+bdPilot.slice(2)];if(s)return from(s)}
- const p=PILOTS.find(x=>x.id===bdPilot)||PILOTS[0],it=BYID[p.id],r=seeded(p.id);return{n:it.n,img:U(pathOf(it)),eva:p.eva,q:p.q,sync:+(52+r()*44).toFixed(1),color:"#7cff2e",hue:0,loc:"NERV 本部 · 发进井"}};
+ const p=PILOTS.find(x=>x.id===bdPilot)||PILOTS[0],it=BYID[p.id],r=seeded(p.id);return{n:it.n,img:U(pathOf(it)),eva:p.eva,q:p.q,sync:+(52+r()*44).toFixed(1),color:"#7cff2e",hue:0,loc:"NERV 本部 · 发进井",tl:bdTl}};
+function renderBdTL(){
+ const t=getTL(bdTl);
+ $("#bd-tl").innerHTML=`<b>TIMELINE</b><select id="bd-tlsel">${Object.entries(WLS).map(([w,o])=>`<optgroup label="${o.n}">${o.nodes.map(x=>`<option value="${x.id}" ${x.id===t.id?"selected":""}>${x.n}（${x.t}）</option>`).join("")}</optgroup>`).join("")}</select><span style="opacity:.8">${t.d}</span>`;
+ $("#bd-tlsel").onchange=e=>{bdTl=e.target.value;SFX.blip();renderBdTL()};
+}
 function renderPicks(){const mine=loadMine();
+ renderBdTL();
  $("#pk-p").innerHTML=[...PILOTS.map(p=>({k:p.id,n:BYID[p.id].n,img:pImg({mode:"base",base:p.id})})),...(bdCur&&bdPilot==="u:cur"?[{k:"u:cur",n:bdCur.name+"（当前）",img:pImg(bdCur),h:bdCur.hue}]:[]),...mine.map((s,i)=>({k:"u:"+i,n:s.name,img:pImg(s),h:s.hue}))].map(x=>`<button class="pk ${x.k===bdPilot?"on":""}" data-k="${x.k}"><img src="${x.img}" data-p="${/^https?:|^data:/.test(x.img)?"":x.img.replace(BASES[bi],"")}" style="${x.h?`filter:hue-rotate(${x.h}deg)`:""}"><span>${x.n}</span></button>`).join("");
  $("#pk-e").innerHTML=R.filter(x=>x.c==="eva").map(x=>`<button class="pk ${x.id===bdEva?"on":""}" data-k="${x.id}">${IM(pathOf(x))}<span>${split(x.n)[0]}${split(x.n)[1]?" "+split(x.n)[1]:""}</span></button>`).join("")}
-ENTER.boardInit=()=>{$("#pk-p").onclick=e=>{const b=e.target.closest(".pk");if(!b)return;bdPilot=b.dataset.k;bdEva=bdP().eva;SFX.click();renderPicks()};
+ENTER.boardInit=()=>{$("#pk-p").onclick=e=>{const b=e.target.closest(".pk");if(!b)return;bdPilot=b.dataset.k;const bp=bdP();bdEva=bp.eva;if(bp.tl)bdTl=bp.tl;SFX.click();renderPicks()};
  $("#pk-e").onclick=e=>{const b=e.target.closest(".pk");if(!b)return;bdEva=b.dataset.k;SFX.click();renderPicks()};
  $("#bd-go").onclick=()=>{ainit();SFX.click();runBoard()};$("#bd-again").onclick=()=>{resetSeq();runBoard()};$("#bd-back").onclick=()=>{resetSeq();$("#bd-pre").classList.remove("hide");$("#nav").classList.add("on");setBg("cage")};
  $("#skip").onclick=()=>{seqTok++;finishSeq()}};
-ENTER.board=()=>{bdEva=bdP().eva;renderPicks();resetSeq();$("#bd-pre").classList.remove("hide");$("#nav").classList.add("on")};
+ENTER.board=()=>{const bp=bdP();bdEva=bp.eva;if(bp.tl)bdTl=bp.tl;renderPicks();resetSeq();$("#bd-pre").classList.remove("hide");$("#nav").classList.add("on")};
 function resetSeq(){seqTok++;$("#bd-seq").classList.remove("on");$("#bd-end").classList.remove("on");$("#alarm").classList.remove("on");$("#phud").classList.remove("on");$("#speedl").style.opacity=0;bubOn=false;
  $$("#w3,#hd,#pil,#plN,#e3,#hO,#hC,#cam").forEach(e=>{e.getAnimations().forEach(a=>a.cancel());e.style.cssText=""});$("#cam").style.display="";$("#fxl").innerHTML="";
  $("#seq-eva").style.opacity=0;$("#lcl").style.translate="0 100%";$("#log").innerHTML="";$("#big").className="";$("#big .t1").textContent="";$("#big .t2").textContent="";$("#gc").style.strokeDashoffset=339.3;$("#gn").textContent="0.0"}
@@ -995,7 +1053,8 @@ async function runBoard(){const tok=++seqTok,W=async ms=>{await sleep(ms);if(tok
   flash(.9,900);$("#cam").style.display="none";setBg("plug");$("#big").className="";$("#big .t1").textContent="";$("#big .t2").textContent="";
   $("#phud").classList.add("on");bubOn=true;bubs=[];bubLoop();SFX.bubbles(5.5);SFX.riser(5);
   $("#lcl").animate([{translate:"0 100%"},{translate:"0 8%"}],{duration:3600,easing:"ease-in-out",fill:"both"});
-  const lines=["插入栓 固定完了",`出発地点：${P.loc}`,"LCL 注入 開始","A10神经 接続 …… OK","双方向回路 開通","同步率 測定 開始"];
+  const tinfo=getTL(P.tl);
+  const lines=["插入栓 固定完了",`世界线：${tinfo.wn}`,`时间点：${tinfo.n}（${tinfo.t}）`,`出発地点：${P.loc}`,"LCL 注入 開始","A10神经 接続 …… OK","双方向回路 開通","同步率 測定 開始"];
   for(const l of lines){log(l);SFX.blip();await W(480)}
   const t0=performance.now(),dur=2800;await new Promise(res=>{(function st(){if(tok!==seqTok)return res();const k=Math.min(1,(performance.now()-t0)/dur),v=P.sync*(1-Math.pow(1-k,3))+rnd(-1,1)*(1-k)*6;$("#gn").textContent=Math.max(0,v).toFixed(1);$("#gc").style.strokeDashoffset=339.3*(1-clamp(v,0,100)/100);if(k<1)requestAnimationFrame(st);else{$("#gn").textContent=P.sync.toFixed(1);res()}})()});
   if(tok!==seqTok)throw"x";log(`同步率 ${P.sync}% ▸ 起動可能`);SFX.ok();await W(1100);
@@ -1016,14 +1075,16 @@ async function runBoard(){const tok=++seqTok,W=async ms=>{await sleep(ms);if(tok
  setBg("title","50% 18%");setTheme(...SC.title.th);$("#s-title").classList.add("on");cur="title";$("#boot").classList.add("off")})();
 $("#startBtn").onclick=()=>{ainit();SFX.click();go(sharedP?"create":"hub");if(sharedP)setTimeout(()=>toast("已载入分享的角色设定"),2500)};
 
-/* ============ 横屏按钮 ============ */
-$("#rot").onclick=async()=>{
+/* ============ 横屏按钮（仅手机端显示；横屏时进入与电脑一致的舞台模式） ============ */
+async function toggleRot(){
  if(STG.force||STG.rot){STG.force=false;try{screen.orientation&&screen.orientation.unlock&&screen.orientation.unlock()}catch(e){}try{document.fullscreenElement&&await document.exitFullscreen()}catch(e){}layout();return}
  STG.force=true;
  try{if(!document.fullscreenElement&&document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen()}catch(e){}
  try{if(screen.orientation&&screen.orientation.lock)await screen.orientation.lock("landscape")}catch(e){}
  setTimeout(layout,250);layout();
-};
+}
+$("#rot").onclick=toggleRot;
+$("#mob-rot").onclick=toggleRot;
 /* ============ 音乐播放器：网易云官方外链音频流（music.163.com，国内直连；不内嵌、不存本地音频） ============ */
 const TRACKS=[
  {id:2151910982,t:"One Last Kiss",a:"宇多田ヒカル"},
