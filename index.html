@@ -205,16 +205,44 @@ html.w1000 #s-map .stage{right:calc(3*var(--vw,1vw));bottom:300px}html.w1000 #ms
 /* ---------- create ---------- */
 #cwrap{position:absolute;inset:0;overflow-y:auto;padding:76px calc(3*var(--vw,1vw)) 60px;display:grid;grid-template-columns:repeat(12,1fr);gap:22px 20px;align-content:start}
 #cwrap::-webkit-scrollbar{width:6px}#cwrap::-webkit-scrollbar-thumb{background:var(--c1)}
+#cr-modebar{grid-column:1/-1;display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:12px 18px}
+#cr-modebar .mbtns{display:flex;gap:8px;flex-wrap:wrap}
+#cr-modebar .mbtns button{padding:8px 18px;font:12.5px var(--mono);letter-spacing:.14em;border:1.5px solid #6f5a8c;background:rgba(0,0,0,.48);color:#e6d8fa;transition:.2s;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+#cr-modebar .mbtns button:hover{border-color:var(--c1);color:#fff}
+#cr-modebar .mbtns button.on{background:var(--c1);border-color:var(--c1);color:#000;font-weight:700}
+#cr-modebar .mdesc{font:11.5px/1.6 var(--mono);color:#c3b0dc;margin-left:auto}
 .cp{padding:18px 20px 16px;min-width:0}
 .ph{font:10px var(--mono);letter-spacing:.35em;color:var(--g);margin-bottom:12px;display:flex;justify-content:space-between}
 .ph i{font-style:normal;color:#9d89b8}
-#pA{grid-column:1/5;grid-row:1/3;rotate:-.7deg}
-#pCard{grid-column:5/9;grid-row:1/5;translate:0 -6px;padding:0;background:none;border:0;backdrop-filter:none}
-#pB{grid-column:9/13;grid-row:1/2;rotate:.8deg;translate:10px 14px}
-#pC{grid-column:9/13;grid-row:2/4;translate:-12px 30px;rotate:-.4deg}
-#pD{grid-column:1/5;grid-row:3/5;translate:16px -10px;rotate:.5deg}
-html.w1100 #cwrap{grid-template-columns:1fr 1fr}html.w1100 #pA,html.w1100 #pB,html.w1100 #pC,html.w1100 #pD{grid-column:auto;grid-row:auto;translate:0;rotate:0deg}html.w1100 #pCard{grid-column:1/3;grid-row:auto;order:-1}
+#pA{grid-column:1/5;grid-row:2/4;rotate:-.7deg}
+#pCanon{grid-column:1/5;grid-row:2/6;rotate:-.4deg;display:none}
+#pCard{grid-column:5/9;grid-row:2/6;translate:0 -6px;padding:0;background:none;border:0;backdrop-filter:none}
+#pB{grid-column:9/13;grid-row:2/3;rotate:.8deg;translate:10px 14px}
+#pC{grid-column:9/13;grid-row:3/5;translate:-12px 30px;rotate:-.4deg}
+#pD{grid-column:1/5;grid-row:4/6;translate:16px -10px;rotate:.5deg}
+#cwrap.is-canon #pA,#cwrap.is-canon #pC,#cwrap.is-canon #pD,#cwrap.is-canon #pB-custom{display:none}
+#cwrap.is-canon #pCanon{display:block}
+#cwrap.is-canon #pB{grid-row:2/5}
+html.w1100 #cwrap{grid-template-columns:1fr 1fr}html.w1100 #pA,html.w1100 #pB,html.w1100 #pC,html.w1100 #pD,html.w1100 #pCanon{grid-column:auto;grid-row:auto;translate:0;rotate:0deg}html.w1100 #pCard{grid-column:1/3;grid-row:auto;order:-1}html.w1100 #cr-modebar{order:-2}
 html.w700 #cwrap{grid-template-columns:1fr}html.w700 #pCard{grid-column:1}
+.canon-tabs{display:flex;gap:8px;margin-bottom:10px}
+.canon-tabs button{flex:1;padding:7px 10px;font:12px var(--mono);letter-spacing:.14em;border:1.5px solid #6f5a8c;background:rgba(0,0,0,.45);color:#dfd1f5;transition:.2s}
+.canon-tabs button.on{background:var(--o);border-color:var(--o);color:#000;font-weight:700}
+.canon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:310px;overflow-y:auto;padding:4px;margin-bottom:12px;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.1)}
+.canon-grid::-webkit-scrollbar{width:5px}.canon-grid::-webkit-scrollbar-thumb{background:var(--c1)}
+.canon-grid button{position:relative;aspect-ratio:3/4;border:1.5px solid #5a4875;background:rgba(15,8,26,.7);overflow:hidden;transition:.2s}
+.canon-grid button img{width:100%;height:100%;object-fit:contain;object-position:50% 10%}
+.canon-grid button span{position:absolute;left:0;right:0;bottom:0;padding:3px 4px;background:rgba(8,4,14,.88);font:10px/1.35 var(--mono);color:#efe6ff;text-align:center;border-top:1px solid rgba(255,255,255,.15);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.canon-grid button.on{border-color:var(--c1);outline:1.5px solid var(--c1);outline-offset:1px}
+.canon-grid button.on span{background:var(--c1);color:#000;font-weight:700}
+.canon-detail{padding:11px 13px;background:rgba(0,0,0,.42);border:1px solid #5a4875;border-left:3px solid var(--c1);font:12px/1.7 var(--mono);color:#e6d9fa}
+.canon-detail .cd-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px;border-bottom:1px dashed rgba(255,255,255,.16);padding-bottom:6px}
+.canon-detail .cd-h b{font:700 16px var(--serif);color:#fff;letter-spacing:.1em}
+.canon-detail .cd-h small{color:var(--g);font-size:10.5px}
+.canon-detail .cd-row{margin:3px 0;color:#d6c7ee}
+.canon-detail .cd-row i{font-style:normal;color:var(--o)}
+.angel-box{padding:10px 12px;background:rgba(255,42,68,.08);border:1px solid rgba(255,42,68,.45);border-left:3px solid var(--r);margin-bottom:13px}
+.angel-sub{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(255,255,255,.16)}
 .fld{margin-bottom:13px}
 .fld label,.lab{display:block;font:11px var(--mono);letter-spacing:.25em;color:#b8a4d4;margin-bottom:6px}
 .fld input[type=text],.fld select,.fld textarea{width:100%;background:rgba(0,0,0,.45);border:1.5px solid #6f5a8c;color:#fff;padding:8px 11px;font:14px "Microsoft YaHei",sans-serif;outline:0}
@@ -496,17 +524,47 @@ html.mob.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
 
 <section class="scr" id="s-create">
  <div id="cwrap">
+  <div class="cp panel chamf" id="cr-modebar">
+   <div class="mbtns">
+    <button type="button" id="m-custom" class="on">✎ 自行填写（自创角色）</button>
+    <button type="button" id="m-canon">★ 选择原著身份（使徒 / 主角团）</button>
+   </div>
+   <div class="mdesc" id="m-desc">当前为「自行填写」模式：全部属性与立绘自由设定，也可选是否以使徒身份开局。</div>
+  </div>
+
+  <div class="cp panel chamf" id="pCanon">
+   <div class="ph"><span>01 · CANON IDENTITY</span><i>原著身份（使徒 / 主角团）</i></div>
+   <div class="canon-tabs" id="canon-tabs">
+    <button type="button" data-g="ang" class="on">1 · 使徒（使徒阵营）</button>
+    <button type="button" data-g="hero">2 · 主角团（NERV / 适格者）</button>
+   </div>
+   <div class="canon-grid" id="canon-grid"></div>
+   <div class="canon-detail" id="canon-detail"></div>
+  </div>
+
   <div class="cp panel chamf" id="pA">
    <div class="ph"><span>01 · IDENTITY</span><i>身份</i></div>
-   <div class="fld"><label>姓名</label><input type="text" id="f-name" maxlength="10" value="天城 朔夜"></div>
+   <div class="fld"><label>姓名</label><input type="text" id="f-name" maxlength="10" value="天城 朔夜" placeholder="请输入角色姓名"></div>
    <div class="fld"><label>性别（可选 / 自由填写）</label><div class="cchips" id="f-gen-opts"></div><input type="text" id="f-gen" maxlength="18" value="男" placeholder="点选或自由填写性别"></div>
    <div class="fld"><label>年龄 · <span id="f-agev">20</span></label><input type="range" id="f-age" min="18" max="21" value="20"></div>
+   <div class="angel-box">
+    <div class="fld" style="margin-bottom:0"><label style="color:#ff8a9b">使徒开局（未选原著身份 · 自创可选）</label>
+     <div class="cchips" id="f-angel-tog">
+      <button type="button" data-a="0" class="on">否 · 人类 / 常规适格者</button>
+      <button type="button" data-a="1">是 · 开启使徒身份</button>
+     </div>
+    </div>
+    <div class="angel-sub" id="f-angel-sub" style="display:none">
+     <div class="fld" style="margin-bottom:8px"><label>使徒形态 / 定位</label><div class="cchips" id="f-angel-type"></div></div>
+     <div class="fld" style="margin-bottom:0"><label>核心能力倾向</label><div class="cchips" id="f-angel-pwr"></div></div>
+    </div>
+   </div>
    <div class="fld"><label>所属（可选 / 自由填写）</label><div class="cchips" id="f-org-opts"></div><input type="text" id="f-org" maxlength="28" value="NERV 本部" placeholder="点选或自定义所属势力"></div>
    <div class="fld"><label>身份（可选 / 自由填写）</label><div class="cchips" id="f-role-opts"></div><input type="text" id="f-role" maxlength="28" value="适格者（驾驶员）" placeholder="点选或自定义角色身份"></div>
    <div class="fld"><label>开局地点（可选 / 自由填写）</label><div class="cchips loc" id="f-loc"></div><input type="text" id="f-loc-in" maxlength="32" value="NERV 本部 · 发令所" placeholder="点选或自定义开局地点"></div>
    <div class="fld"><label>开局背景（自由填写）</label><textarea id="f-bg" maxlength="500" placeholder="选填：角色的来历、当前处境、与原作人物的渊源或开场前情…"></textarea></div>
    <div class="fld"><label>特殊设定（自由填写）</label><textarea id="f-sp" maxlength="500" placeholder="选填：体质/同步异常、特殊能力、隐藏秘密、随身物品或专属限制…"></textarea></div>
-   <div class="fld"><label>出击宣言</label><input type="text" id="f-q" maxlength="22" value="让我来结束这一切。"></div>
+   <div class="fld"><label>出击宣言</label><input type="text" id="f-q" maxlength="22" value="让我来结束这一切。" placeholder="请输入出击/登场宣言"></div>
   </div>
 
   <div class="cp" id="pCard">
@@ -520,10 +578,12 @@ html.mob.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
    <div class="tl-tabs" id="f-wl"></div>
    <div class="tl-nodes" id="f-tl"></div>
    <div class="tl-info" id="f-tli"></div>
-   <div class="ph"><span>PERSONALITY</span><i>性格 ≤3</i></div>
-   <div class="tg" id="f-tr"></div>
-   <div class="ph" style="margin-top:14px"><span>THEME COLOR</span><i>主题色</i></div>
-   <div class="sw" id="f-sw"></div>
+   <div id="pB-custom">
+    <div class="ph"><span>PERSONALITY</span><i>性格 ≤3</i></div>
+    <div class="tg" id="f-tr"></div>
+    <div class="ph" style="margin-top:14px"><span>THEME COLOR</span><i>主题色</i></div>
+    <div class="sw" id="f-sw"></div>
+   </div>
   </div>
 
   <div class="cp panel chamf" id="pC">
@@ -888,7 +948,65 @@ const OCS=[
  {id:"OCFY",n:"女性 · 青年（18–19岁）",short:"女 · 青年",p:"img/oc/female-youth.webp",g:"女",defAge:18,minA:18,maxA:19}
 ];
 const OC_MAP=Object.fromEntries(OCS.map(x=>[x.id,x]));
-let cr={wl:"A",tl:"A1",tr:["冷静"],color:COLS[0],mode:"base",base:"OCMA",pVal:"",aVal:"",noise:0,st:[...DEFST],loc:LOCS[0]};
+const ANGEL_TYPES=["第18使徒侧 · 拟态使徒","亚当胚胎融合体","人造使徒实验体","S²机关觉醒体"];
+const ANGEL_PWRS=["A.T.力场特化","S²机关无限能源","高能粒子射线","精神污染 / 心理干涉","高维影域 / 核心重构"];
+const CANON_ROSTER=[
+ // ===== 1. 使徒（使徒阵营）=====
+ {cid:"ang-044",group:"ang",rid:"044",art:"A044",p:"img/ang/044.webp",n:"亚当 Adam",g:"无性（光之巨人）",age:"始祖生命体",org:"南极 / 生命之果",role:"第一使徒 · 亚当",loc:"南极 · 白之月",eva:"",color:"#ff2a44",tr:["冷漠","威严"],st:[90,85,70,95,95,95],sync:"∞",q:"光之巨人再次苏醒。",bg:"降临于南极白之月的始祖生命体，拥有生命之果。2000 年引发第二次冲击后被还原为胚胎。",sp:"无限 S² 机关能源与压倒性 A.T. 力场，能引发反 A.T. 力场重置生命形态。"},
+ {cid:"ang-045",group:"ang",rid:"045",art:"A045",p:"img/ang/045.webp",n:"莉莉丝 Lilith",g:"无性（始祖巨人）",age:"始祖生命体",org:"终端教条 / 智慧之果",role:"第二使徒 · 莉莉丝",loc:"NERV 本部 · 终端教条",eva:"",color:"#ffffff",tr:["沉默","包容"],st:[75,60,85,95,95,90],sync:"∞",q:"一切 LCL 之海的归宿。",bg:"长着黑之月降临地球的始祖巨人，现被朗基努斯之枪钉在 NERV 地下最深处的十字架上。",sp:"全人类（第 18 使徒 Lilin）与零号机/初号机肉体基底之母，体内流出 LCL 原始汤。"},
+ {cid:"ang-046",group:"ang",rid:"046",art:"A046",p:"img/ang/046.webp",n:"水天使 Sachiel",g:"使徒",age:"降临体",org:"使徒阵营",role:"第3使徒 · 水天使",loc:"第三新东京市 · 海岸线",eva:"",color:"#ff2a44",tr:["执着","好战"],st:[82,68,40,75,60,88],sync:"100",q:"（沉默的红色核心脉动）",bg:"2015 年 6 月自海上登陆的第一个来袭使徒，与重启后的初号机正面对决。",sp:"近战突刺光矛、高自愈核心与自爆威能，能强行撕开常规装甲。"},
+ {cid:"ang-047",group:"ang",rid:"047",art:"A047",p:"img/ang/047.webp",n:"昼天使 Shamshel",g:"使徒",age:"降临体",org:"使徒阵营",role:"第4使徒 · 昼天使",loc:"第三新东京市 · 山麓",eva:"",color:"#ff7a1a",tr:["猛攻","好胜"],st:[78,74,45,70,62,80],sync:"100",q:"（双鞭高热光束横扫）",bg:"紧随水天使之后现身，以高热光鞭切断初号机脐带电缆。",sp:"两根高震动高热粒子光鞭，兼具长距离横扫与近身绞杀能力。"},
+ {cid:"ang-048",group:"ang",rid:"048",art:"A048",p:"img/ang/048.webp",n:"雷天使 Ramiel",g:"使徒",age:"正八面体",org:"使徒阵营",role:"第5使徒 · 雷天使",loc:"第三新东京市 · 中央上空",eva:"",color:"#38c8ff",tr:["冷静","多疑"],st:[55,95,80,88,75,85],sync:"100",q:"（几何共鸣 · 高能荷电粒子炮）",bg:"悬停在 NERV 正上方尝试直接钻穿大空洞，迫使人类集结全国电力实行屋岛作战。",sp:"自动反击加农炮与超厚实 A.T. 力场，底部伸出高硬度掘削钻头。"},
+ {cid:"ang-049",group:"ang",rid:"049",art:"A049",p:"img/ang/049.webp",n:"鱼天使 Gaghiel",g:"使徒",age:"水栖体",org:"使徒阵营",role:"第6使徒 · 鱼天使",loc:"太平洋 · 运输舰队海域",eva:"",color:"#38c8ff",tr:["凶猛","执着"],st:[84,45,50,70,65,92],sync:"100",q:"（深海巨颚破浪噬咬）",bg:"锁定海上运输中的亚当胚胎与二号机，在太平洋舰队战中突袭。",sp:"极致水下机动与超巨型物理咬合力，可在深海直接拖沉战舰与 EVA。"},
+ {cid:"ang-050",group:"ang",rid:"050",art:"A050",p:"img/ang/050.webp",n:"音乐天使 Israfel",g:"使徒",age:"双生体",org:"使徒阵营",role:"第7使徒 · 音乐天使",loc:"箱根 · 芦之湖",eva:"",color:"#b48cff",tr:["默契","好胜"],st:[80,66,75,78,88,78],sync:"100",q:"（甲乙双核同步分裂）",bg:"被击毁一次后分裂为甲、乙两个同步个体，迫使真嗣与明日香展开 62 秒同步合舞特训。",sp:"双核共振分裂再生：必须以完全同步的联合攻击同时击碎两颗核心才能击破。"},
+ {cid:"ang-051",group:"ang",rid:"051",art:"A051",p:"img/ang/051.webp",n:"胎天使 Sandalphon",g:"使徒",age:"成长期",org:"使徒阵营",role:"第8使徒 · 胎天使",loc:"浅间山 · 火山口熔岩内",eva:"",color:"#ff7a1a",tr:["本能","顽强"],st:[76,40,35,80,68,94],sync:"100",q:"（于超高温熔岩中孵化）",bg:"被 NERV 发现在活火山熔岩深处处于蛹化状态，意图活捉却在熔岩中急剧羽化。",sp:"适应上千度高热高压环境与极速进化蜕变能力。"},
+ {cid:"ang-052",group:"ang",rid:"052",art:"A052",p:"img/ang/052.webp",n:"雨天使 Matarael",g:"使徒",age:"降临体",org:"使徒阵营",role:"第9使徒 · 雨天使",loc:"第三新东京市 · 停电城区",eva:"",color:"#ffd23a",tr:["沉默","算计"],st:[50,86,78,70,60,66],sync:"100",q:"（强酸溶解液垂直倾泻）",bg:"趁 NERV 本部遭遇神秘停电危机时现身，试图用强酸从上方融穿垂直竖井。",sp:"九眼体腔分泌超强腐蚀性酸液，擅长地形封锁与远程溶解。"},
+ {cid:"ang-053",group:"ang",rid:"053",art:"A053",p:"img/ang/053.webp",n:"空天使 Sahaquiel",g:"使徒",age:"轨道体",org:"使徒阵营",role:"第10使徒 · 空天使",loc:"卫星轨道 → 第三新东京市上空",eva:"",color:"#ff7a1a",tr:["狂暴","执着"],st:[88,72,62,85,70,95],sync:"100",q:"（将自身化为重力炸弹坠落）",bg:"直接以地球卫星轨道为起点脱离重力井，企图用自身整个质量撞毁 NERV 本部。",sp:"强力 A.T. 力场惯性冲击与大范围质量爆破，需要三台 EVA 合力承接。"},
+ {cid:"ang-054",group:"ang",rid:"054",art:"A054",p:"img/ang/054.webp",n:"恐怖天使 Iruel",g:"使徒",age:"纳米群落",org:"使徒阵营",role:"第11使徒 · 恐怖天使",loc:"NERV 本部 · MAGI 模拟体区",eva:"",color:"#7cff2e",tr:["冷静","多疑"],st:[35,70,95,88,80,72],sync:"100",q:"（自进化电路高速改写 MAGI）",bg:"以微生物/纳米计算机形态直接潜入 NERV 内部并高速进化入侵 MAGI 系统。",sp:"极速电子进化与系统劫持能力，常规物理攻击无效，只能通过自毁逻辑逆向瓦解。"},
+ {cid:"ang-055",group:"ang",rid:"055",art:"A055",p:"img/ang/055.webp",n:"夜天使 Leliel",g:"使徒",age:"高维影域",org:"使徒阵营",role:"第12使徒 · 夜天使",loc:"第三新东京市 · 上空与地面",eva:"",color:"#b48cff",tr:["孤僻","沉默"],st:[45,55,90,92,85,80],sync:"100",q:"（影与实体的虚数反转）",bg:"空中的黑白球体只是投影，地面延展的绝对零度黑影才是狄拉克之海本体。",sp:"虚数空间吞噬与精神接触审问能力，能将整台初号机拖入异次元空间。"},
+ {cid:"ang-056",group:"ang",rid:"056",art:"A056",p:"img/ang/056.webp",n:"霞天使 Bardiel",g:"使徒",age:"寄生体",org:"使徒阵营",role:"第13使徒 · 霞天使",loc:"松代 · 三号机启动实验场",eva:"079",color:"#ff2a44",tr:["狡诈","侵蚀"],st:[92,65,75,80,86,88],sync:"100",q:"（寄生侵蚀 EVA 三号机）",bg:"在运送途中化作粘菌状寄生于 EVA 三号机，于松代启动实验瞬间暴走突袭。",sp:"生物机械寄生、双臂大幅伸长与极高爆发力，逼出初号机傀儡系统惨剧。"},
+ {cid:"ang-057",group:"ang",rid:"057",art:"A057",p:"img/ang/057.webp",n:"力天使 Zeruel",g:"使徒",age:"最强战力",org:"使徒阵营",role:"第14使徒 · 力天使",loc:"NERV 本部 · 中央发令所正上方",eva:"",color:"#ff2a44",tr:["冷酷","压倒性"],st:[95,95,78,94,88,95],sync:"100",q:"（一击贯通十八层特殊装甲）",bg:"实力凌驾其余常规使徒的恐怖存在，单枪匹马击溃零号机与二号机并攻入本部。",sp:"高频折叠纸刃手臂与零距离超高能交叉光炮，吞噬后可令初号机获得 S² 机关。"},
+ {cid:"ang-058",group:"ang",rid:"058",art:"A058",p:"img/ang/058.webp",n:"鸟天使 Arael",g:"使徒",age:"轨道精神体",org:"使徒阵营",role:"第15使徒 · 鸟天使",loc:"静止卫星轨道",eva:"",color:"#ffffff",tr:["冷静","窥视"],st:[40,92,90,90,92,70],sync:"100",q:"（以心灵之光剖析创伤记忆）",bg:"悬停在所有地球武器射程之外的卫星轨道，对二号机发射精神污染光束。",sp:"超远距精神侵入与记忆挖掘，唯有朗基努斯之枪可跨越大气层将其击穿。"},
+ {cid:"ang-059",group:"ang",rid:"059",art:"A059",p:"img/ang/059.webp",n:"子宫天使 Armisael",g:"使徒",age:"融合光环",org:"使徒阵营",role:"第16使徒 · 子宫天使",loc:"第三新东京市 · 荒废战场",eva:"",color:"#b48cff",tr:["寂寞","执着"],st:[78,76,82,92,95,82],sync:"100",q:"「……寂寞吗？想与你合为一体。」",bg:"化作双螺旋光带强行物理融合零号机，并将被吞噬使徒的孤独与痛楚传给驾驶员。",sp:"生物融合侵蚀与情绪共振，唯有启动零号机自爆才能将其连同机体一并摧毁。"},
+ {cid:"ang-005",group:"ang",rid:"005",art:"C006-S01",p:"img/chr/005.webp",n:"渚薰（第17使徒）",g:"男（自由使者 Tabris）",age:"14岁（外观）",org:"SEELE / 第17使徒",role:"第17使徒 · Tabris",loc:"NERV 本部 · 大空洞湖畔",eva:"075",color:"#38c8ff",tr:["温柔","冷静","宿命感"],st:[80,82,95,95,99,85],sync:"99.9",q:"「歌真好听啊……能与你相遇，真是太好了。」",bg:"以第五适格者身份被 SEELE 送入 NERV 的银发少年，体内寄宿着亚当的灵魂。",sp:"天生拥有自由操纵任何 EVA 的满分同步率与最强人类形态 A.T. 力场。"},
+ {cid:"ang-060",group:"ang",rid:"060",art:"A060",p:"img/ang/060.webp",n:"Adams 光之巨人",g:"始祖集群",age:"第二次冲击体",org:"新剧 · 南极原点",role:"四位光之巨人（Adams）",loc:"南极 · 爆心地",eva:"",color:"#ffffff",tr:["神性","沉默"],st:[95,95,88,95,95,95],sync:"∞",q:"（四道光环于南极苍穹展开）",bg:"新剧场版世界观下引发第二次冲击的四体始祖光之巨人，后来部分转化为 Mark.06 与第 13 号机。",sp:"拥有神格级光翼与冲击触发能力，为新剧场版一切核心机体的起源。"},
+ {cid:"ang-061",group:"ang",rid:"061",art:"A061",p:"img/ang/061.webp",n:"新剧第二使徒 · 莉莉丝",g:"无性（始祖）",age:"太古存在",org:"新剧 · 终端教条",role:"第2使徒 · 莉莉丝",loc:"中央教条最深处",eva:"",color:"#ffffff",tr:["沉默","庄严"],st:[75,65,85,95,95,90],sync:"∞",q:"（佩戴七眼面具的白巨人）",bg:"新剧场版中佩戴 SEELE 七眼面具的地下白巨人，14 年后头部化作巨大残骸。",sp:"智慧之果起源，与 Mark.06 及第 12 使徒共同构成中央教条封印局势。"},
+ {cid:"ang-062",group:"ang",rid:"062",art:"A062",p:"img/ang/062.webp",n:"新剧第3使徒",g:"使徒",age:"封印研究体",org:"新剧 · 伯大尼基地",role:"第3使徒（冻土骨架体）",loc:"北极圈 · 伯大尼基地",eva:"",color:"#ff2a44",tr:["狂暴","脱逃"],st:[84,70,50,80,70,86],sync:"100",q:"（挣脱封印柱的骸骨巨兽）",bg:"在《破》开篇被欧洲 NERV 封印解剖研究，突破牢笼后与真希波驾驶的暂设五号机死斗。",sp:"细长骨骼躯体与超高机动力，口部释放高能灼热射线。"},
+ {cid:"ang-063",group:"ang",rid:"063",art:"A063",p:"img/ang/063.webp",n:"新剧第4使徒",g:"使徒",age:"降临体",org:"新剧 · 使徒阵营",role:"第4使徒（水天使型）",loc:"第三新东京市 · 市街",eva:"",color:"#ff2a44",tr:["执着","好战"],st:[82,68,42,76,62,88],sync:"100",q:"（红核闪耀，突破防线）",bg:"《序》开篇来袭的首位使徒，逼使尚未经过训练的碇真嗣坐上初号机。",sp:"骨面双核与高热光矛，最终引发初号机首次暴走击破。"},
+ {cid:"ang-064",group:"ang",rid:"064",art:"A064",p:"img/ang/064.webp",n:"新剧第5使徒",g:"使徒",age:"降临体",org:"新剧 · 使徒阵营",role:"第5使徒（昼天使型）",loc:"第三新东京市 · 近郊",eva:"",color:"#ff7a1a",tr:["猛攻","执着"],st:[78,74,45,70,64,82],sync:"100",q:"（双鞭切断外部供电）",bg:"《序》中第二位来袭的使徒，令初号机在仅剩数秒电源时陷入苦战。",sp:"高震动光鞭与高速突刺，迫使真嗣无视撤退命令强行贴脸刺核。"},
+ {cid:"ang-065",group:"ang",rid:"065",art:"A065",p:"img/ang/065.webp",n:"新剧第6使徒",g:"使徒",age:"可变几何体",org:"新剧 · 使徒阵营",role:"第6使徒（屋岛作战目标）",loc:"第三新东京市 · 上空",eva:"",color:"#38c8ff",tr:["精密","冷酷"],st:[60,95,86,90,78,88],sync:"100",q:"（几何形变 · 荷电粒子光束）",bg:"《序》高潮阶段的高机动变形结晶使徒，攻防一体且威力远超旧版。",sp:"可依战况自由折叠变换为多种多面体，发射超长距瞬发粒子炮。"},
+ {cid:"ang-066",group:"ang",rid:"066",art:"A066",p:"img/ang/066.webp",n:"新剧第7使徒",g:"使徒",age:"水上巡行体",org:"新剧 · 使徒阵营",role:"第7使徒（水上钟摆体）",loc:"相模湾 · 海面",eva:"",color:"#ffd23a",tr:["突进","狂躁"],st:[78,72,50,74,66,85],sync:"100",q:"（冻结海面并高速滑行）",bg:"《破》中式波·明日香·兰格雷初登场一战的对手，从海上高速逼近。",sp:"脚部旋转冰轮冻结海水行进，拥有伪核心诱饵与多节再生肢体。"},
+ {cid:"ang-067",group:"ang",rid:"067",art:"A067",p:"img/ang/067.webp",n:"新剧第8使徒",g:"使徒",age:"轨道坠落体",org:"新剧 · 使徒阵营",role:"第8使徒（空降光翼体）",loc:"大气圈 → 第三新东京市",eva:"",color:"#ff7a1a",tr:["狂暴","压迫"],st:[90,74,65,86,72,95],sync:"100",q:"（万丈光翼自苍穹压境）",bg:"《破》中从卫星轨道自由落体直击本部的巨型使徒，迫使三机全速冲刺拦截。",sp:"极高动能质量与核心位移回避能力，展开炫目的光弧防御膜。"},
+ {cid:"ang-068",group:"ang",rid:"068",art:"A068",p:"img/ang/068.webp",n:"新剧第9使徒",g:"使徒",age:"侵蚀体",org:"新剧 · 使徒阵营",role:"第9使徒（三号机寄生体）",loc:"松代 · 二号实验场",eva:"079",color:"#ff2a44",tr:["侵蚀","凶暴"],st:[92,68,74,82,86,90],sync:"100",q:"（漆黑四臂撕裂装甲）",bg:"《破》中寄生在运往日本的 EVA 三号机内，将测试驾驶员式波明日香困在插入栓中。",sp:"使徒侵蚀神经接口与四臂狂化撕咬，最终遭启动傀儡系统的初号机残忍咬碎。"},
+ {cid:"ang-069",group:"ang",rid:"069",art:"A069",p:"img/ang/069.webp",n:"新剧第10使徒",g:"使徒",age:"最强使徒",org:"新剧 · 使徒阵营",role:"第10使徒（吞噬进化体）",loc:"NERV 本部 · 地下大空洞",eva:"",color:"#ff2a44",tr:["冷静","捕食"],st:[95,95,84,95,92,95],sync:"100",q:"（撕裂兽化二号机并吞噬零号机）",bg:"《破》终盘压倒一切防线，重创兽化二号机、连机带人吞下零号机并直接引发初号机拟似神化。",sp:"多层极致 A.T. 力场、极速伸缩折叠手刃与吞噬同化 EVA 的恐怖特性。"},
+ {cid:"ang-070",group:"ang",rid:"070",art:"A070",p:"img/ang/070.webp",n:"新剧第12使徒",g:"使徒",age:"封印集合体",org:"新剧 · 中央教条",role:"第12使徒（液态黑影体）",loc:"中央教条 · 莉莉丝残骸前",eva:"",color:"#b48cff",tr:["执着","诡异"],st:[84,78,86,92,95,90],sync:"100",q:"（黑影缠绕第 13 号机化作红果）",bg:"《Q》中蛰伏在 Mark.06 体内的最后使徒，随长枪拔出而破封并诱导第 13 号机觉醒。",sp:"巨量黑色拟态触丝群与极高核心再生度，被咬碎后化作第 13 号机的生命之果。"},
+
+ // ===== 2. 主角团（NERV / 适格者 / 核心人物）=====
+ {cid:"hero-001",group:"hero",rid:"001",art:"C001-S01",p:"img/chr/001.webp",n:"碇真嗣",g:"男",age:"14岁",org:"NERV 本部",role:"第三适格者 · 初号机驾驶员",loc:"NERV 本部 · 发进井",eva:"073",color:"#7cff2e",tr:["沉默","温柔","自我否定"],st:[46,44,54,58,86,42],sync:"76.4",q:"「不能逃避、不能逃避、不能逃避……！」",bg:"NERV 总司令碇源堂之子，三岁起离家寄居。2015 年被父亲召回第三新东京市并登上初号机。",sp:"对初号机拥有极高原始同调与暴走觉醒契合度（核心内寄宿生母碇唯的灵魂）。"},
+ {cid:"hero-002",group:"hero",rid:"002",art:"C002-S02",p:"img/chr/002.webp",n:"绫波丽",g:"女",age:"14岁",org:"NERV 本部",role:"第一适格者 · 零号机驾驶员",loc:"NERV 本部 · 地下实验室",eva:"071",color:"#38c8ff",tr:["沉默","冷静","执着"],st:[48,60,64,78,74,46],sync:"68.5",q:"「……如果命令我死的话，我就会死。」",bg:"居住在荒凉公寓里的神秘蓝发少女，作为第一适格者接受极端严密的医疗与替换槽管理。",sp:"躯体以碇唯基因融合莉莉丝灵魂制成，可与零号机深度共鸣并具备备用躯体替换机制。"},
+ {cid:"hero-031",group:"hero",rid:"031",art:"C002-S05",p:"img/chr/031.webp",n:"绫波丽（暂称）",g:"女",age:"14岁（外观）",org:"NERV 本部（Q/终）",role:"Mark.09 驾驶员 · 黑衣丽",loc:"NERV 废墟 · 培养区",eva:"089",color:"#b48cff",tr:["沉默","天然","服从"],st:[50,62,56,70,78,48],sync:"71.2",q:"「这是什么味道？……大家都在笑吗？」",bg:"新剧场版《Q》与《终》中登场的黒色作战服绫波系列个体，初时不具备前代记忆，后在第 3 村学会人间感情。",sp:"Mark.09（亚当之器）专属适格者，离开核心维护液后身体存在 LCL 化崩解时限。"},
+ {cid:"hero-032",group:"hero",rid:"032",art:"C002-S06",p:"img/chr/032.webp",n:"绫波丽（第3村农务）",g:"女",age:"14岁（外观）",org:"第3村",role:"第3村居民 · 农耕见习",loc:"第3村 · 农田",eva:"",color:"#ffd23a",tr:["温柔","天然","好奇"],st:[38,40,56,74,70,52],sync:"70.0",q:"「早安。祝你有个好梦。谢谢你。」",bg:"《终》中随着真嗣与明日香来到人类幸存者聚落第 3 村，在插秧、看猫与澡堂中逐渐拥有自己的名字与心愿。",sp:"保留黑衣丽体质限制，但心灵防壁已逐步向日常温度敞开。"},
+ {cid:"hero-003",group:"hero",rid:"003",art:"C003-S01",p:"img/chr/003.webp",n:"惣流·明日香·兰格雷",g:"女",age:"14岁",org:"NERV 本部",role:"第二适格者 · 贰号机驾驶员",loc:"第三新东京市 · 美里公寓",eva:"075",color:"#ff2a44",tr:["好胜","傲娇","多疑"],st:[78,72,62,70,82,66],sync:"81.6",q:"「我是第二适格者明日香！给我记好了，笨蛋真嗣！」",bg:"世界线 A 正史线的日德混血天才少女，14 岁已大学毕业，将驾驶 EVA 视为自我价值的唯一证明。",sp:"极度精湛的实战操作与近战爆发力，但内心深处埋藏着生母精神崩溃的童年创伤。"},
+ {cid:"hero-004",group:"hero",rid:"004",art:"C004-S01",p:"img/chr/004.webp",n:"式波·明日香·兰格雷",g:"女",age:"14岁（停滞28岁）",org:"WILLE / 欧洲空军上尉",role:"第二适格者 · 改二号机驾驶员",loc:"AAA 奇迹号 · 整备甲板",eva:"077",color:"#ff2a44",tr:["好胜","毒舌","冷静"],st:[84,78,70,82,84,72],sync:"83.0",q:"「别小看 EVA 驾驶员的觉悟啊，笨蛋！」",bg:"世界线 B 新剧场版的式波系列克隆优胜个体。经历三号机使徒寄生事件后左眼戴上眼罩，14 年后担任 WILLE 前锋。",sp:"左眼封印第 9 使徒之力，可主动解封兽化与里 Code 777 模式。"},
+ {cid:"hero-005",group:"hero",rid:"005",art:"C006-S01",p:"img/chr/005.webp",n:"渚薰",g:"男",age:"14岁（外观）",org:"SEELE / NERV",role:"第五适格者 / 自由之使者",loc:"NERV 本部 · 湖畔废墟",eva:"094",color:"#38c8ff",tr:["温柔","冷静","孤僻"],st:[80,82,92,95,95,84],sync:"99.9",q:"「只要有琴声与你在，无论多少次我都会再次弹响幸福。」",bg:"由 SEELE 直接派往本部的神秘银发少年，与真嗣四手联弹钢琴并拥有超越时间循环的记忆。",sp:"可自由操控任意 EVA（含 Mark.06、第 13 号机）的最高阶适格者，内在为第 17 / 第 1 使徒。"},
+ {cid:"hero-006",group:"hero",rid:"006",art:"C005-S01",p:"img/chr/006.webp",n:"真希波·玛丽·伊兰崔亚斯",g:"女",age:"14岁（停滞）",org:"WILLE / 英国分部",role:"适格者 · 八号机驾驶员",loc:"AAA 奇迹号 · 机库",eva:"085",color:"#ff6fb0",tr:["乐观","好胜","敏锐"],st:[80,86,78,84,82,74],sync:"80.5",q:"「只要唱着歌、闻着味道，总能找到突破口的喵～！」",bg:"新剧场版登场的眼镜双马尾驾驶员，掌握大量连 NERV 内部都未公开的机密知识与老歌。",sp:"擅长狙击支援、里 Code 兽化与高机动接战，与碇唯及冬月一辈似乎早有深厚渊源。"},
+ {cid:"hero-007",group:"hero",rid:"007",art:"C007-S01",p:"img/chr/007.webp",n:"葛城美里",g:"女",age:"29岁",org:"NERV 本部 · 作战部",role:"作战部长 / 一尉（后三佐）",loc:"NERV 本部 · 发令所",eva:"",color:"#b48cff",tr:["豪爽","责任感","执着"],st:[58,70,88,82,20,62],sync:"0.0",q:"「奇迹这种东西，是要靠自己的双手去争取的！」",bg:"2000 年第二次冲击唯一生还者葛城博士之女，现坐镇发令所指挥 EVA 迎击使徒并担任真嗣与明日香的监护人。",sp:"极度大胆果断的战场临机决断力（屋岛作战、空天使拦截总指挥），执着追查 NERV 内部真相。"},
+ {cid:"hero-036",group:"hero",rid:"036",art:"C007-S02",p:"img/chr/036.webp",n:"葛城美里（WILLE舰长）",g:"女",age:"43岁",org:"WILLE",role:"WILLE 司令 · AAA 奇迹号舰长",loc:"AAA 奇迹号 · 舰桥",eva:"",color:"#38c8ff",tr:["冷峻","责任感","执着"],st:[62,74,94,94,20,58],sync:"0.0",q:"「为了人类的未来，我们只能背负一切罪孽前行。」",bg:"近第三次冲击 14 年后率领反 NERV 组织 WILLE 驾驭神杀战舰 AAA 奇迹号抗衡 NERV 与量产机群。",sp:"统帅奇迹号主炮与全舰队战术协同，以冷峻面具封存对真嗣等人的深切愧疚与守护。"},
+ {cid:"hero-008",group:"hero",rid:"008",art:"C008-S01",p:"img/chr/008.webp",n:"赤木律子",g:"女",age:"30岁",org:"NERV 本部 · 技术部",role:"E 计划核心 · 技术部长",loc:"NERV 本部 · MAGI 主控室",eva:"",color:"#ffd23a",tr:["冷静","多疑","毒舌"],st:[35,55,95,78,20,45],sync:"0.0",q:"「EVA 的本质与人类一样，不过是绝望的容器罢了。」",bg:"MAGI 超级计算机发明者赤木直子博士之女，主持 EVA 维护、傀儡系统开发与丽系列体医学管理。",sp:"掌握 NERV 核心机密（Level 3）与 MAGI 底层权限，在理智学者外表下藏着扭曲的情感执念。"},
+ {cid:"hero-037",group:"hero",rid:"037",art:"C008-S02",p:"img/chr/037.webp",n:"赤木律子（WILLE副长）",g:"女",age:"44岁",org:"WILLE",role:"AAA 奇迹号副长 · 首席技术官",loc:"AAA 奇迹号 · 轮机控制室",eva:"",color:"#ffd23a",tr:["冷静","果断"],st:[38,60,95,88,20,44],sync:"0.0",q:"「DSS 项圈随时处于待命击发状态。」",bg:"离开 NERV 后跟随美里创建 WILLE，负责奇迹号动力炉（初号机主引擎）控制与 DSS 项圈监控。",sp:"拥有最高级别技术与反制权限，能在最绝望的局势下作出最冷静的理性裁断。"},
+ {cid:"hero-009",group:"hero",rid:"009",art:"C009-S01",p:"img/chr/009.webp",n:"碇源堂",g:"男",age:"48岁",org:"NERV 本部",role:"NERV 总司令",loc:"NERV 本部 · 司令室",eva:"",color:"#ff7a1a",tr:["冷酷","沉默","执着"],st:[45,60,95,95,20,50],sync:"0.0",q:"「人类没有多少时间了。一切按剧本推进。」",bg:"真嗣之父，因失去妻子碇唯而彻底封闭自我，表面执行 SEELE 死海文书剧本，暗中谋划专属于自己的补完计划。",sp:"右手移植有亚当胚胎（旧版）/ 尼布甲尼撒之钥（新版），是站在最高保密层级 Level 4 的棋手。"},
+ {cid:"hero-010",group:"hero",rid:"010",art:"C010-S01",p:"img/chr/010.webp",n:"冬月耕造",g:"男",age:"58岁",org:"NERV 本部",role:"NERV 副司令",loc:"NERV 本部 · 司令室",eva:"",color:"#b48cff",tr:["冷静","稳重"],st:[35,45,94,88,20,40],sync:"0.0",q:"「胜利之后等待我们的，究竟是什么呢，碇？」",bg:"原京都大学形而上生物学教授、碇唯的恩师，如今唯一陪伴并辅佐碇源堂走到终局的幕后副手。",sp:"掌握最高层补完历史与真希波过往（Level 4），在棋盘边冷静注视着人类命运走向。"},
+ {cid:"hero-011",group:"hero",rid:"011",art:"C011-S01",p:"img/chr/011.webp",n:"加持良治",g:"男",age:"30岁",org:"NERV 特别监察部",role:"特别监察官 / 多重间谍",loc:"大空洞 · 西瓜田",eva:"",color:"#ff7a1a",tr:["温柔","多疑","责任感"],st:[70,74,90,85,20,76],sync:"0.0",q:"「追求真相的代价，我早就准备好自己承担了。」",bg:"美里大学时代恋人，同时周旋于日本内务省、SEELE 与 NERV 之间调查第二次冲击真相。",sp:"顶级情报搜集与渗透身手，常在危机中以看似散漫的玩笑点醒真嗣与美里。"},
+ {cid:"hero-012",group:"hero",rid:"012",art:"C012-S01",p:"img/chr/012.webp",n:"伊吹摩耶",g:"女",age:"24岁",org:"NERV 本部 · 技术部",role:"二尉 · 主控操作员（后期整备长）",loc:"NERV 本部 · 发令所",eva:"",color:"#7cff2e",tr:["温柔","认真","责任感"],st:[38,48,80,72,20,50],sync:"0.0",q:"「各机同步率稳定！但 LCL 压力正在急剧上升！」",bg:"赤木律子最信赖的直属部下，在发令所一线负责监测驾驶员神经同步率与生命体征。",sp:"极度珍视驾驶员安危的操作专家（14 年后成长为独当一面的 WILLE 整备长）。"},
+ {cid:"hero-013",group:"hero",rid:"013",art:"C013-S01",p:"img/chr/013.webp",n:"日向诚",g:"男",age:"25岁",org:"NERV 本部 · 作战部",role:"一尉 · 战术情报操作员",loc:"NERV 本部 · 发令所",eva:"",color:"#38c8ff",tr:["冷静","责任感"],st:[46,56,78,70,20,56],sync:"0.0",q:"「图案蓝色确认！使徒正在进入迎击区！」",bg:"发令所一线核心操作员，暗恋并长期协助葛城美里搜集与追踪情报。",sp:"雷达监测与战术数据即时研判高手，关键时刻忠实执行美里的突围部署。"},
+ {cid:"hero-014",group:"hero",rid:"014",art:"C014-S01",p:"img/chr/014.webp",n:"青叶茂",g:"男",age:"25岁",org:"NERV 本部 · 作战部",role:"一尉 · 通信与外部防卫操作员",loc:"NERV 本部 · 发令所",eva:"",color:"#ff7a1a",tr:["冷静","毒舌"],st:[48,58,76,68,20,56],sync:"0.0",q:"「全通讯线路切换至第一战斗配置！」",bg:"喜欢吉他的长发操作员，负责发令所通讯联络、雷达与外围火力网协调。",sp:"在面对重火力攻防时始终保持稳健操作节奏，抗压能力出众。"},
+ {cid:"hero-015",group:"hero",rid:"015",art:"C015-S01",p:"img/chr/015.webp",n:"铃原东治",g:"男",age:"14岁",org:"第壹中学校 / NERV",role:"第四适格者（TV）/ 同学",loc:"第三新东京市 · 地表",eva:"079",color:"#ff7a1a",tr:["热血","温柔","责任感"],st:[76,46,44,72,58,78],sync:"56.0",q:"「为了妹妹和小光，怎么能让你一个人扛啊！」",bg:"真嗣的同班同学，性格直爽重情义；世界线 A 中成为被第 13 使徒寄生的三号机驾驶员。",sp:"天生强健体魄与守护妹妹小樱的强烈责任感（成年后成为第 3 村医生）。"},
+ {cid:"hero-016",group:"hero",rid:"016",art:"C016-S01",p:"img/chr/016.webp",n:"相田剑介",g:"男",age:"14岁",org:"第壹中学校",role:"真嗣挚友 / 军事观察者",loc:"第三新东京市 · 地表",eva:"",color:"#7cff2e",tr:["乐观","好奇","责任感"],st:[44,50,74,64,40,56],sync:"0.0",q:"「这可是历史性的一刻啊，要全部拍下来！」",bg:"热衷摄影机与军事装备的真嗣同班好友，总是在混乱中带来一丝真实的少年日常气息。",sp:"对军武与生存技巧极其熟悉（14 年后成长为第 3 村可靠的修理工与向导）。"},
+ {cid:"hero-017",group:"hero",rid:"017",art:"C017-S01",p:"img/chr/017.webp",n:"洞木光",g:"女",age:"14岁",org:"第壹中学校",role:"2年A组班长",loc:"第三新东京市 · 地表",eva:"",color:"#ffd23a",tr:["温柔","认真","责任感"],st:[42,40,66,70,38,54],sync:"0.0",q:"「便当我已经做好了，别忘了按时吃哦。」",bg:"认真照顾妹妹并暗恋铃原东治的班长，也是明日香在学校里少有的真正朋友。",sp:"拥有极强的共情与日常治愈力，是在冰冷要塞都市中维系少年少女正常生活感的重要支柱。"},
+ {cid:"hero-018",group:"hero",rid:"018",art:"C018-S01",p:"img/chr/018.webp",n:"铃原樱",g:"女",age:"19岁（Q/终）",org:"WILLE",role:"AAA 奇迹号医疗官（少尉）",loc:"AAA 奇迹号 · 医疗室",eva:"",color:"#ff6fb0",tr:["温柔","执着","善良"],st:[40,52,70,76,20,50],sync:"0.0",q:"「碇先生，拜托您千万不要再坐上 EVA 了……」",bg:"铃原东治的妹妹，14 年后成长为 WILLE 医疗官，对真嗣既怀感恩又害怕他再次毁灭世界。",sp:"擅长急救照护与在高压战舰环境下稳定乘员心理状态。"}
+];
+const CANON_MAP=Object.fromEntries(CANON_ROSTER.map(x=>[x.cid,x]));
+let cr={identityMode:"custom",canonTab:"ang",canonId:"hero-001",wl:"A",tl:"A1",tr:["冷静"],color:COLS[0],mode:"base",base:"OCMA",pVal:"",aVal:"",angelOpen:false,angelType:ANGEL_TYPES[0],angelPwr:ANGEL_PWRS[0],noise:0,st:[...DEFST],loc:LOCS[0]};
 let pend={pVal:"",aVal:"",dirty:false};
 const LS="eva_genesis_pilots",DR="eva_genesis_draft";
 const loadMine=()=>{try{return JSON.parse(localStorage.getItem(LS)||"[]")}catch(e){return[]}};
@@ -897,27 +1015,46 @@ const calcSync=()=>+clamp(22+cr.st[4]*.55+cr.st[3]*.12+cr.st[5]*.05+cr.noise,18,
 let sharedP=null;
 const toExt=p=>(BASES[bi]&&/^https?:/.test(BASES[bi])?BASES[bi]:BASES[0])+p;
 function getPortraitLinks(s){
- const oc=OC_MAP[s.base]||OCS[0],presetUrl=toExt(oc.p);
+ if(s.identityMode==="canon"){
+  const cn=CANON_MAP[s.canonId]||CANON_ROSTER[0];
+  const u=toExt(cn.p);
+  return{pLink:u,aLink:u,isCustom:false,isCanon:true,art:cn.art,hasSepAv:false,isUpload:false,empty:false};
+ }
+ const oc=OC_MAP[s.base],presetUrl=oc?toExt(oc.p):"";
  if(s.mode==="custom"&&(s.pVal||s.aVal)){
   const pLink=s.pVal||presetUrl;
   const aLink=s.aVal||pLink;
-  return{pLink,aLink,isCustom:true,hasSepAv:!!s.aVal&&s.aVal!==pLink,isUpload:pLink.startsWith("data:")||aLink.startsWith("data:")};
+  return{pLink,aLink,isCustom:true,isCanon:false,hasSepAv:!!s.aVal&&s.aVal!==pLink,isUpload:pLink.startsWith("data:")||aLink.startsWith("data:"),empty:false};
  }
- return{pLink:presetUrl,aLink:presetUrl,isCustom:false,hasSepAv:false,isUpload:false};
+ if(!oc)return{pLink:"",aLink:"",isCustom:false,isCanon:false,art:"",hasSepAv:false,isUpload:false,empty:true};
+ return{pLink:presetUrl,aLink:presetUrl,isCustom:false,isCanon:false,art:oc.id,hasSepAv:false,isUpload:false,empty:false};
 }
 function formatProfile(s){
- const tinfo=getTL(s.tl),oc=OC_MAP[s.base]||OCS[0],lk=getPortraitLinks(s);
- const gen=(s.gender||"").trim()||oc.g;
- const stage=lk.isCustom?"自定义立绘":oc.n;
- const ptLines=lk.isCustom
-  ?`立绘来源：${lk.isUpload?"自定义本地上传":"自定义外链"}\n立绘外链：${lk.pLink}\n头像外链：${lk.aLink}`
-  :`立绘短码：${oc.id}（mt-${oc.id}）\n立绘外链：${lk.pLink}\n头像外链：${lk.aLink}`;
- const req=lk.isCustom
-  ?`【立绘渲染要求】请在正文玩家气泡头像及主角状态栏（立绘）中使用上述「立绘外链」与「头像外链」渲染。`
-  :`【立绘渲染要求】请在正文玩家气泡头像及主角状态栏（立绘）中统一使用短码 mt-${oc.id}（立绘外链：${lk.pLink}｜头像外链：${lk.aLink}）。`;
+ const tinfo=getTL(s.tl),lk=getPortraitLinks(s);
+ if(s.identityMode==="canon"){
+  const cn=CANON_MAP[s.canonId]||CANON_ROSTER[0];
+  const unitName=s.eva?(BYID[s.eva]?.n||"无"):"无专属 EVA（使徒本体 / 指挥后勤）";
+  const grp=cn.group==="ang"?"使徒阵营":"主角团 / NERV·WILLE";
+  return `【NERV 原著身份档案 · ${grp}】\n时间线：${tinfo.wn} · ${tinfo.n}（${tinfo.t}）\n原著身份：${cn.n}\n性别：${cn.g}\n年龄/阶段：${cn.age}\n立绘短码：${cn.art}（mt-${cn.art}）\n立绘外链：${lk.pLink}\n头像外链：${lk.aLink}\n所属：${cn.org}\n身份：${cn.role}\n开局地点：${cn.loc}\n机体/形态：${unitName}\n性格：${cn.tr.join("、")}\n属性：${STN.map((n,i)=>n+cn.st[i]).join(" ")}\n同步率/共鸣度：${cn.sync}%\n开局背景：${cn.bg}\n特殊设定：${cn.sp}\n出击/登场宣言：${cn.q}\n【立绘渲染要求】玩家选择了原著身份「${cn.n}」，请在正文玩家气泡头像（.mt-say-r .mt-say-av）与主角状态栏立绘（.mt-p2 .mt-portrait）中统一使用短码 mt-${cn.art}（立绘外链：${lk.pLink}｜头像外链：${lk.aLink}）。`;
+ }
+ const oc=OC_MAP[s.base];
+ const gen=(s.gender||"").trim()||(oc?oc.g:"未填写");
+ const stage=lk.empty?"未选择立绘":(lk.isCustom?"自定义立绘":oc.n);
+ const ptLines=lk.empty
+  ?`立绘外链：未选择\n头像外链：未选择`
+  :(lk.isCustom
+   ?`立绘来源：${lk.isUpload?"自定义本地上传":"自定义外链"}\n立绘外链：${lk.pLink}\n头像外链：${lk.aLink}`
+   :`立绘短码：${oc.id}（mt-${oc.id}）\n立绘外链：${lk.pLink}\n头像外链：${lk.aLink}`);
+ const req=lk.empty
+  ?`【立绘渲染要求】玩家尚未指定自定义立绘，可由系统按角色设定匹配默认立绘。`
+  :(lk.isCustom
+   ?`【立绘渲染要求】请在正文玩家气泡头像及主角状态栏（立绘）中使用上述「立绘外链」与「头像外链」渲染。`
+   :`【立绘渲染要求】请在正文玩家气泡头像及主角状态栏（立绘）中统一使用短码 mt-${oc.id}（立绘外链：${lk.pLink}｜头像外链：${lk.aLink}）。`);
+ const angLine=s.angelOpen?`\n使徒开局：已开启（${s.angelType}｜核心能力：${s.angelPwr}）`:"\n使徒开局：否（人类 / 常规适格者）";
  const bgLine=(s.bg||"").trim()?`\n开局背景：${s.bg.trim()}`:"";
  const spLine=(s.sp||"").trim()?`\n特殊设定：${s.sp.trim()}`:"";
- return `【NERV 驾驶员档案】\n时间线：${tinfo.wn} · ${tinfo.n}（${tinfo.t}）\n姓名：${s.name}\n性别：${gen}（立绘阶段：${stage}）\n${ptLines}\n年龄：${s.age}\n所属：${s.org}\n身份：${s.role}\n开局地点：${s.loc}\n机体：${BYID[s.eva].n}\n性格：${s.tr.join("、")}\n属性：${STN.map((n,i)=>n+s.st[i]).join(" ")}\n同步率：${s.sync}%${bgLine}${spLine}\n出击宣言：${s.q}\n${req}`;
+ const evaName=s.eva&&BYID[s.eva]?BYID[s.eva].n:"未指定机体";
+ return `【NERV 驾驶员档案】\n时间线：${tinfo.wn} · ${tinfo.n}（${tinfo.t}）\n姓名：${s.name}\n性别：${gen}（立绘阶段：${stage}）\n${ptLines}\n年龄：${s.age}${angLine}\n所属：${s.org}\n身份：${s.role}\n开局地点：${s.loc}\n机体：${evaName}\n性格：${s.tr.join("、")||"未填写"}\n属性：${STN.map((n,i)=>n+s.st[i]).join(" ")}\n同步率：${s.sync}%${bgLine}${spLine}\n出击宣言：${s.q}\n${req}`;
 }
 function formatLinksOnly(s){
  const lk=getPortraitLinks(s);
@@ -975,6 +1112,10 @@ function renderCustPrev(){
   const spans=box.querySelectorAll("span");spans[0].textContent="立绘："+pTxt;spans[1].textContent="头像："+aTxt;
   return;
  }
+ if(lk.empty){
+  box.innerHTML=`<div class="pv-meta"><b>暂无立绘 · 请选择上方预设立绘或输入外链 / 上传图片</b><span>立绘：未选择</span><span>头像：未选择</span></div>`;
+  return;
+ }
  const pShow=pImg(s),aShow=aImg(s);
  const pLabel=lk.pLink.startsWith("data:")?"[本地上传立绘]":lk.pLink;
  const aLabel=lk.aLink.startsWith("data:")?"[本地上传头像]":lk.aLink;
@@ -985,8 +1126,52 @@ function renderCustPrev(){
  spans[0].textContent="立绘："+pLabel;spans[0].title=pLabel;
  spans[1].textContent="头像："+aLabel;spans[1].title=aLabel;
 }
+function renderCanonUI(){
+ const list=CANON_ROSTER.filter(x=>x.group===cr.canonTab);
+ $$("#canon-tabs button").forEach(b=>b.classList.toggle("on",b.dataset.g===cr.canonTab));
+ const grid=$("#canon-grid");
+ grid.innerHTML=list.map(x=>`<button type="button" data-cid="${x.cid}" class="${cr.canonId===x.cid?"on":""}" title="${x.n}">${IM(x.p)}<span>${x.n.split(" ")[0]}</span></button>`).join("");
+ const cn=CANON_MAP[cr.canonId]||list[0];
+ const esc=v=>String(v||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+ const unitTxt=cn.eva?(BYID[cn.eva]?.n||cn.eva):"无专属 EVA（使徒本体 / 指挥后勤）";
+ $("#canon-detail").innerHTML=`<div class="cd-h"><b>${esc(cn.n)}</b><small>${cn.group==="ang"?"使徒阵营":"主角团"} · 短码 mt-${cn.art}</small></div>
+  <div class="cd-row"><i>性别 / 年龄：</i>${esc(cn.g)} · ${esc(cn.age)}</div>
+  <div class="cd-row"><i>所属 / 身份：</i>${esc(cn.org)} · ${esc(cn.role)}</div>
+  <div class="cd-row"><i>开局地点：</i>${esc(cn.loc)}</div>
+  <div class="cd-row"><i>机体 / 形态：</i>${esc(unitTxt)}　<i>同步：</i>${esc(cn.sync)}%</div>
+  <div class="cd-row"><i>性格 / 属性：</i>${esc(cn.tr.join("、"))} ｜ ${STN.map((n,i)=>n+cn.st[i]).join(" ")}</div>
+  <div class="cd-row"><i>背景：</i>${esc(cn.bg)}</div>
+  <div class="cd-row"><i>特殊设定：</i>${esc(cn.sp)}</div>
+  <div class="cd-row"><i>宣言：</i>${esc(cn.q)}</div>`;
+}
+function selectCanon(cid){
+ const cn=CANON_MAP[cid];if(!cn)return;
+ cr.identityMode="canon";
+ cr.canonTab=cn.group;
+ cr.canonId=cn.cid;
+ cr.tr=[...cn.tr];
+ cr.color=cn.color;
+ cr.st=[...cn.st];
+ cr.loc=cn.loc;
+ pend={pVal:"",aVal:"",dirty:false};
+ syncUI();
+}
+function switchToCustomClearCanon(){
+ cr.identityMode="custom";
+ cr.canonId="";
+ cr.mode="base";cr.base="";cr.pVal="";cr.aVal="";
+ pend={pVal:"",aVal:"",dirty:false};
+ cr.angelOpen=false;cr.angelType=ANGEL_TYPES[0];cr.angelPwr=ANGEL_PWRS[0];
+ cr.tr=[];cr.color=COLS[0];cr.st=Array(6).fill(MINV);cr.loc="";cr.noise=0;
+ $("#f-name").value="";$("#f-gen").value="";$("#f-age").value=20;$("#f-agev").textContent=20;
+ $("#f-org").value="";$("#f-role").value="";$("#f-loc-in").value="";
+ $("#f-bg").value="";$("#f-sp").value="";$("#f-q").value="";
+ $("#f-hue").value=0;$("#f-huev").textContent=0;$("#f-eva").value="";
+ $("#f-url").value="";$("#f-avurl").value="";
+ SFX.blip();syncUI();toast("已清空原著设定与立绘，请自由填写 ✔");
+}
 ENTER.createInit=()=>{
- $("#f-eva").innerHTML=R.filter(x=>x.c==="eva").map(x=>`<option value="${x.id}" ${x.id==="073"?"selected":""}>${x.n}</option>`).join("");
+ $("#f-eva").innerHTML=`<option value="">（未选机体 / 自行选择）</option>`+R.filter(x=>x.c==="eva").map(x=>`<option value="${x.id}" ${x.id==="073"?"selected":""}>${x.n}</option>`).join("");
  $("#f-gen-opts").innerHTML=GENDERS.map(g=>`<button type="button" data-v="${g}">${g}</button>`).join("");
  $("#f-gen-opts").onclick=e=>{const v=e.target.dataset.v;if(!v)return;$("#f-gen").value=v;SFX.blip();syncUI()};
  $("#f-org-opts").innerHTML=ORGS.map(o=>`<button type="button" data-v="${o}">${o}</button>`).join("");
@@ -996,6 +1181,15 @@ ENTER.createInit=()=>{
  $("#f-loc").innerHTML=LOCS.map(l=>`<button type="button" data-l="${l}">${l}</button>`).join("");
  $("#f-loc").onclick=e=>{const l=e.target.dataset.l;if(!l)return;cr.loc=l;$("#f-loc-in").value=l;SFX.blip();syncUI()};
  $("#f-loc-in").oninput=e=>{cr.loc=e.target.value;syncUI()};
+ $("#f-angel-tog").onclick=e=>{const b=e.target.closest("button");if(!b)return;cr.angelOpen=b.dataset.a==="1";SFX.blip();syncUI()};
+ $("#f-angel-type").innerHTML=ANGEL_TYPES.map(t=>`<button type="button" data-v="${t}">${t}</button>`).join("");
+ $("#f-angel-type").onclick=e=>{const v=e.target.dataset.v;if(!v)return;cr.angelType=v;SFX.blip();syncUI()};
+ $("#f-angel-pwr").innerHTML=ANGEL_PWRS.map(p=>`<button type="button" data-v="${p}">${p}</button>`).join("");
+ $("#f-angel-pwr").onclick=e=>{const v=e.target.dataset.v;if(!v)return;cr.angelPwr=v;SFX.blip();syncUI()};
+ $("#m-custom").onclick=()=>{if(cr.identityMode==="canon")switchToCustomClearCanon();else syncUI()};
+ $("#m-canon").onclick=()=>{const first=(CANON_ROSTER.find(x=>x.group===cr.canonTab)||CANON_ROSTER[0]).cid;selectCanon(cr.canonId&&CANON_MAP[cr.canonId]?cr.canonId:first);SFX.blip()};
+ $("#canon-tabs").onclick=e=>{const b=e.target.closest("button");if(!b)return;cr.canonTab=b.dataset.g;const list=CANON_ROSTER.filter(x=>x.group===cr.canonTab);if(!list.some(x=>x.cid===cr.canonId))selectCanon(list[0].cid);else renderCanonUI();SFX.blip()};
+ $("#canon-grid").onclick=e=>{const b=e.target.closest("button[data-cid]");if(!b)return;selectCanon(b.dataset.cid);SFX.ok()};
  $("#f-wl").onclick=e=>{const b=e.target.closest("button");if(!b)return;cr.wl=b.dataset.w;cr.tl=WLS[cr.wl].nodes[0].id;SFX.blip();syncUI()};
  $("#f-tl").onclick=e=>{const b=e.target.closest("button");if(!b)return;cr.tl=b.dataset.t;SFX.blip();syncUI()};
  $("#f-tr").innerHTML=TRAITS.map(t=>`<button data-t="${t}">${t}</button>`).join("");
@@ -1016,67 +1210,129 @@ ENTER.createInit=()=>{
  $("#f-avup").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=await readImgFile(f,256,256);pend.aVal=d;pend.dirty=true;$("#f-avurl").value="";toast("已读取本地头像，请点击「保存设定」");renderCustPrev()}catch(err){toast("图片读取失败")}e.target.value=""};
  $("#b-save-custom").onclick=()=>commitCustomAndSave(true);
  $("#b-reset-pt").onclick=()=>{cr.mode="base";cr.pVal="";cr.aVal="";pend={pVal:"",aVal:"",dirty:false};$("#f-url").value="";$("#f-avurl").value="";SFX.blip();syncUI();toast("已恢复自创预设立绘")};
- $("#b-copy-img").onclick=()=>{if(pend.dirty){toast("请先点击「保存设定」保存自定义立绘");return}copyText(formatLinksOnly(snap())).then(()=>{SFX.ok();toast("立绘外链与头像外链已复制")})};
+ $("#b-copy-img").onclick=()=>{if(cr.identityMode!=="canon"&&pend.dirty){toast("请先点击「保存设定」保存自定义立绘");return}const s=snap();if(getPortraitLinks(s).empty){toast("请先选择立绘或输入外链/上传图片");return}copyText(formatLinksOnly(s)).then(()=>{SFX.ok();toast("立绘外链与头像外链已复制")})};
  ["f-name","f-gen","f-org","f-role","f-bg","f-sp","f-eva","f-q"].forEach(id=>$("#"+id).oninput=()=>syncUI());
  $("#f-age").oninput=e=>{$("#f-agev").textContent=e.target.value;syncUI()};$("#f-hue").oninput=e=>{$("#f-huev").textContent=e.target.value;syncUI()};
  $("#u-prev").onclick=()=>cycleEva(-1);$("#u-next").onclick=()=>cycleEva(1);
- $("#b-save").onclick=()=>{if(pend.dirty){commitCustomAndSave(true);return}const a=loadMine();a.unshift(snap());saveMineArr(a);SFX.ok();toast("设定已保存 ✔");renderMine()};
- $("#b-board").onclick=()=>{if(pend.dirty){toast("请先点击「保存设定」保存自定义立绘");return}bdPilot="u:cur";bdCur=snap();bdTl=bdCur.tl||cr.tl;ainit();go("board")};
- $("#b-copy").onclick=()=>{if(pend.dirty){toast("请先点击「保存设定」保存自定义立绘");return}copyText(formatProfile(snap())).then(()=>{SFX.ok();toast("档案及立绘/头像外链已复制")})};
- $("#b-link").onclick=()=>{const s=snap();if(s.mode==="custom"&&((s.pVal&&s.pVal.startsWith("data:"))||(s.aVal&&s.aVal.startsWith("data:")))){toast("本地上传图片不支持短链接分享，请使用「复制档案」");return}const code=btoa(unescape(encodeURIComponent(JSON.stringify(s))));copyText(location.href.split("#")[0]+"#p="+code).then(()=>toast("分享链接已复制"))};
+ $("#b-save").onclick=()=>{if(cr.identityMode!=="canon"&&pend.dirty){commitCustomAndSave(true);return}const a=loadMine();a.unshift(snap());saveMineArr(a);SFX.ok();toast("设定已保存 ✔");renderMine()};
+ $("#b-board").onclick=()=>{if(cr.identityMode!=="canon"&&pend.dirty){toast("请先点击「保存设定」保存自定义立绘");return}bdPilot="u:cur";bdCur=snap();bdTl=bdCur.tl||cr.tl;ainit();go("board")};
+ $("#b-copy").onclick=()=>{if(cr.identityMode!=="canon"&&pend.dirty){toast("请先点击「保存设定」保存自定义立绘");return}copyText(formatProfile(snap())).then(()=>{SFX.ok();toast("档案及立绘/头像外链已复制")})};
+ $("#b-link").onclick=()=>{const s=snap();if(s.identityMode!=="canon"&&s.mode==="custom"&&((s.pVal&&s.pVal.startsWith("data:"))||(s.aVal&&s.aVal.startsWith("data:")))){toast("本地上传图片不支持短链接分享，请使用「复制档案」");return}const code=btoa(unescape(encodeURIComponent(JSON.stringify(s))));copyText(location.href.split("#")[0]+"#p="+code).then(()=>toast("分享链接已复制"))};
  $("#idc").onclick=e=>{if(e.target.closest(".plugbtn"))cycleEva(e.shiftKey?-1:1)};
  $("#idc").oncontextmenu=e=>{if(e.target.closest(".plugbtn")){e.preventDefault();cycleEva(-1)}};
  let d=null;try{d=JSON.parse(localStorage.getItem(DR)||"null")}catch(e){}
  if(sharedP)apply(sharedP);else if(d)apply(d);else syncUI();
  renderMine()};
 function copyText(t){return(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).catch(()=>{const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove()})}
-function cycleEva(d){const ids=R.filter(x=>x.c==="eva").map(x=>x.id),i=ids.indexOf($("#f-eva").value);$("#f-eva").value=ids[(i+d+ids.length)%ids.length];SFX.clunk();const p=$(".plugbtn");if(p){p.classList.remove("pop");void p.offsetWidth;p.classList.add("pop")}syncUI()}
-const snap=()=>({wl:cr.wl,tl:cr.tl,name:$("#f-name").value||"无名",gender:$("#f-gen").value.trim()||(OC_MAP[cr.base]||OCS[0]).g,age:$("#f-age").value,org:$("#f-org").value.trim()||"无所属",role:$("#f-role").value.trim()||"独立个体",loc:($("#f-loc-in").value||cr.loc||"").trim()||LOCS[0],bg:$("#f-bg").value,sp:$("#f-sp").value,eva:$("#f-eva").value,tr:[...cr.tr],color:cr.color,mode:cr.mode,base:(OC_MAP[cr.base]||OCS[0]).id,pVal:cr.pVal,aVal:cr.aVal,hue:+$("#f-hue").value,q:$("#f-q").value||"……",sync:calcSync(),st:[...cr.st]});
-const pImg=s=>(s.mode==="custom"&&s.pVal)?s.pVal:U((OC_MAP[s.base]||OCS[0]).p);
-const aImg=s=>(s.mode==="custom"&&(s.aVal||s.pVal))?(s.aVal||s.pVal):U((OC_MAP[s.base]||OCS[0]).p);
+function cycleEva(d){if(cr.identityMode==="canon")return;const ids=R.filter(x=>x.c==="eva").map(x=>x.id),i=ids.indexOf($("#f-eva").value);$("#f-eva").value=i<0?(d<0?ids[ids.length-1]:ids[0]):ids[(i+d+ids.length)%ids.length];SFX.clunk();const p=$(".plugbtn");if(p){p.classList.remove("pop");void p.offsetWidth;p.classList.add("pop")}syncUI()}
+function snap(){
+ if(cr.identityMode==="canon"){
+  const cn=CANON_MAP[cr.canonId]||CANON_ROSTER[0];
+  return{identityMode:"canon",canonTab:cn.group,canonId:cn.cid,wl:cr.wl,tl:cr.tl,name:cn.n,gender:cn.g,age:cn.age,org:cn.org,role:cn.role,loc:cn.loc,bg:cn.bg,sp:cn.sp,eva:cn.eva,tr:[...cn.tr],color:cn.color,mode:"canon",base:"OCMA",pVal:"",aVal:"",hue:0,q:cn.q,sync:cn.sync,st:[...cn.st],angelOpen:cn.group==="ang"};
+ }
+ const oc=OC_MAP[cr.base];
+ return{identityMode:"custom",canonTab:cr.canonTab,canonId:"",wl:cr.wl,tl:cr.tl,name:$("#f-name").value.trim()||"无名",gender:$("#f-gen").value.trim()||(oc?oc.g:"未填写"),age:$("#f-age").value,org:$("#f-org").value.trim()||"无所属",role:$("#f-role").value.trim()||"独立个体",loc:($("#f-loc-in").value||cr.loc||"").trim()||"未指定地点",bg:$("#f-bg").value,sp:$("#f-sp").value,eva:$("#f-eva").value,tr:[...cr.tr],color:cr.color,mode:cr.mode,base:oc?oc.id:"",pVal:cr.pVal,aVal:cr.aVal,hue:+$("#f-hue").value,q:$("#f-q").value.trim()||"……",sync:calcSync(),st:[...cr.st],angelOpen:!!cr.angelOpen,angelType:cr.angelType,angelPwr:cr.angelPwr};
+}
+const pImg=s=>{if(s.identityMode==="canon")return U((CANON_MAP[s.canonId]||CANON_ROSTER[0]).p);if(s.mode==="custom"&&s.pVal)return s.pVal;return OC_MAP[s.base]?U(OC_MAP[s.base].p):""};
+const aImg=s=>{if(s.identityMode==="canon")return U((CANON_MAP[s.canonId]||CANON_ROSTER[0]).p);if(s.mode==="custom"&&(s.aVal||s.pVal))return s.aVal||s.pVal;return OC_MAP[s.base]?U(OC_MAP[s.base].p):""};
 function apply(s){
- const oc=OC_MAP[s.base]||OCS[0];const ag=clamp(+(s.age||oc.defAge),18,21);
- $("#f-name").value=s.name||"";$("#f-gen").value=s.gender||oc.g;$("#f-age").value=ag;$("#f-agev").textContent=ag;$("#f-org").value=s.org||"NERV 本部";$("#f-role").value=s.role||ROLES[0];$("#f-loc-in").value=s.loc||LOCS[0];$("#f-bg").value=s.bg||"";$("#f-sp").value=s.sp||"";$("#f-eva").value=s.eva||"073";$("#f-q").value=s.q||"";$("#f-hue").value=s.hue||0;$("#f-huev").textContent=s.hue||0;
- const tinfo=getTL(s.tl);cr.wl=s.wl||tinfo.wl;cr.tl=tinfo.id;cr.tr=[...(s.tr||[])];cr.color=s.color||COLS[0];cr.base=oc.id;
+ const tinfo=getTL(s.tl);cr.wl=s.wl||tinfo.wl;cr.tl=tinfo.id;
+ if(s.identityMode==="canon"&&CANON_MAP[s.canonId]){
+  const cn=CANON_MAP[s.canonId];
+  cr.identityMode="canon";cr.canonTab=cn.group;cr.canonId=cn.cid;
+  cr.tr=[...cn.tr];cr.color=cn.color;cr.st=[...cn.st];cr.loc=cn.loc;pend={pVal:"",aVal:"",dirty:false};
+  syncUI();return;
+ }
+ cr.identityMode="custom";cr.canonId="";
+ const oc=OC_MAP[s.base];const ag=clamp(+(s.age||(oc?oc.defAge:20)),18,21);
+ $("#f-name").value=s.name==="无名"?"":(s.name||"");$("#f-gen").value=s.gender==="未填写"?"":(s.gender||"");$("#f-age").value=ag;$("#f-agev").textContent=ag;$("#f-org").value=s.org==="无所属"?"":(s.org||"");$("#f-role").value=s.role==="独立个体"?"":(s.role||"");$("#f-loc-in").value=s.loc==="未指定地点"?"":(s.loc||"");$("#f-bg").value=s.bg||"";$("#f-sp").value=s.sp||"";$("#f-eva").value=(s.eva!==undefined)?s.eva:"073";$("#f-q").value=s.q==="……"?"":(s.q||"");$("#f-hue").value=s.hue||0;$("#f-huev").textContent=s.hue||0;
+ cr.tr=[...(s.tr||[])];cr.color=s.color||COLS[0];cr.base=(s.base==="")?"":(oc?oc.id:"OCMA");
  cr.mode=(s.mode==="custom"&&(s.pVal||s.aVal))?"custom":"base";cr.pVal=s.pVal||"";cr.aVal=s.aVal||"";
+ cr.angelOpen=!!s.angelOpen;cr.angelType=s.angelType||ANGEL_TYPES[0];cr.angelPwr=s.angelPwr||ANGEL_PWRS[0];
  pend={pVal:cr.pVal,aVal:cr.aVal,dirty:false};
  $("#f-url").value=(cr.pVal&&!cr.pVal.startsWith("data:"))?cr.pVal:"";
  $("#f-avurl").value=(cr.aVal&&!cr.aVal.startsWith("data:"))?cr.aVal:"";
- cr.st=[...(s.st||DEFST)];cr.loc=s.loc||LOCS[0];cr.noise=(s.sync||60)-(22+cr.st[4]*.55+cr.st[3]*.12+cr.st[5]*.05);syncUI()
+ cr.st=[...(s.st||DEFST)];cr.loc=$("#f-loc-in").value;cr.noise=(parseFloat(s.sync)||60)-(22+cr.st[4]*.55+cr.st[3]*.12+cr.st[5]*.05);syncUI()
 }
 function radar(st){const pt=(i,r)=>{const a=-Math.PI/2+i*Math.PI/3;return(50+Math.cos(a)*r).toFixed(1)+","+(50+Math.sin(a)*r).toFixed(1)};
  const ring=k=>st.map((_,i)=>pt(i,34*k)).join(" ");return`<svg viewBox="0 0 100 100" fill="none"><polygon points="${ring(1)}" stroke="rgba(255,255,255,.35)" stroke-width=".6" fill="rgba(0,0,0,.35)"/><polygon points="${ring(.66)}" stroke="rgba(255,255,255,.18)" stroke-width=".5"/><polygon points="${ring(.33)}" stroke="rgba(255,255,255,.18)" stroke-width=".5"/>${st.map((_,i)=>`<line x1="50" y1="50" x2="${pt(i,34).split(",")[0]}" y2="${pt(i,34).split(",")[1]}" stroke="rgba(255,255,255,.18)" stroke-width=".4"/>`).join("")}<polygon points="${st.map((v,i)=>pt(i,34*v/100)).join(" ")}" fill="var(--cc)" fill-opacity=".38" stroke="var(--cc)" stroke-width="1.2"/>${STN.map((n,i)=>{const [x,y]=pt(i,43).split(",");return`<text x="${x}" y="${y}" fill="#fff" font-size="6.5" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif">${n}</text>`}).join("")}</svg>`}
 let cardBuilt=false,dtm;
-function syncUI(){renderTLUI();$$("#f-tr button").forEach(b=>b.classList.toggle("on",cr.tr.includes(b.dataset.t)));$$("#f-sw i").forEach(i=>i.classList.toggle("on",i.dataset.c===cr.color));
- const gV=$("#f-gen").value.trim(),oV=$("#f-org").value.trim(),rV=$("#f-role").value.trim(),lV=$("#f-loc-in").value.trim();
- cr.loc=lV||cr.loc||LOCS[0];
- $$("#f-gen-opts button").forEach(b=>b.classList.toggle("on",b.dataset.v===gV));
- $$("#f-org-opts button").forEach(b=>b.classList.toggle("on",b.dataset.v===oV));
- $$("#f-role-opts button").forEach(b=>b.classList.toggle("on",b.dataset.v===rV));
- $$("#f-loc button").forEach(b=>b.classList.toggle("on",b.dataset.l===cr.loc));$$("#bases button").forEach(x=>x.classList.toggle("on",cr.mode==="base"&&x.dataset.b===cr.base));
- $$("#stats .stp").forEach((r,i)=>{$("input",r).value=cr.st[i];$("b",r).textContent=cr.st[i]});$("#pts-left").textContent=BUDGET-cr.st.reduce((a,b)=>a+b,0);
- renderCustPrev();drawCard();clearTimeout(dtm);dtm=setTimeout(()=>{try{localStorage.setItem(DR,JSON.stringify(snap()))}catch(e){}},400)}
-function buildCard(){$("#idc").innerHTML=`<div class="ic-bgw" data-bg="img/bg/create.webp"></div><img class="ic-eva" id="ic-eva" alt=""><img class="ic-pt" id="ic-pt" alt=""><button class="plugbtn" title="点击切换搭载机体（右键 / Shift 反向）">${IM("img/fx/plug.webp","","alt=''")}<span id="ic-un">UNIT</span></button><div class="ic-top"><span>NERV · PILOT FILE</span><span id="ic-no"></span></div><div class="stamp">PILOT</div><div class="ic-nm" id="ic-nm"></div><div class="ic-rd" id="ic-rd"></div><div class="ic-bt" id="ic-bt"></div>`;hydrate($("#idc"));cardBuilt=true}
-function drawCard(){if(!cardBuilt)buildCard();const s=snap(),c=$("#idc"),tinfo=getTL(s.tl),oc=OC_MAP[s.base]||OCS[0];c.style.setProperty("--cc",s.color);
- const ev=$("#ic-eva"),ep=evaPath(s.eva);if(ev.dataset.p!==ep){setImg(ev,ep);ev.classList.remove("swap");void ev.offsetWidth;ev.classList.add("swap")}
- const pt=$("#ic-pt");
- if(s.mode==="custom"&&s.pVal){
-  if(pt.dataset.cur!==s.pVal){pt.dataset.cur=s.pVal;delete pt.dataset.p;pt.src=s.pVal}
+function syncUI(){
+ const isC=cr.identityMode==="canon";
+ $("#cwrap").classList.toggle("is-canon",isC);
+ $("#m-custom").classList.toggle("on",!isC);
+ $("#m-canon").classList.toggle("on",isC);
+ $("#m-desc").textContent=isC
+  ?"当前为「原著身份」模式：从「使徒」或「主角团」中任选角色，立绘与全部设定自动套用，无需手填；切回「自行填写」即清空。"
+  :"当前为「自行填写」模式：全部属性与立绘自由设定，也可选是否以使徒身份开局。";
+ renderTLUI();
+ if(isC){renderCanonUI()}
+ else{
+  $$("#f-tr button").forEach(b=>b.classList.toggle("on",cr.tr.includes(b.dataset.t)));
+  $$("#f-sw i").forEach(i=>i.classList.toggle("on",i.dataset.c===cr.color));
+  const gV=$("#f-gen").value.trim(),oV=$("#f-org").value.trim(),rV=$("#f-role").value.trim(),lV=$("#f-loc-in").value.trim();
+  cr.loc=lV;
+  $$("#f-gen-opts button").forEach(b=>b.classList.toggle("on",b.dataset.v===gV));
+  $$("#f-org-opts button").forEach(b=>b.classList.toggle("on",b.dataset.v===oV));
+  $$("#f-role-opts button").forEach(b=>b.classList.toggle("on",b.dataset.v===rV));
+  $$("#f-loc button").forEach(b=>b.classList.toggle("on",b.dataset.l===cr.loc));
+  $$("#f-angel-tog button").forEach(b=>b.classList.toggle("on",(b.dataset.a==="1")===cr.angelOpen));
+  $("#f-angel-sub").style.display=cr.angelOpen?"block":"none";
+  $$("#f-angel-type button").forEach(b=>b.classList.toggle("on",b.dataset.v===cr.angelType));
+  $$("#f-angel-pwr button").forEach(b=>b.classList.toggle("on",b.dataset.v===cr.angelPwr));
+  $$("#bases button").forEach(x=>x.classList.toggle("on",cr.mode==="base"&&x.dataset.b===cr.base));
+  $$("#stats .stp").forEach((r,i)=>{$("input",r).value=cr.st[i];$("b",r).textContent=cr.st[i]});
+  $("#pts-left").textContent=BUDGET-cr.st.reduce((a,b)=>a+b,0);
+  renderCustPrev();
+ }
+ drawCard();clearTimeout(dtm);dtm=setTimeout(()=>{try{localStorage.setItem(DR,JSON.stringify(snap()))}catch(e){}},400)
+}
+function buildCard(){$("#idc").innerHTML=`<div class="ic-bgw" data-bg="img/bg/create.webp"></div><img class="ic-eva" id="ic-eva" alt=""><img class="ic-pt" id="ic-pt" alt=""><button class="plugbtn" title="点击切换搭载机体（右键 / Shift 反向）">${IM("img/fx/plug.webp","","alt=''")}<span id="ic-un">UNIT</span></button><div class="ic-top"><span id="ic-top-l">NERV · PILOT FILE</span><span id="ic-no"></span></div><div class="stamp" id="ic-stamp">PILOT</div><div class="ic-nm" id="ic-nm"></div><div class="ic-rd" id="ic-rd"></div><div class="ic-bt" id="ic-bt"></div>`;hydrate($("#idc"));cardBuilt=true}
+function drawCard(){if(!cardBuilt)buildCard();const s=snap(),c=$("#idc"),tinfo=getTL(s.tl),oc=OC_MAP[s.base];c.style.setProperty("--cc",s.color);
+ const ev=$("#ic-eva"),pb=$(".plugbtn",c);
+ if(s.eva&&BYID[s.eva]){
+  ev.style.display="";pb.style.display=s.identityMode==="canon"?"none":"";
+  const ep=evaPath(s.eva);if(ev.dataset.p!==ep){setImg(ev,ep);ev.classList.remove("swap");void ev.offsetWidth;ev.classList.add("swap")}
  }else{
+  ev.style.display="none";pb.style.display=s.identityMode==="canon"?"none":"";
+ }
+ const pt=$("#ic-pt");
+ if(s.identityMode==="canon"){
+  const cn=CANON_MAP[s.canonId]||CANON_ROSTER[0];
+  pt.style.display="";
+  if(pt.dataset.cur!==cn.cid){pt.dataset.cur=cn.cid;setImg(pt,cn.p)}
+  $("#ic-top-l").textContent=cn.group==="ang"?"PATTERN BLUE · ANGEL":"CANON · ORIGIN FILE";
+  $("#ic-stamp").textContent=cn.group==="ang"?"ANGEL":"CANON";
+ }else if(s.mode==="custom"&&s.pVal){
+  pt.style.display="";
+  if(pt.dataset.cur!==s.pVal){pt.dataset.cur=s.pVal;delete pt.dataset.p;pt.src=s.pVal}
+  $("#ic-top-l").textContent=s.angelOpen?"PATTERN BLUE · ANGEL OC":"NERV · PILOT FILE";
+  $("#ic-stamp").textContent=s.angelOpen?"ANGEL":"PILOT";
+ }else if(oc){
+  pt.style.display="";
   if(pt.dataset.cur!==oc.id){pt.dataset.cur=oc.id;setImg(pt,oc.p)}
+  $("#ic-top-l").textContent=s.angelOpen?"PATTERN BLUE · ANGEL OC":"NERV · PILOT FILE";
+  $("#ic-stamp").textContent=s.angelOpen?"ANGEL":"PILOT";
+ }else{
+  pt.style.display="none";pt.dataset.cur="";delete pt.dataset.p;pt.removeAttribute("src");
+  $("#ic-top-l").textContent=s.angelOpen?"PATTERN BLUE · ANGEL OC":"NERV · PILOT FILE";
+  $("#ic-stamp").textContent=s.angelOpen?"ANGEL":"PILOT";
  }
  pt.style.filter=`hue-rotate(${s.hue}deg) drop-shadow(0 4px 8px rgba(0,0,0,.55))`;
  const esc=v=>String(v||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
- $("#ic-un").textContent=split(BYID[s.eva].n)[0].slice(0,6);$("#ic-no").textContent="NO."+(hash(s.name)%9000+1000);$("#ic-nm").textContent=s.name;$("#ic-rd").innerHTML=radar(s.st);
- $("#ic-bt").innerHTML=`<div class="ic-q">「${esc(s.q)}」</div><b>TIME</b> ${esc(tinfo.wn.replace(/世界线\s*/,""))} · ${esc(tinfo.n)}<br><b>UNIT</b> ${esc(BYID[s.eva].n)}　<b>SEX</b> ${esc(s.gender)}　<b>AGE</b> ${esc(s.age)}<br><b>ROLE</b> ${esc(s.role)}<br><b>FROM</b> ${esc(s.loc)}<br><b>ORG</b> ${esc(s.org)}<br><b>TRAIT</b> ${esc(s.tr.join(" / ")||"—")}　<b>SYNC</b> ${s.sync}%<div class="bar2"></div>`}
-function renderMine(){const a=loadMine();$("#mine").innerHTML=a.map((s,i)=>`<div class="m" data-i="${i}" title="${s.name}"><img src="${pImg(s)}" style="filter:hue-rotate(${s.hue}deg)"><s data-d="${i}">✕</s></div>`).join("");
+ const unitShow=s.eva&&BYID[s.eva]?BYID[s.eva].n:(s.identityMode==="canon"?"使徒 / 指挥":"未选择");
+ $("#ic-un").textContent=s.eva&&BYID[s.eva]?split(BYID[s.eva].n)[0].slice(0,6):"选择机体";
+ $("#ic-no").textContent="NO."+(hash(s.name)%9000+1000);$("#ic-nm").textContent=s.name;$("#ic-rd").innerHTML=radar(s.st);
+ const angBadge=s.identityMode!=="canon"&&s.angelOpen?`　<b>ANGEL</b> ${esc(s.angelType.split(" · ")[0])}`:"";
+ $("#ic-bt").innerHTML=`<div class="ic-q">「${esc(s.q)}」</div><b>TIME</b> ${esc(tinfo.wn.replace(/世界线\s*/,""))} · ${esc(tinfo.n)}<br><b>UNIT</b> ${esc(unitShow)}　<b>SEX</b> ${esc(s.gender)}　<b>AGE</b> ${esc(s.age)}${angBadge}<br><b>ROLE</b> ${esc(s.role)}<br><b>FROM</b> ${esc(s.loc)}<br><b>ORG</b> ${esc(s.org)}<br><b>TRAIT</b> ${esc(s.tr.join(" / ")||"—")}　<b>SYNC</b> ${s.sync}%<div class="bar2"></div>`}
+function renderMine(){const a=loadMine();$("#mine").innerHTML=a.map((s,i)=>{const im=pImg(s);return`<div class="m" data-i="${i}" title="${s.name}">${im?`<img src="${im}" style="filter:hue-rotate(${s.hue}deg)">`:`<span style="display:grid;place-items:center;height:100%;font-size:10px;color:#aaa">无图</span>`}<s data-d="${i}">✕</s></div>`}).join("");
  $("#mine").onclick=e=>{const d=e.target.dataset.d;if(d!=null){const a=loadMine();a.splice(+d,1);localStorage.setItem(LS,JSON.stringify(a));renderMine();return}const m=e.target.closest(".m");if(m){apply(loadMine()[+m.dataset.i]);toast("已读取设定")}}}
 ENTER.create=()=>drawCard();
 
 /* ================= BOARD ================= */
 const PILOTS=[{id:"001",eva:"073",q:"逃げちゃダメだ。（不能逃避。）"},{id:"002",eva:"071",q:"我会完成任务。"},{id:"003",eva:"075",q:"你是笨蛋吗？让我来！"},{id:"004",eva:"077",q:"交给我吧，别拖后腿。"},{id:"005",eva:"094",q:"能与你相遇，真好。"},{id:"006",eva:"082",q:"出击咯，喵～"}];
 let bdPilot="001",bdEva="073",bdCur=null,bdTl="A1";
-const bdP=()=>{const from=s=>({n:s.name,img:pImg(s),eva:s.eva,q:s.q,sync:s.sync,color:s.color,hue:s.hue,loc:s.loc,tl:s.tl||bdTl,raw:s});
+const bdP=()=>{const from=s=>({n:s.name,img:pImg(s)||U(OCS[0].p),eva:s.eva||"073",q:s.q,sync:s.sync,color:s.color,hue:s.hue,loc:s.loc,tl:s.tl||bdTl,raw:s});
  if(bdPilot==="u:cur"&&bdCur)return from(bdCur);
  if(bdPilot.startsWith("u:")){const s=loadMine()[+bdPilot.slice(2)];if(s)return from(s)}
  const p=PILOTS.find(x=>x.id===bdPilot)||PILOTS[0],it=BYID[p.id],r=seeded(p.id);return{n:it.n,img:U(pathOf(it)),eva:p.eva,q:p.q,sync:+(52+r()*44).toFixed(1),color:"#7cff2e",hue:0,loc:"NERV 本部 · 发进井",tl:bdTl,pid:p.id}};
