@@ -544,23 +544,39 @@ html.mob.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
 "use strict";
 /* ============ 舞台 / 横竖屏：严格只在手机端启用；电脑端保持原版不动 ============ */
 const IS_MOB=/Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(navigator.userAgent)||(matchMedia("(pointer:coarse)").matches&&!matchMedia("(any-pointer:fine)").matches);
-const STG={w:window.innerWidth,h:window.innerHeight,s:1,rw:window.innerWidth,stage:false,rot:false,force:false};
+const STG={w:window.innerWidth||1280,h:window.innerHeight||720,s:1,rw:window.innerWidth||1280,stage:false,rot:false,force:false};
+let onRs=()=>{};
 function P(e){if(!STG.stage)return{x:e.clientX,y:e.clientY};return STG.rot?{x:e.clientY/STG.s,y:(STG.rw-e.clientX)/STG.s}:{x:e.clientX/STG.s,y:e.clientY/STG.s}}
 function layout(){
- const RW=window.innerWidth,RH=window.innerHeight,root=document.documentElement,B=document.body,portrait=RH>RW;
+ const RW=window.innerWidth||document.documentElement.clientWidth,RH=window.innerHeight||document.documentElement.clientHeight;
+ const root=document.documentElement,B=document.body,portrait=RH>RW;
  root.classList.toggle("mob",IS_MOB);
+ if(RW<10||RH<10){
+  root.style.removeProperty("--vw");root.style.removeProperty("--vh");
+  return;
+ }
  let stage=false,rot=false;
  if(IS_MOB){if(portrait&&STG.force){stage=true;rot=true}else if(!portrait&&RW<1280)stage=true}
  STG.rw=RW;STG.stage=stage;STG.rot=rot;
- if(stage){const vw=rot?RH:RW,vh=rot?RW:RH,s=Math.min(vw/1280,vh/720);STG.s=s;STG.w=vw/s;STG.h=vh/s;
-  B.style.width=STG.w+"px";B.style.height=STG.h+"px";B.style.transform=(rot?`translateX(${RW}px) rotate(90deg) `:"")+`scale(${s})`}
- else{STG.s=1;STG.w=RW;STG.h=RH;B.style.width=B.style.height=B.style.transform=""}
+ if(stage){
+  const vw=rot?RH:RW,vh=rot?RW:RH,s=Math.min(vw/1280,vh/720);STG.s=s;STG.w=vw/s;STG.h=vh/s;
+  B.style.width=STG.w+"px";B.style.height=STG.h+"px";B.style.transform=(rot?`translateX(${RW}px) rotate(90deg) `:"")+`scale(${s})`;
+  root.style.setProperty("--vw",STG.w/100+"px");root.style.setProperty("--vh",STG.h/100+"px");
+ }else{
+  STG.s=1;STG.w=RW;STG.h=RH;B.style.width=B.style.height=B.style.transform="";
+  root.style.removeProperty("--vw");root.style.removeProperty("--vh");
+ }
  root.classList.toggle("stage",stage);root.classList.toggle("rot",rot);
- root.style.setProperty("--vw",STG.w/100+"px");root.style.setProperty("--vh",STG.h/100+"px");
  [700,820,860,900,1000,1100].forEach(n=>root.classList.toggle("w"+n,STG.w<=n));
  const rb=document.getElementById("rot");if(rb){rb.textContent=(rot||STG.force)?"竖屏 ⟲":"横屏 ⟳";rb.classList.toggle("on",rot||STG.force)}
+ onRs();
 }
-layout();addEventListener("resize",layout);addEventListener("orientationchange",()=>setTimeout(layout,200));
+layout();
+addEventListener("resize",layout);
+addEventListener("pageshow",layout);
+document.addEventListener("visibilitychange",layout);
+if(window.ResizeObserver)new ResizeObserver(layout).observe(document.documentElement);
+addEventListener("orientationchange",()=>setTimeout(layout,200));
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const rnd=(a,b)=>a+Math.random()*(b-a);
@@ -636,7 +652,7 @@ function setTheme(c1,c2){const s=document.documentElement.style;s.setProperty("-
 let mx=0,my=0,tx=0,ty=0;
 addEventListener("pointermove",e=>{const q=P(e);tx=q.x/STG.w*2-1;ty=q.y/STG.h*2-1;const c=$("#cur");c.style.left=q.x+"px";c.style.top=q.y+"px";c.classList.toggle("big",!!e.target.closest("button,.card,.mi,.pk,.hs"))});
 addEventListener("pointerdown",e=>{const r=document.createElement("div");r.className="ring";const q=P(e);r.style.left=q.x+"px";r.style.top=q.y+"px";document.body.appendChild(r);setTimeout(()=>r.remove(),750)});
-const cv=$("#fx"),cx=cv.getContext("2d");let W,H;const rs=()=>{W=cv.width=STG.w;H=cv.height=STG.h};rs();addEventListener("resize",rs);
+const cv=$("#fx"),cx=cv.getContext("2d");let W,H;const rs=()=>{W=cv.width=STG.w;H=cv.height=STG.h};rs();onRs=rs;addEventListener("resize",rs);
 const PT=Array.from({length:36},()=>({x:Math.random(),y:Math.random(),s:rnd(5,16),v:rnd(.04,.14),r:Math.random()*6,vr:rnd(-.01,.01),k:Math.random()<.55?0:1,a:rnd(.1,.3)}));
 function hexPath(x,y,s,r){cx.beginPath();for(let i=0;i<6;i++){const a=r+i*Math.PI/3;cx.lineTo(x+Math.cos(a)*s,y+Math.sin(a)*s)}cx.closePath()}
 function loop(t){requestAnimationFrame(loop);mx+=(tx-mx)*.05;my+=(ty-my)*.05;const rs=document.documentElement.style;rs.setProperty("--mx",mx.toFixed(3));rs.setProperty("--my",my.toFixed(3));
