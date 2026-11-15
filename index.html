@@ -236,11 +236,12 @@ html.w700 #cwrap{grid-template-columns:1fr}html.w700 #pCard{grid-column:1}
 .pts b{color:var(--g);font-size:15px;font-weight:400}
 .mini{font:11px var(--mono);letter-spacing:.15em;padding:4px 10px;border:1px solid #6f5a8c;margin-right:6px;background:rgba(0,0,0,.35);transition:.2s}
 .mini:hover{border-color:var(--c1);color:#fff}
-#bases{display:grid;grid-template-columns:repeat(auto-fill,minmax(50px,1fr));gap:5px;max-height:170px;overflow-y:auto;padding:3px}
-#bases button{aspect-ratio:1;border:1px solid #5a4875;background:rgba(0,0,0,.4);overflow:hidden;transition:.2s;opacity:.85}
-#bases button:nth-child(5n+2){translate:0 3px}
-#bases button img{width:100%;height:100%;object-fit:cover;object-position:50% 8%}
+#bases{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:3px}
+#bases button{position:relative;aspect-ratio:3/4.3;border:1.5px solid #5a4875;background:rgba(0,0,0,.45);overflow:hidden;transition:.2s;opacity:.88}
+#bases button img{width:100%;height:100%;object-fit:cover;object-position:50% 6%}
+#bases button span{position:absolute;left:0;right:0;bottom:0;background:rgba(10,5,18,.86);color:#e9dcff;font:10px/1.45 var(--mono);padding:2px 3px;text-align:center;border-top:1px solid rgba(255,255,255,.15);letter-spacing:.03em}
 #bases button.on{border-color:var(--c1);outline:1.5px solid var(--c1);outline-offset:1px;opacity:1}
+#bases button.on span{background:var(--c1);color:#000;font-weight:700}
 .srcrow{display:flex;gap:6px;margin-top:9px}
 .srcrow input{flex:1;min-width:0;background:rgba(0,0,0,.45);border:1.5px solid #6f5a8c;color:#fff;padding:7px 9px;font:12px var(--mono);outline:0}
 .up{display:inline-block;font:11px var(--mono);letter-spacing:.15em;padding:7px 12px;border:1px dashed #9a86b5;cursor:pointer;white-space:nowrap}
@@ -481,7 +482,7 @@ html.mob.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
   <div class="cp panel chamf" id="pA">
    <div class="ph"><span>01 · IDENTITY</span><i>身份</i></div>
    <div class="fld"><label>姓名</label><input type="text" id="f-name" maxlength="10" value="天城 朔夜"></div>
-   <div class="fld"><label>年龄 · <span id="f-agev">14</span></label><input type="range" id="f-age" min="12" max="30" value="14"></div>
+   <div class="fld"><label>年龄 · <span id="f-agev">20</span></label><input type="range" id="f-age" min="18" max="21" value="20"></div>
    <div class="fld"><label>所属</label><select id="f-org"><option>NERV 本部</option><option>WILLE</option><option>SEELE 直属</option><option>联合国军 · 特别派遣</option><option>第3村 · 独立适格者</option></select></div>
    <div class="fld"><label>身份</label><select id="f-role"></select></div>
    <div class="fld"><label>开局地点</label><div class="locs" id="f-loc"></div></div>
@@ -515,9 +516,7 @@ html.mob.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
   <div class="cp panel chamf" id="pD">
    <div class="ph"><span>04 · PORTRAIT &amp; UNIT</span><i>立绘 · 机体</i></div>
    <div id="bases"></div>
-   <div class="srcrow"><label class="up">⬆ 上传本地图片<input type="file" id="f-up" accept="image/*" hidden></label></div>
-   <div class="srcrow"><input type="text" id="f-url" placeholder="粘贴图片外链 https://…"><button class="mini" id="b-url" style="margin:0">载入</button></div>
-   <div class="hint">外链立绘可通过「分享链接」让别人看到；本地上传仅保存在你的浏览器。</div>
+   <div class="hint">选择以上 4 套自创立绘（男/女 · 成年/青年），将同步出现在正文与状态栏中。</div>
    <div class="fld" style="margin-top:12px"><label>色调滤镜 · <span id="f-huev">0</span>°</label><input type="range" id="f-hue" min="0" max="360" value="0"></div>
    <div class="unit"><button class="mini" id="u-prev" style="margin:0">◀</button><div class="fld" style="flex:1;margin:0"><select id="f-eva"></select></div><button class="mini" id="u-next" style="margin:0">▶</button></div>
    <div class="hint">搭载机体会出现在立绘身后；也可点击立绘旁的插入栓图标切换。</div>
@@ -551,7 +550,7 @@ html.mob.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
    <div id="log"></div></div>
   <div id="big"><div class="t1"></div><div class="t2"></div></div>
   <button id="skip">SKIP ▸▸</button>
-  <div id="bd-end"><div class="q" id="bd-q"></div><button class="btn solid" id="bd-again">再 次 登 机</button> <button class="btn" id="bd-back">返回基地</button></div>
+  <div id="bd-end"><div class="q" id="bd-q"></div><button class="btn solid" id="bd-copy">复制开局档案</button> <button class="btn" id="bd-again">再 次 登 机</button> <button class="btn" id="bd-back">返回基地</button></div>
  </div>
 </section>
 
@@ -856,11 +855,22 @@ const COLS=["#ff7a1a","#ff2a44","#7cff2e","#b48cff","#38c8ff","#ffd23a","#ff6fb0
 const ROLES=["适格者（驾驶员）","作战参谋","技术开发员","情报特务","SEELE 使者","转学生","第3村居民","前联合国军士官","MAGI 运维员"];
 const LOCS=["NERV 本部 · 发令所","第三新东京市 · 地表","大空洞 · 湖畔","发进井 · 整备桥","第3村 · 农田","箱根 · 旧温泉街","月面 · 地下基地","南极 · 观测站"];
 const STN=["格斗","射击","谋略","意志","同步","体能"],CAP=95,BUDGET=330,MINV=5,DEFST=[55,50,60,55,60,50];
-let cr={wl:"A",tl:"A1",tr:["冷静"],color:COLS[0],mode:"base",base:"002",url:"",upload:null,noise:0,st:[...DEFST],loc:LOCS[0]};
+const OCS=[
+ {id:"OCMA",n:"男性 · 成年（20–21岁）",short:"男 · 成年",p:"img/oc/male-adult.webp",g:"男",defAge:20,minA:20,maxA:21},
+ {id:"OCMY",n:"男性 · 青年（18–19岁）",short:"男 · 青年",p:"img/oc/male-youth.webp",g:"男",defAge:18,minA:18,maxA:19},
+ {id:"OCFA",n:"女性 · 成年（20–21岁）",short:"女 · 成年",p:"img/oc/female-adult.webp",g:"女",defAge:20,minA:20,maxA:21},
+ {id:"OCFY",n:"女性 · 青年（18–19岁）",short:"女 · 青年",p:"img/oc/female-youth.webp",g:"女",defAge:18,minA:18,maxA:19}
+];
+const OC_MAP=Object.fromEntries(OCS.map(x=>[x.id,x]));
+let cr={wl:"A",tl:"A1",tr:["冷静"],color:COLS[0],mode:"base",base:"OCMA",url:"",upload:null,noise:0,st:[...DEFST],loc:LOCS[0]};
 const LS="eva_genesis_pilots",DR="eva_genesis_draft";
 const loadMine=()=>{try{return JSON.parse(localStorage.getItem(LS)||"[]")}catch(e){return[]}};
 const calcSync=()=>+clamp(22+cr.st[4]*.55+cr.st[3]*.12+cr.st[5]*.05+cr.noise,18,99.9).toFixed(1);
 let sharedP=null;
+function formatProfile(s){
+ const tinfo=getTL(s.tl),oc=OC_MAP[s.base]||OCS[0];
+ return `【NERV 驾驶员档案】\n时间线：${tinfo.wn} · ${tinfo.n}（${tinfo.t}）\n姓名：${s.name}\n性别/阶段：${oc.n}\n立绘短码：${oc.id}（mt-${oc.id}）\n年龄：${s.age}\n所属：${s.org}\n身份：${s.role}\n开局地点：${s.loc}\n机体：${BYID[s.eva].n}\n性格：${s.tr.join("、")}\n属性：${STN.map((n,i)=>n+s.st[i]).join(" ")}\n同步率：${s.sync}%\n出击宣言：${s.q}\n【立绘渲染要求】请在正文（玩家立绘框与玩家气泡头像）及主角状态栏（立绘）中统一使用短码 mt-${oc.id}。`;
+}
 function renderTLUI(){
  $("#f-wl").innerHTML=Object.entries(WLS).map(([k,v])=>`<button data-w="${k}" class="${cr.wl===k?"on":""}">${v.n}</button>`).join("");
  const curW=WLS[cr.wl]||WLS.A;
@@ -886,17 +896,15 @@ ENTER.createInit=()=>{
  $("#st-avg").onclick=()=>{cr.st=Array(6).fill(BUDGET/6);SFX.ok();syncUI()};
  $("#st-rnd").onclick=()=>{const a=Array(6).fill(20);let left=BUDGET-120;while(left>0){const i=Math.floor(Math.random()*6);if(a[i]+5<=CAP){a[i]+=5;left-=5}}cr.st=a;SFX.ok();syncUI()};
  $("#b-sync").onclick=()=>{cr.noise=rnd(-6,6);SFX.ok();syncUI()};
- $("#bases").innerHTML=R.filter(x=>x.c==="chr"&&+x.id<=43).map(x=>`<button data-b="${x.id}" title="${x.n}">${IM(pathOf(x),"",'loading="lazy"')}</button>`).join("");
- $("#bases").onclick=e=>{const b=e.target.closest("button");if(!b)return;cr.base=b.dataset.b;cr.mode="base";SFX.blip();syncUI()};
- $("#f-up").onchange=e=>{const f=e.target.files[0];if(!f)return;const im=new Image();im.onload=()=>{const k=Math.min(1,640/im.height),c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);cr.upload=c.toDataURL("image/webp",.85);cr.mode="upload";toast("已载入本地立绘");syncUI()};im.onerror=()=>toast("图片读取失败");im.src=URL.createObjectURL(f)};
- $("#b-url").onclick=()=>{const u=$("#f-url").value.trim();if(!/^https?:\/\//i.test(u))return toast("请输入 http(s) 开头的图片链接");const im=new Image();im.onload=()=>{cr.url=u;cr.mode="url";toast("已载入外链立绘");syncUI()};im.onerror=()=>toast("无法加载该链接（可能不允许外链）");im.src=u};
+ $("#bases").innerHTML=OCS.map(x=>`<button data-b="${x.id}" title="${x.n}">${IM(x.p)}<span>${x.short}</span></button>`).join("");
+ $("#bases").onclick=e=>{const b=e.target.closest("button");if(!b)return;cr.base=b.dataset.b;cr.mode="base";const oc=OC_MAP[cr.base]||OCS[0];const curA=+$("#f-age").value;if(curA<oc.minA||curA>oc.maxA){$("#f-age").value=oc.defAge;$("#f-agev").textContent=oc.defAge}SFX.blip();syncUI()};
  ["f-name","f-org","f-role","f-eva","f-q"].forEach(id=>$("#"+id).oninput=()=>syncUI());
  $("#f-age").oninput=e=>{$("#f-agev").textContent=e.target.value;syncUI()};$("#f-hue").oninput=e=>{$("#f-huev").textContent=e.target.value;syncUI()};
  $("#u-prev").onclick=()=>cycleEva(-1);$("#u-next").onclick=()=>cycleEva(1);
  $("#b-save").onclick=()=>{const a=loadMine();a.unshift(snap());localStorage.setItem(LS,JSON.stringify(a.slice(0,12)));SFX.ok();toast("设定已保存 ✔");renderMine()};
  $("#b-board").onclick=()=>{bdPilot="u:cur";bdCur=snap();bdTl=bdCur.tl||cr.tl;ainit();go("board")};
- $("#b-copy").onclick=()=>{const s=snap(),tinfo=getTL(s.tl);const t=`【NERV 驾驶员档案】\n时间线：${tinfo.wn} · ${tinfo.n}（${tinfo.t}）\n姓名：${s.name}\n年龄：${s.age}\n所属：${s.org}\n身份：${s.role}\n开局地点：${s.loc}\n机体：${BYID[s.eva].n}\n性格：${s.tr.join("、")}\n属性：${STN.map((n,i)=>n+s.st[i]).join(" ")}\n同步率：${s.sync}%\n出击宣言：${s.q}`;copyText(t).then(()=>{SFX.ok();toast("档案文本已复制")})};
- $("#b-link").onclick=()=>{const s=snap();if(s.mode==="upload"){s.mode="base"}delete s.upload;const code=btoa(unescape(encodeURIComponent(JSON.stringify(s))));copyText(location.href.split("#")[0]+"#p="+code).then(()=>toast(snap().mode==="upload"?"链接已复制（本地上传立绘不会随链接分享）":"分享链接已复制"))};
+ $("#b-copy").onclick=()=>{copyText(formatProfile(snap())).then(()=>{SFX.ok();toast("档案文本已复制")})};
+ $("#b-link").onclick=()=>{const s=snap();const code=btoa(unescape(encodeURIComponent(JSON.stringify(s))));copyText(location.href.split("#")[0]+"#p="+code).then(()=>toast("分享链接已复制"))};
  $("#idc").onclick=e=>{if(e.target.closest(".plugbtn"))cycleEva(e.shiftKey?-1:1)};
  $("#idc").oncontextmenu=e=>{if(e.target.closest(".plugbtn")){e.preventDefault();cycleEva(-1)}};
  let d=null;try{d=JSON.parse(localStorage.getItem(DR)||"null")}catch(e){}
@@ -904,22 +912,25 @@ ENTER.createInit=()=>{
  renderMine()};
 function copyText(t){return(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).catch(()=>{const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove()})}
 function cycleEva(d){const ids=R.filter(x=>x.c==="eva").map(x=>x.id),i=ids.indexOf($("#f-eva").value);$("#f-eva").value=ids[(i+d+ids.length)%ids.length];SFX.clunk();const p=$(".plugbtn");if(p){p.classList.remove("pop");void p.offsetWidth;p.classList.add("pop")}syncUI()}
-const snap=()=>({wl:cr.wl,tl:cr.tl,name:$("#f-name").value||"无名",age:$("#f-age").value,org:$("#f-org").value,role:$("#f-role").value,loc:cr.loc,eva:$("#f-eva").value,tr:[...cr.tr],color:cr.color,mode:cr.mode,base:cr.base,url:cr.url,upload:cr.upload,hue:+$("#f-hue").value,q:$("#f-q").value||"……",sync:calcSync(),st:[...cr.st]});
-const pImg=s=>s.mode==="url"&&s.url?s.url:s.mode==="upload"&&s.upload?s.upload:U(pathOf(BYID[s.base]||BYID["002"]));
-function apply(s){$("#f-name").value=s.name||"";$("#f-age").value=s.age||14;$("#f-agev").textContent=s.age||14;$("#f-org").value=s.org;$("#f-role").value=s.role;$("#f-eva").value=s.eva||"073";$("#f-q").value=s.q||"";$("#f-hue").value=s.hue||0;$("#f-huev").textContent=s.hue||0;
- const tinfo=getTL(s.tl);cr.wl=s.wl||tinfo.wl;cr.tl=tinfo.id;cr.tr=[...(s.tr||[])];cr.color=s.color||COLS[0];cr.mode=s.mode||"base";cr.base=s.base||"002";cr.url=s.url||"";cr.upload=s.upload||null;cr.st=[...(s.st||DEFST)];cr.loc=s.loc||LOCS[0];cr.noise=(s.sync||60)-(22+cr.st[4]*.55+cr.st[3]*.12+cr.st[5]*.05);if(cr.mode==="url")$("#f-url").value=cr.url;syncUI()}
+const snap=()=>({wl:cr.wl,tl:cr.tl,name:$("#f-name").value||"无名",age:$("#f-age").value,org:$("#f-org").value,role:$("#f-role").value,loc:cr.loc,eva:$("#f-eva").value,tr:[...cr.tr],color:cr.color,mode:"base",base:(OC_MAP[cr.base]||OCS[0]).id,hue:+$("#f-hue").value,q:$("#f-q").value||"……",sync:calcSync(),st:[...cr.st]});
+const pImg=s=>U((OC_MAP[s.base]||OCS[0]).p);
+function apply(s){
+ const oc=OC_MAP[s.base]||OCS[0];const ag=clamp(+(s.age||oc.defAge),18,21);
+ $("#f-name").value=s.name||"";$("#f-age").value=ag;$("#f-agev").textContent=ag;$("#f-org").value=s.org||"NERV 本部";$("#f-role").value=s.role||ROLES[0];$("#f-eva").value=s.eva||"073";$("#f-q").value=s.q||"";$("#f-hue").value=s.hue||0;$("#f-huev").textContent=s.hue||0;
+ const tinfo=getTL(s.tl);cr.wl=s.wl||tinfo.wl;cr.tl=tinfo.id;cr.tr=[...(s.tr||[])];cr.color=s.color||COLS[0];cr.mode="base";cr.base=oc.id;cr.st=[...(s.st||DEFST)];cr.loc=s.loc||LOCS[0];cr.noise=(s.sync||60)-(22+cr.st[4]*.55+cr.st[3]*.12+cr.st[5]*.05);syncUI()
+}
 function radar(st){const pt=(i,r)=>{const a=-Math.PI/2+i*Math.PI/3;return(50+Math.cos(a)*r).toFixed(1)+","+(50+Math.sin(a)*r).toFixed(1)};
  const ring=k=>st.map((_,i)=>pt(i,34*k)).join(" ");return`<svg viewBox="0 0 100 100" fill="none"><polygon points="${ring(1)}" stroke="rgba(255,255,255,.35)" stroke-width=".6" fill="rgba(0,0,0,.35)"/><polygon points="${ring(.66)}" stroke="rgba(255,255,255,.18)" stroke-width=".5"/><polygon points="${ring(.33)}" stroke="rgba(255,255,255,.18)" stroke-width=".5"/>${st.map((_,i)=>`<line x1="50" y1="50" x2="${pt(i,34).split(",")[0]}" y2="${pt(i,34).split(",")[1]}" stroke="rgba(255,255,255,.18)" stroke-width=".4"/>`).join("")}<polygon points="${st.map((v,i)=>pt(i,34*v/100)).join(" ")}" fill="var(--cc)" fill-opacity=".38" stroke="var(--cc)" stroke-width="1.2"/>${STN.map((n,i)=>{const [x,y]=pt(i,43).split(",");return`<text x="${x}" y="${y}" fill="#fff" font-size="6.5" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif">${n}</text>`}).join("")}</svg>`}
 let cardBuilt=false,dtm;
 function syncUI(){renderTLUI();$$("#f-tr button").forEach(b=>b.classList.toggle("on",cr.tr.includes(b.dataset.t)));$$("#f-sw i").forEach(i=>i.classList.toggle("on",i.dataset.c===cr.color));
- $$("#f-loc button").forEach(b=>b.classList.toggle("on",b.dataset.l===cr.loc));$$("#bases button").forEach(x=>x.classList.toggle("on",cr.mode==="base"&&x.dataset.b===cr.base));
+ $$("#f-loc button").forEach(b=>b.classList.toggle("on",b.dataset.l===cr.loc));$$("#bases button").forEach(x=>x.classList.toggle("on",x.dataset.b===cr.base));
  $$("#stats .stp").forEach((r,i)=>{$("input",r).value=cr.st[i];$("b",r).textContent=cr.st[i]});$("#pts-left").textContent=BUDGET-cr.st.reduce((a,b)=>a+b,0);
  drawCard();clearTimeout(dtm);dtm=setTimeout(()=>{try{localStorage.setItem(DR,JSON.stringify(snap()))}catch(e){}},400)}
 function buildCard(){$("#idc").innerHTML=`<div class="ic-bgw" data-bg="img/bg/create.webp"></div><img class="ic-eva" id="ic-eva" alt=""><img class="ic-pt" id="ic-pt" alt=""><button class="plugbtn" title="点击切换搭载机体（右键 / Shift 反向）">${IM("img/fx/plug.webp","","alt=''")}<span id="ic-un">UNIT</span></button><div class="ic-top"><span>NERV · PILOT FILE</span><span id="ic-no"></span></div><div class="stamp">PILOT</div><div class="ic-nm" id="ic-nm"></div><div class="ic-rd" id="ic-rd"></div><div class="ic-bt" id="ic-bt"></div>`;hydrate($("#idc"));cardBuilt=true}
-function drawCard(){if(!cardBuilt)buildCard();const s=snap(),c=$("#idc"),tinfo=getTL(s.tl);c.style.setProperty("--cc",s.color);
+function drawCard(){if(!cardBuilt)buildCard();const s=snap(),c=$("#idc"),tinfo=getTL(s.tl),oc=OC_MAP[s.base]||OCS[0];c.style.setProperty("--cc",s.color);
  const ev=$("#ic-eva"),ep=evaPath(s.eva);if(ev.dataset.p!==ep){setImg(ev,ep);ev.classList.remove("swap");void ev.offsetWidth;ev.classList.add("swap")}
- const pt=$("#ic-pt"),pu=pImg(s),key=s.mode+"|"+(s.mode==="url"?s.url:s.mode==="upload"?"up":s.base);
- if(pt.dataset.cur!==key){pt.dataset.cur=key;if(s.mode==="base"){setImg(pt,pathOf(BYID[s.base]))}else{delete pt.dataset.p;pt.src=pu}}
+ const pt=$("#ic-pt");
+ if(pt.dataset.cur!==oc.id){pt.dataset.cur=oc.id;setImg(pt,oc.p)}
  pt.style.filter=`hue-rotate(${s.hue}deg) drop-shadow(0 4px 8px rgba(0,0,0,.55))`;
  $("#ic-un").textContent=split(BYID[s.eva].n)[0].slice(0,6);$("#ic-no").textContent="NO."+(hash(s.name)%9000+1000);$("#ic-nm").textContent=s.name;$("#ic-rd").innerHTML=radar(s.st);
  $("#ic-bt").innerHTML=`<div class="ic-q">「${s.q}」</div><b>TIME</b> ${tinfo.wn.replace(/世界线\s*/,"")} · ${tinfo.n}<br><b>UNIT</b> ${BYID[s.eva].n}　<b>AGE</b> ${s.age}<br><b>ROLE</b> ${s.role}<br><b>FROM</b> ${s.loc}<br><b>ORG</b> ${s.org}<br><b>TRAIT</b> ${s.tr.join(" / ")||"—"}　<b>SYNC</b> ${s.sync}%<div class="bar2"></div>`}
@@ -930,10 +941,10 @@ ENTER.create=()=>drawCard();
 /* ================= BOARD ================= */
 const PILOTS=[{id:"001",eva:"073",q:"逃げちゃダメだ。（不能逃避。）"},{id:"002",eva:"071",q:"我会完成任务。"},{id:"003",eva:"075",q:"你是笨蛋吗？让我来！"},{id:"004",eva:"077",q:"交给我吧，别拖后腿。"},{id:"005",eva:"094",q:"能与你相遇，真好。"},{id:"006",eva:"082",q:"出击咯，喵～"}];
 let bdPilot="001",bdEva="073",bdCur=null,bdTl="A1";
-const bdP=()=>{const from=s=>({n:s.name,img:pImg(s),eva:s.eva,q:s.q,sync:s.sync,color:s.color,hue:s.hue,loc:s.loc,tl:s.tl||bdTl});
+const bdP=()=>{const from=s=>({n:s.name,img:pImg(s),eva:s.eva,q:s.q,sync:s.sync,color:s.color,hue:s.hue,loc:s.loc,tl:s.tl||bdTl,raw:s});
  if(bdPilot==="u:cur"&&bdCur)return from(bdCur);
  if(bdPilot.startsWith("u:")){const s=loadMine()[+bdPilot.slice(2)];if(s)return from(s)}
- const p=PILOTS.find(x=>x.id===bdPilot)||PILOTS[0],it=BYID[p.id],r=seeded(p.id);return{n:it.n,img:U(pathOf(it)),eva:p.eva,q:p.q,sync:+(52+r()*44).toFixed(1),color:"#7cff2e",hue:0,loc:"NERV 本部 · 发进井",tl:bdTl}};
+ const p=PILOTS.find(x=>x.id===bdPilot)||PILOTS[0],it=BYID[p.id],r=seeded(p.id);return{n:it.n,img:U(pathOf(it)),eva:p.eva,q:p.q,sync:+(52+r()*44).toFixed(1),color:"#7cff2e",hue:0,loc:"NERV 本部 · 发进井",tl:bdTl,pid:p.id}};
 function renderBdTL(){
  const t=getTL(bdTl);
  $("#bd-tl").innerHTML=`<b>TIMELINE</b><select id="bd-tlsel">${Object.entries(WLS).map(([w,o])=>`<optgroup label="${o.n}">${o.nodes.map(x=>`<option value="${x.id}" ${x.id===t.id?"selected":""}>${x.n}（${x.t}）</option>`).join("")}</optgroup>`).join("")}</select><span style="opacity:.8">${t.d}</span>`;
@@ -941,11 +952,12 @@ function renderBdTL(){
 }
 function renderPicks(){const mine=loadMine();
  renderBdTL();
- $("#pk-p").innerHTML=[...PILOTS.map(p=>({k:p.id,n:BYID[p.id].n,img:pImg({mode:"base",base:p.id})})),...(bdCur&&bdPilot==="u:cur"?[{k:"u:cur",n:bdCur.name+"（当前）",img:pImg(bdCur),h:bdCur.hue}]:[]),...mine.map((s,i)=>({k:"u:"+i,n:s.name,img:pImg(s),h:s.hue}))].map(x=>`<button class="pk ${x.k===bdPilot?"on":""}" data-k="${x.k}"><img src="${x.img}" data-p="${/^https?:|^data:/.test(x.img)?"":x.img.replace(BASES[bi],"")}" style="${x.h?`filter:hue-rotate(${x.h}deg)`:""}"><span>${x.n}</span></button>`).join("");
+ $("#pk-p").innerHTML=[...PILOTS.map(p=>({k:p.id,n:BYID[p.id].n,img:U(pathOf(BYID[p.id]))})),...(bdCur&&bdPilot==="u:cur"?[{k:"u:cur",n:bdCur.name+"（当前）",img:pImg(bdCur),h:bdCur.hue}]:[]),...mine.map((s,i)=>({k:"u:"+i,n:s.name,img:pImg(s),h:s.hue}))].map(x=>`<button class="pk ${x.k===bdPilot?"on":""}" data-k="${x.k}"><img src="${x.img}" data-p="${/^https?:|^data:/.test(x.img)?"":x.img.replace(BASES[bi],"")}" style="${x.h?`filter:hue-rotate(${x.h}deg)`:""}"><span>${x.n}</span></button>`).join("");
  $("#pk-e").innerHTML=R.filter(x=>x.c==="eva").map(x=>`<button class="pk ${x.id===bdEva?"on":""}" data-k="${x.id}">${IM(pathOf(x))}<span>${split(x.n)[0]}${split(x.n)[1]?" "+split(x.n)[1]:""}</span></button>`).join("")}
 ENTER.boardInit=()=>{$("#pk-p").onclick=e=>{const b=e.target.closest(".pk");if(!b)return;bdPilot=b.dataset.k;const bp=bdP();bdEva=bp.eva;if(bp.tl)bdTl=bp.tl;SFX.click();renderPicks()};
  $("#pk-e").onclick=e=>{const b=e.target.closest(".pk");if(!b)return;bdEva=b.dataset.k;SFX.click();renderPicks()};
  $("#bd-go").onclick=()=>{ainit();SFX.click();runBoard()};$("#bd-again").onclick=()=>{resetSeq();runBoard()};$("#bd-back").onclick=()=>{resetSeq();$("#bd-pre").classList.remove("hide");$("#nav").classList.add("on");setBg("cage")};
+ $("#bd-copy").onclick=()=>{const P=bdP(),tinfo=getTL(bdTl);const txt=P.raw?formatProfile({...P.raw,tl:bdTl,eva:bdEva}):`【NERV 出击档案】\n时间线：${tinfo.wn} · ${tinfo.n}（${tinfo.t}）\n驾驶员：${P.n}\n机体：${BYID[bdEva].n}\n同步率：${P.sync}%\n出击宣言：${P.q}`;copyText(txt).then(()=>{SFX.ok();toast("开局档案已复制")})};
  $("#skip").onclick=()=>{seqTok++;finishSeq()}};
 ENTER.board=()=>{const bp=bdP();bdEva=bp.eva;if(bp.tl)bdTl=bp.tl;renderPicks();resetSeq();$("#bd-pre").classList.remove("hide");$("#nav").classList.add("on")};
 function resetSeq(){seqTok++;$("#bd-seq").classList.remove("on");$("#bd-end").classList.remove("on");$("#alarm").classList.remove("on");$("#phud").classList.remove("on");$("#speedl").style.opacity=0;bubOn=false;
