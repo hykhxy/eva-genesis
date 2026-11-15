@@ -1006,7 +1006,7 @@ const CANON_ROSTER=[
  {cid:"hero-018",group:"hero",rid:"018",art:"C018-S01",p:"img/chr/018.webp",n:"铃原樱",g:"女",age:"19岁（Q/终）",org:"WILLE",role:"AAA 奇迹号医疗官（少尉）",loc:"AAA 奇迹号 · 医疗室",eva:"",color:"#ff6fb0",tr:["温柔","执着","善良"],st:[40,52,70,76,20,50],sync:"0.0",q:"「碇先生，拜托您千万不要再坐上 EVA 了……」",bg:"铃原东治的妹妹，14 年后成长为 WILLE 医疗官，对真嗣既怀感恩又害怕他再次毁灭世界。",sp:"擅长急救照护与在高压战舰环境下稳定乘员心理状态。"}
 ];
 const CANON_MAP=Object.fromEntries(CANON_ROSTER.map(x=>[x.cid,x]));
-let cr={identityMode:"custom",canonTab:"ang",canonId:"hero-001",wl:"A",tl:"A1",tr:["冷静"],color:COLS[0],mode:"base",base:"OCMA",pVal:"",aVal:"",angelOpen:false,angelType:ANGEL_TYPES[0],angelPwr:ANGEL_PWRS[0],noise:0,st:[...DEFST],loc:LOCS[0]};
+let cr={identityMode:"custom",canonTab:"ang",canonId:"",wl:"A",tl:"A1",tr:["冷静"],color:COLS[0],mode:"base",base:"OCMA",pVal:"",aVal:"",angelOpen:false,angelType:ANGEL_TYPES[0],angelPwr:ANGEL_PWRS[0],noise:0,st:[...DEFST],loc:LOCS[0]};
 let pend={pVal:"",aVal:"",dirty:false};
 const LS="eva_genesis_pilots",DR="eva_genesis_draft";
 const loadMine=()=>{try{return JSON.parse(localStorage.getItem(LS)||"[]")}catch(e){return[]}};
@@ -1324,7 +1324,8 @@ function drawCard(){if(!cardBuilt)buildCard();const s=snap(),c=$("#idc"),tinfo=g
  $("#ic-un").textContent=s.eva&&BYID[s.eva]?split(BYID[s.eva].n)[0].slice(0,6):"选择机体";
  $("#ic-no").textContent="NO."+(hash(s.name)%9000+1000);$("#ic-nm").textContent=s.name;$("#ic-rd").innerHTML=radar(s.st);
  const angBadge=s.identityMode!=="canon"&&s.angelOpen?`　<b>ANGEL</b> ${esc(s.angelType.split(" · ")[0])}`:"";
- $("#ic-bt").innerHTML=`<div class="ic-q">「${esc(s.q)}」</div><b>TIME</b> ${esc(tinfo.wn.replace(/世界线\s*/,""))} · ${esc(tinfo.n)}<br><b>UNIT</b> ${esc(unitShow)}　<b>SEX</b> ${esc(s.gender)}　<b>AGE</b> ${esc(s.age)}${angBadge}<br><b>ROLE</b> ${esc(s.role)}<br><b>FROM</b> ${esc(s.loc)}<br><b>ORG</b> ${esc(s.org)}<br><b>TRAIT</b> ${esc(s.tr.join(" / ")||"—")}　<b>SYNC</b> ${s.sync}%<div class="bar2"></div>`}
+ const qShow=String(s.q||"").replace(/^「|」$/g,"");
+ $("#ic-bt").innerHTML=`<div class="ic-q">「${esc(qShow)}」</div><b>TIME</b> ${esc(tinfo.wn.replace(/世界线\s*/,""))} · ${esc(tinfo.n)}<br><b>UNIT</b> ${esc(unitShow)}　<b>SEX</b> ${esc(s.gender)}　<b>AGE</b> ${esc(s.age)}${angBadge}<br><b>ROLE</b> ${esc(s.role)}<br><b>FROM</b> ${esc(s.loc)}<br><b>ORG</b> ${esc(s.org)}<br><b>TRAIT</b> ${esc(s.tr.join(" / ")||"—")}　<b>SYNC</b> ${s.sync}%<div class="bar2"></div>`}
 function renderMine(){const a=loadMine();$("#mine").innerHTML=a.map((s,i)=>{const im=pImg(s);return`<div class="m" data-i="${i}" title="${s.name}">${im?`<img src="${im}" style="filter:hue-rotate(${s.hue}deg)">`:`<span style="display:grid;place-items:center;height:100%;font-size:10px;color:#aaa">无图</span>`}<s data-d="${i}">✕</s></div>`}).join("");
  $("#mine").onclick=e=>{const d=e.target.dataset.d;if(d!=null){const a=loadMine();a.splice(+d,1);localStorage.setItem(LS,JSON.stringify(a));renderMine();return}const m=e.target.closest(".m");if(m){apply(loadMine()[+m.dataset.i]);toast("已读取设定")}}}
 ENTER.create=()=>drawCard();
