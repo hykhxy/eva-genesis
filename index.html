@@ -242,10 +242,21 @@ html.w700 #cwrap{grid-template-columns:1fr}html.w700 #pCard{grid-column:1}
 #bases button span{position:absolute;left:0;right:0;bottom:0;background:rgba(10,5,18,.86);color:#e9dcff;font:10px/1.45 var(--mono);padding:2px 3px;text-align:center;border-top:1px solid rgba(255,255,255,.15);letter-spacing:.03em}
 #bases button.on{border-color:var(--c1);outline:1.5px solid var(--c1);outline-offset:1px;opacity:1}
 #bases button.on span{background:var(--c1);color:#000;font-weight:700}
-.srcrow{display:flex;gap:6px;margin-top:9px}
+.srcrow{display:flex;gap:6px;margin-top:8px}
 .srcrow input{flex:1;min-width:0;background:rgba(0,0,0,.45);border:1.5px solid #6f5a8c;color:#fff;padding:7px 9px;font:12px var(--mono);outline:0}
-.up{display:inline-block;font:11px var(--mono);letter-spacing:.15em;padding:7px 12px;border:1px dashed #9a86b5;cursor:pointer;white-space:nowrap}
+.srcrow input:focus{border-color:var(--c1)}
+.up{display:inline-block;font:11px var(--mono);letter-spacing:.12em;padding:7px 10px;border:1px dashed #9a86b5;cursor:pointer;white-space:nowrap}
 .up:hover{border-color:var(--c1)}
+.cust-acts{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:9px}
+.mini.act{background:var(--c1);border-color:var(--c1);color:#000;font-weight:700}
+.cust-prev{display:flex;gap:10px;align-items:center;margin-top:9px;padding:8px 10px;background:rgba(0,0,0,.38);border:1px solid #5a4875;border-left:3px solid var(--c1)}
+.cust-prev .pv-pt{width:38px;height:56px;object-fit:contain;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);flex:none}
+.cust-prev .pv-av{width:44px;height:44px;border-radius:50%;border:2px solid var(--c1);background-color:rgba(255,255,255,.08);background-repeat:no-repeat;background-size:210% auto;background-position:50% 3%;flex:none}
+.cust-prev .pv-av.cov{background-size:cover;background-position:50% 20%}
+.cust-prev .pv-meta{flex:1;min-width:0;font:10.5px/1.5 var(--mono);color:#d9c9ee}
+.cust-prev .pv-meta b{display:block;color:var(--g);font-weight:700;margin-bottom:2px}
+.cust-prev .pv-meta b.warn{color:var(--o)}
+.cust-prev .pv-meta span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#a592bd}
 .unit{display:flex;gap:6px;align-items:center;margin-top:12px}
 .unit select{flex:1;min-width:0}
 .hint{font:10px/1.7 var(--mono);color:#8f7ca9;letter-spacing:.08em;margin-top:6px}
@@ -516,7 +527,11 @@ html.mob.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
   <div class="cp panel chamf" id="pD">
    <div class="ph"><span>04 · PORTRAIT &amp; UNIT</span><i>立绘 · 机体</i></div>
    <div id="bases"></div>
-   <div class="hint">选择以上 4 套自创立绘（男/女 · 成年/青年），将同步出现在正文与状态栏中。</div>
+   <div class="hint">可选以上 4 套自创立绘，或在下方输入外链 / 本地上传自定义立绘与头像。</div>
+   <div class="srcrow"><input id="f-url" placeholder="立绘外链 https://...（可选）"><label class="up">本地上传立绘<input type="file" id="f-up" accept="image/*" hidden></label></div>
+   <div class="srcrow"><input id="f-avurl" placeholder="头像外链 https://...（留空则同立绘）"><label class="up">本地上传头像<input type="file" id="f-avup" accept="image/*" hidden></label></div>
+   <div class="cust-acts"><button class="mini act" id="b-save-custom">保存设定</button><button class="mini" id="b-copy-img">复制立绘与头像外链</button><button class="mini" id="b-reset-pt" style="display:none">恢复预设</button></div>
+   <div class="cust-prev" id="cust-prev"></div>
    <div class="fld" style="margin-top:12px"><label>色调滤镜 · <span id="f-huev">0</span>°</label><input type="range" id="f-hue" min="0" max="360" value="0"></div>
    <div class="unit"><button class="mini" id="u-prev" style="margin:0">◀</button><div class="fld" style="flex:1;margin:0"><select id="f-eva"></select></div><button class="mini" id="u-next" style="margin:0">▶</button></div>
    <div class="hint">搭载机体会出现在立绘身后；也可点击立绘旁的插入栓图标切换。</div>
@@ -862,14 +877,36 @@ const OCS=[
  {id:"OCFY",n:"女性 · 青年（18–19岁）",short:"女 · 青年",p:"img/oc/female-youth.webp",g:"女",defAge:18,minA:18,maxA:19}
 ];
 const OC_MAP=Object.fromEntries(OCS.map(x=>[x.id,x]));
-let cr={wl:"A",tl:"A1",tr:["冷静"],color:COLS[0],mode:"base",base:"OCMA",url:"",upload:null,noise:0,st:[...DEFST],loc:LOCS[0]};
+let cr={wl:"A",tl:"A1",tr:["冷静"],color:COLS[0],mode:"base",base:"OCMA",pVal:"",aVal:"",noise:0,st:[...DEFST],loc:LOCS[0]};
+let pend={pVal:"",aVal:"",dirty:false};
 const LS="eva_genesis_pilots",DR="eva_genesis_draft";
 const loadMine=()=>{try{return JSON.parse(localStorage.getItem(LS)||"[]")}catch(e){return[]}};
+const saveMineArr=a=>{try{localStorage.setItem(LS,JSON.stringify(a.slice(0,12)))}catch(e){toast("本地空间不足，旧档案或图片过大")}};
 const calcSync=()=>+clamp(22+cr.st[4]*.55+cr.st[3]*.12+cr.st[5]*.05+cr.noise,18,99.9).toFixed(1);
 let sharedP=null;
+const toExt=p=>(BASES[bi]&&/^https?:/.test(BASES[bi])?BASES[bi]:BASES[0])+p;
+function getPortraitLinks(s){
+ const oc=OC_MAP[s.base]||OCS[0],presetUrl=toExt(oc.p);
+ if(s.mode==="custom"&&(s.pVal||s.aVal)){
+  const pLink=s.pVal||presetUrl;
+  const aLink=s.aVal||pLink;
+  return{pLink,aLink,isCustom:true,hasSepAv:!!s.aVal&&s.aVal!==pLink,isUpload:pLink.startsWith("data:")||aLink.startsWith("data:")};
+ }
+ return{pLink:presetUrl,aLink:presetUrl,isCustom:false,hasSepAv:false,isUpload:false};
+}
 function formatProfile(s){
- const tinfo=getTL(s.tl),oc=OC_MAP[s.base]||OCS[0];
- return `【NERV 驾驶员档案】\n时间线：${tinfo.wn} · ${tinfo.n}（${tinfo.t}）\n姓名：${s.name}\n性别/阶段：${oc.n}\n立绘短码：${oc.id}（mt-${oc.id}）\n年龄：${s.age}\n所属：${s.org}\n身份：${s.role}\n开局地点：${s.loc}\n机体：${BYID[s.eva].n}\n性格：${s.tr.join("、")}\n属性：${STN.map((n,i)=>n+s.st[i]).join(" ")}\n同步率：${s.sync}%\n出击宣言：${s.q}\n【立绘渲染要求】请在正文玩家气泡头像及主角状态栏（立绘）中统一使用短码 mt-${oc.id}。`;
+ const tinfo=getTL(s.tl),oc=OC_MAP[s.base]||OCS[0],lk=getPortraitLinks(s);
+ const ptLines=lk.isCustom
+  ?`立绘来源：${lk.isUpload?"自定义本地上传":"自定义外链"}\n立绘外链：${lk.pLink}\n头像外链：${lk.aLink}`
+  :`立绘短码：${oc.id}（mt-${oc.id}）\n立绘外链：${lk.pLink}\n头像外链：${lk.aLink}`;
+ const req=lk.isCustom
+  ?`【立绘渲染要求】请在正文玩家气泡头像及主角状态栏（立绘）中使用上述「立绘外链」与「头像外链」渲染。`
+  :`【立绘渲染要求】请在正文玩家气泡头像及主角状态栏（立绘）中统一使用短码 mt-${oc.id}（立绘外链：${lk.pLink}｜头像外链：${lk.aLink}）。`;
+ return `【NERV 驾驶员档案】\n时间线：${tinfo.wn} · ${tinfo.n}（${tinfo.t}）\n姓名：${s.name}\n性别/阶段：${oc.n}\n${ptLines}\n年龄：${s.age}\n所属：${s.org}\n身份：${s.role}\n开局地点：${s.loc}\n机体：${BYID[s.eva].n}\n性格：${s.tr.join("、")}\n属性：${STN.map((n,i)=>n+s.st[i]).join(" ")}\n同步率：${s.sync}%\n出击宣言：${s.q}\n${req}`;
+}
+function formatLinksOnly(s){
+ const lk=getPortraitLinks(s);
+ return `立绘外链：${lk.pLink}\n头像外链：${lk.aLink}`;
 }
 function renderTLUI(){
  $("#f-wl").innerHTML=Object.entries(WLS).map(([k,v])=>`<button data-w="${k}" class="${cr.wl===k?"on":""}">${v.n}</button>`).join("");
@@ -878,6 +915,60 @@ function renderTLUI(){
  $("#f-tl").innerHTML=curW.nodes.map(n=>`<button data-t="${n.id}" class="${cr.tl===n.id?"on":""}">${n.n}<span style="opacity:.7;font-size:10px;margin-left:6px">${n.t}</span></button>`).join("");
  const t=getTL(cr.tl);
  $("#f-tli").innerHTML=`<b style="color:var(--o)">${t.wn} · ${t.n}（${t.t}）</b><br>${t.d}`;
+}
+function readImgFile(file,maxW,maxH){
+ return new Promise((res,rej)=>{
+  const r=new FileReader();
+  r.onerror=()=>rej("read");
+  r.onload=()=>{
+   const im=new Image();
+   im.onerror=()=>res(r.result);
+   im.onload=()=>{
+    const sc=Math.min(1,maxW/im.width,maxH/im.height);
+    const w=Math.max(1,Math.round(im.width*sc)),h=Math.max(1,Math.round(im.height*sc));
+    const c=document.createElement("canvas");c.width=w;c.height=h;
+    c.getContext("2d").drawImage(im,0,0,w,h);
+    let out=c.toDataURL("image/webp",0.86);
+    if(!out.startsWith("data:image/webp"))out=c.toDataURL("image/png");
+    res(out);
+   };
+   im.src=r.result;
+  };
+  r.readAsDataURL(file);
+ });
+}
+function commitCustomAndSave(alsoStore=true){
+ const pVal=pend.pVal,aVal=pend.aVal;
+ if(!pVal&&!aVal){
+  cr.mode="base";cr.pVal="";cr.aVal="";pend={pVal:"",aVal:"",dirty:false};
+  syncUI();
+  if(alsoStore){const a=loadMine();a.unshift(snap());saveMineArr(a);renderMine();SFX.ok();toast("设定已保存 ✔")}
+  return true;
+ }
+ cr.mode="custom";cr.pVal=pVal;cr.aVal=aVal;pend={pVal,aVal,dirty:false};
+ if(alsoStore){const a=loadMine();a.unshift(snap());saveMineArr(a);renderMine()}
+ syncUI();SFX.ok();toast("设定已保存，可预览并复制外链 ✔");return true;
+}
+function renderCustPrev(){
+ const box=$("#cust-prev");if(!box)return;
+ const s=snap(),lk=getPortraitLinks(s),isCustom=cr.mode==="custom";
+ $("#b-reset-pt").style.display=(isCustom||pend.dirty)?"inline-block":"none";
+ if(pend.dirty){
+  const pTxt=pend.pVal?(pend.pVal.startsWith("data:")?"[待保存本地立绘]":pend.pVal):"（未填，将沿用当前立绘）";
+  const aTxt=pend.aVal?(pend.aVal.startsWith("data:")?"[待保存本地头像]":pend.aVal):"（留空则同立绘）";
+  box.innerHTML=`<div class="pv-meta"><b class="warn">已录入自定义内容 · 请点击「保存设定」预览与复制</b><span></span><span></span></div>`;
+  const spans=box.querySelectorAll("span");spans[0].textContent="立绘："+pTxt;spans[1].textContent="头像："+aTxt;
+  return;
+ }
+ const pShow=pImg(s),aShow=aImg(s);
+ const pLabel=lk.pLink.startsWith("data:")?"[本地上传立绘]":lk.pLink;
+ const aLabel=lk.aLink.startsWith("data:")?"[本地上传头像]":lk.aLink;
+ box.innerHTML=`<img class="pv-pt" alt="立绘预览"><div class="pv-av ${isCustom&&lk.hasSepAv?"cov":""}" title="头像预览"></div><div class="pv-meta"><b>${isCustom?"已保存自定义设定 · 可预览与复制":"当前使用预设 · 复制档案将带出外链"}</b><span></span><span></span></div>`;
+ const im=box.querySelector(".pv-pt"),av=box.querySelector(".pv-av"),spans=box.querySelectorAll(".pv-meta span");
+ im.src=pShow;im.style.filter=`hue-rotate(${s.hue}deg)`;
+ av.style.backgroundImage=`url("${aShow.replace(/"/g,'\\"')}")`;av.style.filter=`hue-rotate(${s.hue}deg)`;
+ spans[0].textContent="立绘："+pLabel;spans[0].title=pLabel;
+ spans[1].textContent="头像："+aLabel;spans[1].title=aLabel;
 }
 ENTER.createInit=()=>{
  $("#f-eva").innerHTML=R.filter(x=>x.c==="eva").map(x=>`<option value="${x.id}" ${x.id==="073"?"selected":""}>${x.n}</option>`).join("");
@@ -897,14 +988,21 @@ ENTER.createInit=()=>{
  $("#st-rnd").onclick=()=>{const a=Array(6).fill(20);let left=BUDGET-120;while(left>0){const i=Math.floor(Math.random()*6);if(a[i]+5<=CAP){a[i]+=5;left-=5}}cr.st=a;SFX.ok();syncUI()};
  $("#b-sync").onclick=()=>{cr.noise=rnd(-6,6);SFX.ok();syncUI()};
  $("#bases").innerHTML=OCS.map(x=>`<button data-b="${x.id}" title="${x.n}">${IM(x.p)}<span>${x.short}</span></button>`).join("");
- $("#bases").onclick=e=>{const b=e.target.closest("button");if(!b)return;cr.base=b.dataset.b;cr.mode="base";const oc=OC_MAP[cr.base]||OCS[0];const curA=+$("#f-age").value;if(curA<oc.minA||curA>oc.maxA){$("#f-age").value=oc.defAge;$("#f-agev").textContent=oc.defAge}SFX.blip();syncUI()};
+ $("#bases").onclick=e=>{const b=e.target.closest("button");if(!b)return;cr.base=b.dataset.b;cr.mode="base";cr.pVal="";cr.aVal="";pend={pVal:"",aVal:"",dirty:false};$("#f-url").value="";$("#f-avurl").value="";const oc=OC_MAP[cr.base]||OCS[0];const curA=+$("#f-age").value;if(curA<oc.minA||curA>oc.maxA){$("#f-age").value=oc.defAge;$("#f-agev").textContent=oc.defAge}SFX.blip();syncUI()};
+ $("#f-url").oninput=e=>{pend.pVal=e.target.value.trim();pend.dirty=true;renderCustPrev()};
+ $("#f-avurl").oninput=e=>{pend.aVal=e.target.value.trim();pend.dirty=true;renderCustPrev()};
+ $("#f-up").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=await readImgFile(f,600,900);pend.pVal=d;pend.dirty=true;$("#f-url").value="";toast("已读取本地立绘，请点击「保存设定」");renderCustPrev()}catch(err){toast("图片读取失败")}e.target.value=""};
+ $("#f-avup").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=await readImgFile(f,256,256);pend.aVal=d;pend.dirty=true;$("#f-avurl").value="";toast("已读取本地头像，请点击「保存设定」");renderCustPrev()}catch(err){toast("图片读取失败")}e.target.value=""};
+ $("#b-save-custom").onclick=()=>commitCustomAndSave(true);
+ $("#b-reset-pt").onclick=()=>{cr.mode="base";cr.pVal="";cr.aVal="";pend={pVal:"",aVal:"",dirty:false};$("#f-url").value="";$("#f-avurl").value="";SFX.blip();syncUI();toast("已恢复自创预设立绘")};
+ $("#b-copy-img").onclick=()=>{if(pend.dirty){toast("请先点击「保存设定」保存自定义立绘");return}copyText(formatLinksOnly(snap())).then(()=>{SFX.ok();toast("立绘外链与头像外链已复制")})};
  ["f-name","f-org","f-role","f-eva","f-q"].forEach(id=>$("#"+id).oninput=()=>syncUI());
  $("#f-age").oninput=e=>{$("#f-agev").textContent=e.target.value;syncUI()};$("#f-hue").oninput=e=>{$("#f-huev").textContent=e.target.value;syncUI()};
  $("#u-prev").onclick=()=>cycleEva(-1);$("#u-next").onclick=()=>cycleEva(1);
- $("#b-save").onclick=()=>{const a=loadMine();a.unshift(snap());localStorage.setItem(LS,JSON.stringify(a.slice(0,12)));SFX.ok();toast("设定已保存 ✔");renderMine()};
- $("#b-board").onclick=()=>{bdPilot="u:cur";bdCur=snap();bdTl=bdCur.tl||cr.tl;ainit();go("board")};
- $("#b-copy").onclick=()=>{copyText(formatProfile(snap())).then(()=>{SFX.ok();toast("档案文本已复制")})};
- $("#b-link").onclick=()=>{const s=snap();const code=btoa(unescape(encodeURIComponent(JSON.stringify(s))));copyText(location.href.split("#")[0]+"#p="+code).then(()=>toast("分享链接已复制"))};
+ $("#b-save").onclick=()=>{if(pend.dirty){commitCustomAndSave(true);return}const a=loadMine();a.unshift(snap());saveMineArr(a);SFX.ok();toast("设定已保存 ✔");renderMine()};
+ $("#b-board").onclick=()=>{if(pend.dirty){toast("请先点击「保存设定」保存自定义立绘");return}bdPilot="u:cur";bdCur=snap();bdTl=bdCur.tl||cr.tl;ainit();go("board")};
+ $("#b-copy").onclick=()=>{if(pend.dirty){toast("请先点击「保存设定」保存自定义立绘");return}copyText(formatProfile(snap())).then(()=>{SFX.ok();toast("档案及立绘/头像外链已复制")})};
+ $("#b-link").onclick=()=>{const s=snap();if(s.mode==="custom"&&((s.pVal&&s.pVal.startsWith("data:"))||(s.aVal&&s.aVal.startsWith("data:")))){toast("本地上传图片不支持短链接分享，请使用「复制档案」");return}const code=btoa(unescape(encodeURIComponent(JSON.stringify(s))));copyText(location.href.split("#")[0]+"#p="+code).then(()=>toast("分享链接已复制"))};
  $("#idc").onclick=e=>{if(e.target.closest(".plugbtn"))cycleEva(e.shiftKey?-1:1)};
  $("#idc").oncontextmenu=e=>{if(e.target.closest(".plugbtn")){e.preventDefault();cycleEva(-1)}};
  let d=null;try{d=JSON.parse(localStorage.getItem(DR)||"null")}catch(e){}
@@ -912,25 +1010,35 @@ ENTER.createInit=()=>{
  renderMine()};
 function copyText(t){return(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).catch(()=>{const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove()})}
 function cycleEva(d){const ids=R.filter(x=>x.c==="eva").map(x=>x.id),i=ids.indexOf($("#f-eva").value);$("#f-eva").value=ids[(i+d+ids.length)%ids.length];SFX.clunk();const p=$(".plugbtn");if(p){p.classList.remove("pop");void p.offsetWidth;p.classList.add("pop")}syncUI()}
-const snap=()=>({wl:cr.wl,tl:cr.tl,name:$("#f-name").value||"无名",age:$("#f-age").value,org:$("#f-org").value,role:$("#f-role").value,loc:cr.loc,eva:$("#f-eva").value,tr:[...cr.tr],color:cr.color,mode:"base",base:(OC_MAP[cr.base]||OCS[0]).id,hue:+$("#f-hue").value,q:$("#f-q").value||"……",sync:calcSync(),st:[...cr.st]});
-const pImg=s=>U((OC_MAP[s.base]||OCS[0]).p);
+const snap=()=>({wl:cr.wl,tl:cr.tl,name:$("#f-name").value||"无名",age:$("#f-age").value,org:$("#f-org").value,role:$("#f-role").value,loc:cr.loc,eva:$("#f-eva").value,tr:[...cr.tr],color:cr.color,mode:cr.mode,base:(OC_MAP[cr.base]||OCS[0]).id,pVal:cr.pVal,aVal:cr.aVal,hue:+$("#f-hue").value,q:$("#f-q").value||"……",sync:calcSync(),st:[...cr.st]});
+const pImg=s=>(s.mode==="custom"&&s.pVal)?s.pVal:U((OC_MAP[s.base]||OCS[0]).p);
+const aImg=s=>(s.mode==="custom"&&(s.aVal||s.pVal))?(s.aVal||s.pVal):U((OC_MAP[s.base]||OCS[0]).p);
 function apply(s){
  const oc=OC_MAP[s.base]||OCS[0];const ag=clamp(+(s.age||oc.defAge),18,21);
  $("#f-name").value=s.name||"";$("#f-age").value=ag;$("#f-agev").textContent=ag;$("#f-org").value=s.org||"NERV 本部";$("#f-role").value=s.role||ROLES[0];$("#f-eva").value=s.eva||"073";$("#f-q").value=s.q||"";$("#f-hue").value=s.hue||0;$("#f-huev").textContent=s.hue||0;
- const tinfo=getTL(s.tl);cr.wl=s.wl||tinfo.wl;cr.tl=tinfo.id;cr.tr=[...(s.tr||[])];cr.color=s.color||COLS[0];cr.mode="base";cr.base=oc.id;cr.st=[...(s.st||DEFST)];cr.loc=s.loc||LOCS[0];cr.noise=(s.sync||60)-(22+cr.st[4]*.55+cr.st[3]*.12+cr.st[5]*.05);syncUI()
+ const tinfo=getTL(s.tl);cr.wl=s.wl||tinfo.wl;cr.tl=tinfo.id;cr.tr=[...(s.tr||[])];cr.color=s.color||COLS[0];cr.base=oc.id;
+ cr.mode=(s.mode==="custom"&&(s.pVal||s.aVal))?"custom":"base";cr.pVal=s.pVal||"";cr.aVal=s.aVal||"";
+ pend={pVal:cr.pVal,aVal:cr.aVal,dirty:false};
+ $("#f-url").value=(cr.pVal&&!cr.pVal.startsWith("data:"))?cr.pVal:"";
+ $("#f-avurl").value=(cr.aVal&&!cr.aVal.startsWith("data:"))?cr.aVal:"";
+ cr.st=[...(s.st||DEFST)];cr.loc=s.loc||LOCS[0];cr.noise=(s.sync||60)-(22+cr.st[4]*.55+cr.st[3]*.12+cr.st[5]*.05);syncUI()
 }
 function radar(st){const pt=(i,r)=>{const a=-Math.PI/2+i*Math.PI/3;return(50+Math.cos(a)*r).toFixed(1)+","+(50+Math.sin(a)*r).toFixed(1)};
  const ring=k=>st.map((_,i)=>pt(i,34*k)).join(" ");return`<svg viewBox="0 0 100 100" fill="none"><polygon points="${ring(1)}" stroke="rgba(255,255,255,.35)" stroke-width=".6" fill="rgba(0,0,0,.35)"/><polygon points="${ring(.66)}" stroke="rgba(255,255,255,.18)" stroke-width=".5"/><polygon points="${ring(.33)}" stroke="rgba(255,255,255,.18)" stroke-width=".5"/>${st.map((_,i)=>`<line x1="50" y1="50" x2="${pt(i,34).split(",")[0]}" y2="${pt(i,34).split(",")[1]}" stroke="rgba(255,255,255,.18)" stroke-width=".4"/>`).join("")}<polygon points="${st.map((v,i)=>pt(i,34*v/100)).join(" ")}" fill="var(--cc)" fill-opacity=".38" stroke="var(--cc)" stroke-width="1.2"/>${STN.map((n,i)=>{const [x,y]=pt(i,43).split(",");return`<text x="${x}" y="${y}" fill="#fff" font-size="6.5" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif">${n}</text>`}).join("")}</svg>`}
 let cardBuilt=false,dtm;
 function syncUI(){renderTLUI();$$("#f-tr button").forEach(b=>b.classList.toggle("on",cr.tr.includes(b.dataset.t)));$$("#f-sw i").forEach(i=>i.classList.toggle("on",i.dataset.c===cr.color));
- $$("#f-loc button").forEach(b=>b.classList.toggle("on",b.dataset.l===cr.loc));$$("#bases button").forEach(x=>x.classList.toggle("on",x.dataset.b===cr.base));
+ $$("#f-loc button").forEach(b=>b.classList.toggle("on",b.dataset.l===cr.loc));$$("#bases button").forEach(x=>x.classList.toggle("on",cr.mode==="base"&&x.dataset.b===cr.base));
  $$("#stats .stp").forEach((r,i)=>{$("input",r).value=cr.st[i];$("b",r).textContent=cr.st[i]});$("#pts-left").textContent=BUDGET-cr.st.reduce((a,b)=>a+b,0);
- drawCard();clearTimeout(dtm);dtm=setTimeout(()=>{try{localStorage.setItem(DR,JSON.stringify(snap()))}catch(e){}},400)}
+ renderCustPrev();drawCard();clearTimeout(dtm);dtm=setTimeout(()=>{try{localStorage.setItem(DR,JSON.stringify(snap()))}catch(e){}},400)}
 function buildCard(){$("#idc").innerHTML=`<div class="ic-bgw" data-bg="img/bg/create.webp"></div><img class="ic-eva" id="ic-eva" alt=""><img class="ic-pt" id="ic-pt" alt=""><button class="plugbtn" title="点击切换搭载机体（右键 / Shift 反向）">${IM("img/fx/plug.webp","","alt=''")}<span id="ic-un">UNIT</span></button><div class="ic-top"><span>NERV · PILOT FILE</span><span id="ic-no"></span></div><div class="stamp">PILOT</div><div class="ic-nm" id="ic-nm"></div><div class="ic-rd" id="ic-rd"></div><div class="ic-bt" id="ic-bt"></div>`;hydrate($("#idc"));cardBuilt=true}
 function drawCard(){if(!cardBuilt)buildCard();const s=snap(),c=$("#idc"),tinfo=getTL(s.tl),oc=OC_MAP[s.base]||OCS[0];c.style.setProperty("--cc",s.color);
  const ev=$("#ic-eva"),ep=evaPath(s.eva);if(ev.dataset.p!==ep){setImg(ev,ep);ev.classList.remove("swap");void ev.offsetWidth;ev.classList.add("swap")}
  const pt=$("#ic-pt");
- if(pt.dataset.cur!==oc.id){pt.dataset.cur=oc.id;setImg(pt,oc.p)}
+ if(s.mode==="custom"&&s.pVal){
+  if(pt.dataset.cur!==s.pVal){pt.dataset.cur=s.pVal;delete pt.dataset.p;pt.src=s.pVal}
+ }else{
+  if(pt.dataset.cur!==oc.id){pt.dataset.cur=oc.id;setImg(pt,oc.p)}
+ }
  pt.style.filter=`hue-rotate(${s.hue}deg) drop-shadow(0 4px 8px rgba(0,0,0,.55))`;
  $("#ic-un").textContent=split(BYID[s.eva].n)[0].slice(0,6);$("#ic-no").textContent="NO."+(hash(s.name)%9000+1000);$("#ic-nm").textContent=s.name;$("#ic-rd").innerHTML=radar(s.st);
  $("#ic-bt").innerHTML=`<div class="ic-q">「${s.q}」</div><b>TIME</b> ${tinfo.wn.replace(/世界线\s*/,"")} · ${tinfo.n}<br><b>UNIT</b> ${BYID[s.eva].n}　<b>AGE</b> ${s.age}<br><b>ROLE</b> ${s.role}<br><b>FROM</b> ${s.loc}<br><b>ORG</b> ${s.org}<br><b>TRAIT</b> ${s.tr.join(" / ")||"—"}　<b>SYNC</b> ${s.sync}%<div class="bar2"></div>`}
