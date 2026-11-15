@@ -361,26 +361,36 @@ html.w700 #cwrap{grid-template-columns:1fr}html.w700 #pCard{grid-column:1}
 #card .c1{font-family:var(--serif);font-weight:900;font-size:clamp(54px,calc(13*var(--vw,1vw)),190px);letter-spacing:.18em;color:#fff;line-height:1;transform:scaleX(1.1);transform-origin:left;rotate:-3deg}
 #card .c2{font:clamp(11px,calc(1.6*var(--vw,1vw)),18px) var(--mono);letter-spacing:.8em;color:var(--o);margin-top:20px;margin-left:calc(8*var(--vw,1vw))}
 #card .ln{position:absolute;left:0;right:0;height:1px;background:rgba(255,255,255,.4)}
-/* ---------- 舞台模式（横屏：与电脑端同一套分屏排版，等比缩放） ---------- */
+/* ---------- 舞台模式（仅手机端：横屏与电脑端同一套分屏排版，等比缩放） ---------- */
 html.stage body{position:fixed;left:0;top:0;transform-origin:0 0}
-#rot,#mbtn{padding:6px 10px;font-size:12px;letter-spacing:.12em;border:1px solid rgba(255,255,255,.28);color:#e9dcff;white-space:nowrap;margin-left:6px}
+#mbtn,#rot{padding:4px 10px;font:11px var(--mono);letter-spacing:.15em;border:1px solid #8a7aa0;color:#e9dcff;white-space:nowrap;margin-left:8px}
 #mbtn.on,#rot.on{background:var(--c1);color:#fff;border-color:transparent}
-@media (hover:hover) and (pointer:fine){html:not(.w820) #rot{display:none}}
-html.w820 #nav{flex-wrap:wrap;height:auto;padding:6px 8px;gap:0 2px;overflow:visible;background:linear-gradient(180deg,rgba(5,2,10,.92),rgba(5,2,10,.4))}
-html.w820 #nav button.n{padding:6px 7px;letter-spacing:.05em;translate:0 0!important}
-html.w820 #snd,html.w820 #mbtn,html.w820 #rot{padding:4px 6px;font-size:10px;margin-left:2px;letter-spacing:.04em}
-html.w820 #mp{bottom:8px;left:8px}
-html.w700 #grid{grid-template-columns:1fr 1fr;gap:18px 10px;padding:10px 12px 70px}
-html.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
-/* ---------- 音乐播放器（网易云官方外链，国内直连） ---------- */
-#mp{position:fixed;left:16px;bottom:14px;z-index:160;width:min(350px,calc(var(--vw,1vw)*100 - 32px));background:rgba(10,6,18,.9);border:1px solid rgba(255,255,255,.2);padding:12px 12px 10px;rotate:-1.2deg;display:none;backdrop-filter:blur(6px)}
+html:not(.mob) #rot{display:none!important}
+html.mob.w820 #nav{flex-wrap:wrap;height:auto;padding:6px 8px;gap:0 2px;overflow:visible;background:linear-gradient(180deg,rgba(5,2,10,.92),rgba(5,2,10,.4))}
+html.mob.w820 #nav button.n{padding:6px 7px;letter-spacing:.05em;translate:0 0!important}
+html.mob.w820 #snd,html.mob.w820 #mbtn,html.mob.w820 #rot{padding:4px 6px;font-size:10px;margin-left:2px;letter-spacing:.04em}
+html.mob.w820 #mp{top:auto;right:8px;left:8px;bottom:8px;width:auto}
+html.mob.w700 #grid{grid-template-columns:1fr 1fr;gap:18px 10px;padding:10px 12px 70px}
+html.mob.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
+/* ---------- 音乐播放器（网易云外链直连流，国内快速播放；无本地/内嵌音频） ---------- */
+#mp{position:fixed;top:64px;right:20px;z-index:160;width:min(360px,calc(var(--vw,1vw)*100 - 32px));background:rgba(10,6,18,.92);border:1px solid rgba(255,255,255,.22);padding:12px 14px;rotate:-1deg;display:none;backdrop-filter:blur(8px);box-shadow:8px 10px 0 rgba(0,0,0,.4)}
 #mp.on{display:block}
-#mp h4{font:700 12px var(--mono);letter-spacing:.3em;color:var(--o);margin-bottom:8px;display:flex;justify-content:space-between}
-#mp h4 span{cursor:pointer;color:#fff}
-#mp .tl{display:flex;flex-direction:column;gap:2px;max-height:170px;overflow:auto}
+#mp h4{font:700 12px var(--mono);letter-spacing:.28em;color:var(--o);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+#mp h4 span{cursor:pointer;color:#fff;font-size:15px;padding:0 4px}
+#mp .tl{display:flex;flex-direction:column;gap:2px;max-height:176px;overflow:auto}
 #mp .tl button{text-align:left;padding:7px 8px;font-size:13px;color:#d9c9ee;border-left:2px solid transparent;line-height:1.3}
 #mp .tl button small{display:block;color:#8a7aa0;font-size:11px}
-#mp .tl button.on{color:#fff;border-left-color:var(--c1);background:rgba(255,255,255,.07)}
+#mp .tl button.on{color:#fff;border-left-color:var(--c1);background:rgba(255,255,255,.08)}
+#mp .ctrl{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.12)}
+#mp .now{display:flex;justify-content:space-between;align-items:center;font:11px var(--mono);color:#cdb8e6;margin-bottom:6px;gap:8px}
+#mp .now b{color:#fff;font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#mp .bar{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+#mp .bar input[type=range]{flex:1;accent-color:var(--c1);height:4px;cursor:pointer}
+#mp .btns{display:flex;align-items:center;gap:6px}
+#mp .btns button{padding:5px 10px;font:12px var(--mono);border:1px solid rgba(255,255,255,.25);color:#fff}
+#mp .btns button.p{background:var(--c1);border-color:transparent;min-width:58px}
+#mp .btns .vol{margin-left:auto;display:flex;align-items:center;gap:4px;font:10px var(--mono);color:#a592bd}
+#mp .btns .vol input{width:54px;accent-color:var(--o)}
 #mp iframe{width:100%;height:86px;border:0;margin-top:8px;background:#111}
 #mp .add{display:flex;gap:6px;margin-top:8px}
 #mp .add input{flex:1;min-width:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);color:#fff;padding:6px 8px;font-size:12px}
@@ -532,13 +542,15 @@ html.w820 #s-hub .sub{letter-spacing:.12em;font-size:11px}
 <script src="roster.js"></script>
 <script>
 "use strict";
-/* ============ 舞台 / 横竖屏：横屏（含强制横屏）= 电脑端同一排版，按 1280×720 以上的舞台等比缩放 ============ */
+/* ============ 舞台 / 横竖屏：严格只在手机端启用；电脑端保持原版不动 ============ */
+const IS_MOB=/Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(navigator.userAgent)||(matchMedia("(pointer:coarse)").matches&&!matchMedia("(any-pointer:fine)").matches);
 const STG={w:window.innerWidth,h:window.innerHeight,s:1,rw:window.innerWidth,stage:false,rot:false,force:false};
 function P(e){if(!STG.stage)return{x:e.clientX,y:e.clientY};return STG.rot?{x:e.clientY/STG.s,y:(STG.rw-e.clientX)/STG.s}:{x:e.clientX/STG.s,y:e.clientY/STG.s}}
 function layout(){
- const RW=window.innerWidth,RH=window.innerHeight,root=document.documentElement,B=document.body,coarse=matchMedia("(pointer:coarse)").matches,portrait=RH>RW;
+ const RW=window.innerWidth,RH=window.innerHeight,root=document.documentElement,B=document.body,portrait=RH>RW;
+ root.classList.toggle("mob",IS_MOB);
  let stage=false,rot=false;
- if(portrait&&STG.force){stage=true;rot=true}else if(!portrait&&coarse&&RW<1280)stage=true;
+ if(IS_MOB){if(portrait&&STG.force){stage=true;rot=true}else if(!portrait&&RW<1280)stage=true}
  STG.rw=RW;STG.stage=stage;STG.rot=rot;
  if(stage){const vw=rot?RH:RW,vh=rot?RW:RH,s=Math.min(vw/1280,vh/720);STG.s=s;STG.w=vw/s;STG.h=vh/s;
   B.style.width=STG.w+"px";B.style.height=STG.h+"px";B.style.transform=(rot?`translateX(${RW}px) rotate(90deg) `:"")+`scale(${s})`}
@@ -996,25 +1008,84 @@ $("#rot").onclick=async()=>{
  try{if(screen.orientation&&screen.orientation.lock)await screen.orientation.lock("landscape")}catch(e){}
  setTimeout(layout,250);layout();
 };
-/* ============ 音乐播放器：网易云官方外链播放器（music.163.com，国内直连；不内嵌、不存本地音频） ============ */
+/* ============ 音乐播放器：网易云官方外链音频流（music.163.com，国内直连；不内嵌、不存本地音频） ============ */
 const TRACKS=[
- {id:1824020871,t:"One Last Kiss",a:"宇多田ヒカル"},
- {id:657666,t:"残酷な天使のテーゼ",a:"高橋洋子"},
- {id:1483488615,t:"Komm, süsser Tod／甘き死よ、来たれ",a:"arianne schreiber · M-10 Director’s Edit."},
- {id:1887139866,t:"指纹",a:"杜宣达"},
- {id:437715323,t:"Merry Christmas Mr. Lawrence",a:"坂本龍一"}
+ {id:2151910982,t:"One Last Kiss",a:"宇多田ヒカル"},
+ {id:31365692,t:"残酷な天使のテーゼ",a:"高橋洋子"},
+ {id:31365696,t:"Komm, süsser Tod／甘き死よ、来たれ",a:"arianne schreiber · M-10 Director’s Edit."},
+ {id:2127915506,t:"指纹",a:"杜宣达"},
+ {id:4899152,t:"Merry Christmas Mr. Lawrence",a:"坂本龍一"}
 ];
 (function(){
- const mp=$("#mp");let cur=-1,custom=[];
+ const mp=$("#mp"),aud=new Audio();
+ aud.preload="none";aud.volume=0.8;
+ let cur=-1,custom=[],loopOne=false,seeking=false;
  try{custom=JSON.parse(localStorage.getItem("eva_tracks")||"[]")}catch(e){}
  const all=()=>TRACKS.concat(custom);
- function draw(){mp.innerHTML=`<h4><b>♪ NERV RADIO</b><span id="mx">×</span></h4><div class="tl">${all().map((x,i)=>`<button data-i="${i}" class="${i===cur?"on":""}">${i+1}. ${x.t}<small>${x.a||"网易云音乐"}</small></button>`).join("")}</div><div id="mf"></div><div class="add"><input id="mi" placeholder="粘贴网易云歌曲链接或 ID，加入列表"><button id="ma">加入</button></div><div class="tip">由网易云音乐官方外链播放，国内可直连。部分歌曲为会员曲目，未登录时可能只能试听片段；也可 <a id="mo" target="_blank" rel="noopener">在网易云打开</a>。</div>`;
+ const fmt=s=>{if(!isFinite(s)||s<=0)return"00:00";const m=Math.floor(s/60),n=Math.floor(s%60);return String(m).padStart(2,"0")+":"+String(n).padStart(2,"0")};
+ function syncUI(){
+  const x=cur>=0?all()[cur]:null;
+  if($("#m-name"))$("#m-name").textContent=x?x.t:"未选择曲目";
+  if($("#m-play"))$("#m-play").textContent=aud.paused?"▶ 播放":"❚❚ 暂停";
+  if($("#m-loop"))$("#m-loop").textContent=loopOne?"单曲":"顺序";
+  if($("#m-time"))$("#m-time").textContent=`${fmt(aud.currentTime)} / ${fmt(aud.duration)}`;
+  if($("#m-seek")&&!seeking&&isFinite(aud.duration)&&aud.duration>0)$("#m-seek").value=Math.round(aud.currentTime/aud.duration*1000);
+  $$("#mp .tl button").forEach((b,j)=>b.classList.toggle("on",j===cur));
+ }
+ function draw(){
+  mp.innerHTML=`<h4><b>♪ NERV RADIO</b><span id="mx">×</span></h4>
+  <div class="tl">${all().map((x,i)=>`<button data-i="${i}" class="${i===cur?"on":""}">${i+1}. ${x.t}<small>${x.a||"网易云音乐"}</small></button>`).join("")}</div>
+  <div class="ctrl">
+   <div class="now"><b id="m-name">点击曲目播放</b><span id="m-time">00:00 / 00:00</span></div>
+   <div class="bar"><input id="m-seek" type="range" min="0" max="1000" value="0"></div>
+   <div class="btns">
+    <button id="m-prev" title="上一首">⏮</button>
+    <button id="m-play" class="p">▶ 播放</button>
+    <button id="m-next" title="下一首">⏭</button>
+    <button id="m-loop" title="切换循环">顺序</button>
+    <div class="vol">VOL <input id="m-vol" type="range" min="0" max="100" value="${Math.round(aud.volume*100)}"></div>
+   </div>
+   <div id="m-stat" class="tip"></div>
+   <div id="mf"></div>
+  </div>
+  <div class="add"><input id="mi" placeholder="粘贴网易云歌曲链接或 ID，加入列表"><button id="ma">加入</button></div>
+  <div class="tip">通过网易云音乐官方外链流直连播放（国内可快速访问）。<a id="mo" target="_blank" rel="noopener">在网易云打开当前曲目</a></div>`;
   $("#mx").onclick=()=>{mp.classList.remove("on");$("#mbtn").classList.remove("on")};
   $$("#mp .tl button").forEach(b=>b.onclick=()=>play(+b.dataset.i));
-  $("#ma").onclick=()=>{const m=String($("#mi").value).match(/(?:id=|song\/|^)(\d{5,})/);if(!m){toast&&toast("没识别到歌曲 ID");return}custom.push({id:+m[1],t:"自定义曲目 "+m[1],a:"网易云音乐"});localStorage.setItem("eva_tracks",JSON.stringify(custom));const k=cur;draw();play(all().length-1);};
-  if(cur>=0)frame()}
- function frame(){const x=all()[cur];$("#mf").innerHTML=`<iframe allow="autoplay" src="https://music.163.com/outchain/player?type=2&id=${x.id}&auto=1&height=66"></iframe>`;$("#mo").href="https://music.163.com/song?id="+x.id}
- function play(i){cur=i;$$("#mp .tl button").forEach((b,j)=>b.classList.toggle("on",j===i));frame()}
+  $("#m-prev").onclick=()=>play((cur<=0?all().length:cur)-1);
+  $("#m-next").onclick=()=>play((cur+1)%all().length);
+  $("#m-loop").onclick=()=>{loopOne=!loopOne;aud.loop=loopOne;syncUI()};
+  $("#m-play").onclick=()=>{if(cur<0){play(0);return}if(aud.paused)aud.play().catch(()=>fallback());else aud.pause();syncUI()};
+  $("#m-vol").oninput=e=>{aud.volume=e.target.value/100};
+  const sk=$("#m-seek");
+  sk.oninput=()=>{seeking=true;if(isFinite(aud.duration))$("#m-time").textContent=`${fmt(sk.value/1000*aud.duration)} / ${fmt(aud.duration)}`};
+  sk.onchange=()=>{if(isFinite(aud.duration))aud.currentTime=sk.value/1000*aud.duration;seeking=false};
+  $("#ma").onclick=()=>{const m=String($("#mi").value).match(/(?:id=|song\/|^)(\d{5,})/);if(!m){toast&&toast("没识别到歌曲 ID");return}custom.push({id:+m[1],t:"自定义曲目 "+m[1],a:"网易云音乐"});localStorage.setItem("eva_tracks",JSON.stringify(custom));draw();play(all().length-1)};
+  syncUI();
+ }
+ function fallback(){
+  const x=all()[cur];if(!x)return;
+  if($("#m-stat"))$("#m-stat").textContent="该曲目直连受限，已切换网易云外链卡片（部分 VIP 曲目需前往网易云听全曲）：";
+  if($("#mf"))$("#mf").innerHTML=`<iframe allow="autoplay" src="https://music.163.com/outchain/player?type=2&id=${x.id}&auto=1&height=66"></iframe>`;
+ }
+ function play(i){
+  const list=all();if(!list.length)return;
+  cur=(i+list.length)%list.length;
+  const x=list[cur];
+  if($("#mf"))$("#mf").innerHTML="";
+  if($("#m-stat"))$("#m-stat").textContent="LOADING STREAM…";
+  if($("#mo"))$("#mo").href="https://music.163.com/song?id="+x.id;
+  aud.src=`https://music.163.com/song/media/outer/url?id=${x.id}.mp3`;
+  aud.play().then(()=>{if($("#m-stat"))$("#m-stat").textContent="STREAMING · 网易云 CDN";syncUI()}).catch(()=>{syncUI()});
+  syncUI();
+ }
+ aud.ontimeupdate=syncUI;
+ aud.onloadedmetadata=syncUI;
+ aud.ondurationchange=syncUI;
+ aud.onplay=()=>{if($("#m-stat"))$("#m-stat").textContent="STREAMING · 网易云 CDN";syncUI()};
+ aud.onpause=syncUI;
+ aud.onended=()=>{if(!loopOne)play(cur+1)};
+ aud.onerror=()=>fallback();
  draw();
  $("#mbtn").onclick=()=>{const on=mp.classList.toggle("on");$("#mbtn").classList.toggle("on",on);if(on&&cur<0)play(0)};
 })();
