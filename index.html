@@ -869,7 +869,7 @@ const calcSync=()=>+clamp(22+cr.st[4]*.55+cr.st[3]*.12+cr.st[5]*.05+cr.noise,18,
 let sharedP=null;
 function formatProfile(s){
  const tinfo=getTL(s.tl),oc=OC_MAP[s.base]||OCS[0];
- return `【NERV 驾驶员档案】\n时间线：${tinfo.wn} · ${tinfo.n}（${tinfo.t}）\n姓名：${s.name}\n性别/阶段：${oc.n}\n立绘短码：${oc.id}（mt-${oc.id}）\n年龄：${s.age}\n所属：${s.org}\n身份：${s.role}\n开局地点：${s.loc}\n机体：${BYID[s.eva].n}\n性格：${s.tr.join("、")}\n属性：${STN.map((n,i)=>n+s.st[i]).join(" ")}\n同步率：${s.sync}%\n出击宣言：${s.q}\n【立绘渲染要求】请在正文（玩家立绘框与玩家气泡头像）及主角状态栏（立绘）中统一使用短码 mt-${oc.id}。`;
+ return `【NERV 驾驶员档案】\n时间线：${tinfo.wn} · ${tinfo.n}（${tinfo.t}）\n姓名：${s.name}\n性别/阶段：${oc.n}\n立绘短码：${oc.id}（mt-${oc.id}）\n年龄：${s.age}\n所属：${s.org}\n身份：${s.role}\n开局地点：${s.loc}\n机体：${BYID[s.eva].n}\n性格：${s.tr.join("、")}\n属性：${STN.map((n,i)=>n+s.st[i]).join(" ")}\n同步率：${s.sync}%\n出击宣言：${s.q}\n【立绘渲染要求】请在正文玩家气泡头像及主角状态栏（立绘）中统一使用短码 mt-${oc.id}。`;
 }
 function renderTLUI(){
  $("#f-wl").innerHTML=Object.entries(WLS).map(([k,v])=>`<button data-w="${k}" class="${cr.wl===k?"on":""}">${v.n}</button>`).join("");
